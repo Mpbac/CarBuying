@@ -1,2 +1,0 @@
-# CarBuying
-Car Buying Study
