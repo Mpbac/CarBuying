@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Car Buying</title>
+  <title>Car Buying Study</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
     /* Custom Colors (Dartmouth & Forest Green) */
@@ -42,14 +42,33 @@
 
     /* Hero Section Styling */
     .hero.is-primary.is-bold {
-      background-color: var(--dartmouth-green);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the hero */
+      background-color: var(--dartmouth-green); /* Set to Dartmouth Green */
+      background-image: none; /* Ensure no gradient overrides the solid color */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
+
+    /* Flexbox for the container to align logo and title */
+    .hero-body .container {
+      display: flex; /* Enable Flexbox */
+      align-items: center; /* Vertically align items in the center */
+      justify-content: center; /* Horizontally center the content (logo + title) */
+    }
+
     .hero .title {
       color: white;
       font-size: 2.5em; /* Slightly larger title */
       font-weight: 600;
+      margin-left: 1.5rem; /* Space between logo and title */
+      margin-bottom: 0; /* Remove default bottom margin from Bulma's title class */
     }
+
+    /* Styles for the Dartmouth Logo */
+    .banner-logo {
+      max-height: 70px; /* Adjust this value to make the logo larger or smaller */
+      width: auto; /* Maintain aspect ratio */
+      /* No margin-right needed here, as margin-left on title handles spacing */
+    }
+
 
     /* Button Styling */
     .button.is-primary {
@@ -120,7 +139,9 @@
   <section class="hero is-primary is-bold">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">Smart Car Buying</h1>
+        <img src="iD-Pine_Rev.png" alt="Dartmouth College Logo" class="banner-logo">
+        
+        <h1 class="title">Car Buying Study</h1>
       </div>
     </div>
   </section>
