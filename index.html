@@ -6,13 +6,23 @@
   <title>Smart Car Buying</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
+    :root {
+      --dartmouth-green: #00693e; 
+      --forest-green: #228B22; 
+      --off-white: #f8f8f8; 
+    }
+
     body {
-      background-color: #f4f4f4;
+      background-color: var(--off-white);
       padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     }
     .form-card {
       max-width: 700px;
       margin: 20px auto;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+      border-radius: 10px; 
+      overflow: hidden; 
     }
     .hidden {
       display: none;
@@ -27,6 +37,80 @@
       border-radius: 4px;
       font-weight: bold;
       text-align: center;
+    }
+
+    
+    .hero.is-primary.is-bold {
+      background-color: var(--dartmouth-green);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+    .hero .title {
+      color: white;
+      font-size: 2.5em; /* Slightly larger title */
+      font-weight: 600;
+    }
+
+    
+    .button.is-primary {
+      background-color: var(--dartmouth-green);
+      border-color: var(--dartmouth-green);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .button.is-primary:hover,
+    .button.is-primary:focus {
+      background-color: #005a34; 
+      border-color: #005a34;
+    }
+
+    .button.is-success {
+      background-color: var(--forest-green);
+      border-color: var(--forest-green);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .button.is-success:hover,
+    .button.is-success:focus {
+      background-color: #1e7d1e; 
+      border-color: #1e7d1e;
+    }
+
+    
+    .label {
+      font-weight: 600; 
+      color: #363636; 
+      margin-bottom: 0.75rem; 
+    }
+    .field {
+      margin-bottom: 1.5rem; 
+    }
+
+    .input, .select select {
+      border-color: #dbdbdb;
+      box-shadow: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .input:focus, .select select:focus, .textarea:focus {
+      border-color: var(--forest-green);
+      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25); 
+    }
+
+    .radio {
+      margin-right: 1.5em; 
+      cursor: pointer;
+    }
+
+   
+    .content p {
+      line-height: 1.7; 
+      margin-bottom: 1em;
+    }
+    .content hr {
+      background-color: #eee; 
+      height: 1px;
+      margin: 2rem 0; 
     }
   </style>
 </head>
@@ -43,15 +127,20 @@
   <div class="card form-card" id="form-card">
     <div class="card-content">
 
-      <div class="content">
+      <div id="intro-explanation-content" class="content">
         <h2></h2>
         <p>
-         We are researchers at Dartmouth College engaged in a study asking whether better information about the car buying process can make the experience better for consumers.... and save them money...  Your participation is valuable and will help us gain insights into how individuals make decisions when buying cars.
+         We are researchers at Dartmouth College engaged in a study asking whether better information about the car buying process can make the experience better for consumers and save them money. Your participation is valuable and will help us gain insights into how individuals make decisions when buying cars. Participants in this study will receive $20 upon completion.
         </p>
         <p>
-          This survey should take about 5 minutes to complete. Your responses will be kept confidential and used for research purposes only.
+         Please complete this initial screening survey to see if you are eligible to participate in this study! 
         </p>
-         <hr> </div>
+        <p>
+         This survey should take about 5 minutes to complete. Your responses will be kept confidential and used for research purposes only.
+        </p>
+         <hr>
+      </div>
+
       <form id="purchaseForm">
         <input type="hidden" name="timestamp" id="timestampField">
 
@@ -177,7 +266,15 @@
     const formCard = document.getElementById("form-card");
     const questionSection = document.getElementById("question-section");
     const surveySection = document.getElementById("survey-section");
+    const introExplanationContent = document.getElementById("intro-explanation-content"); // Get the intro explanation div
 
+
+    // *** ADD THESE WEBPAGES LATER ***
+    const targetWebpages = [
+      "https://www.example.com/page1",
+      "https://www.example.com/page2",
+      "https://www.example.com/page3"
+    ];
 
     // Function to set the current timestamp
     function setTimestamp() {
@@ -216,6 +313,7 @@
       if (selected.value === "A") {
         questionSection.classList.add("hidden");
         surveySection.classList.remove("hidden");
+        introExplanationContent.classList.add("hidden"); // Hide intro explanation when moving to second survey
         // No fetch here, wait for the full survey submit
       } else {
         // For options B and C, get only the purchase choice and timestamp, format, and send
@@ -271,7 +369,12 @@
       .then(() => { // Simple .then() as no-cors/redirect won't give usable response data
            // Assuming success if no fetch error
            formCard.classList.add("hidden");
-           thankYouMessage.classList.remove("hidden");
+           thankYouMessage.classList.remove("hidden"); // This will be briefly shown then redirected
+
+           // Randomly select a webpage and redirect
+           const randomIndex = Math.floor(Math.random() * targetWebpages.length);
+           const randomPage = targetWebpages[randomIndex];
+           window.location.href = randomPage; // Redirect the user
       })
       .catch(error => {
           console.error('Error sending survey data:', error);
