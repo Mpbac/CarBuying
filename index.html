@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Car Buying Study</title>
+  <title>Smart Car Buying</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
+    /* Custom Colors (Dartmouth & Forest Green) */
     :root {
-      --dartmouth-green: #00693e; 
-      --forest-green: #228B22; 
-      --off-white: #f8f8f8; 
+      --dartmouth-green: #00693e; /* Primary Dartmouth Green */
+      --forest-green: #228B22; /* A slightly lighter, more vibrant green for accents */
+      --off-white: #f8f8f8; /* A soft off-white for backgrounds */
     }
 
     body {
       background-color: var(--off-white);
       padding: 20px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A common readable font */
     }
     .form-card {
       max-width: 700px;
       margin: 20px auto;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
-      border-radius: 10px; 
-      overflow: hidden; 
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer, more pronounced shadow */
+      border-radius: 10px; /* More rounded corners */
+      overflow: hidden; /* Ensures shadow looks clean with rounded corners */
     }
     .hidden {
       display: none;
@@ -31,7 +32,7 @@
       margin: 20px auto;
       max-width: 600px;
       padding: 20px;
-      background-color: #d4edda;
+      background-color: #d4edda; /* Keep a light green for success messages */
       color: #155724;
       border: 1px solid #c3e6cb;
       border-radius: 4px;
@@ -39,10 +40,10 @@
       text-align: center;
     }
 
-    
+    /* Hero Section Styling */
     .hero.is-primary.is-bold {
       background-color: var(--dartmouth-green);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the hero */
     }
     .hero .title {
       color: white;
@@ -50,7 +51,7 @@
       font-weight: 600;
     }
 
-    
+    /* Button Styling */
     .button.is-primary {
       background-color: var(--dartmouth-green);
       border-color: var(--dartmouth-green);
@@ -60,7 +61,7 @@
     }
     .button.is-primary:hover,
     .button.is-primary:focus {
-      background-color: #005a34; 
+      background-color: #005a34; /* Slightly darker Dartmouth green on hover */
       border-color: #005a34;
     }
 
@@ -73,18 +74,18 @@
     }
     .button.is-success:hover,
     .button.is-success:focus {
-      background-color: #1e7d1e; 
+      background-color: #1e7d1e; /* Slightly darker forest green on hover */
       border-color: #1e7d1e;
     }
 
-    
+    /* Form Element Styling */
     .label {
-      font-weight: 600; 
-      color: #363636; 
-      margin-bottom: 0.75rem; 
+      font-weight: 600; /* Slightly bolder labels */
+      color: #363636; /* Standard dark gray for text */
+      margin-bottom: 0.75rem; /* More space below labels */
     }
     .field {
-      margin-bottom: 1.5rem; 
+      margin-bottom: 1.5rem; /* More vertical space between form fields */
     }
 
     .input, .select select {
@@ -94,23 +95,23 @@
     }
     .input:focus, .select select:focus, .textarea:focus {
       border-color: var(--forest-green);
-      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25); 
+      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25); /* Subtle focus shadow */
     }
 
     .radio {
-      margin-right: 1.5em; 
-      cursor: pointer;
+      margin-right: 1.5em; /* More space between radio options */
+      cursor: pointer; /* Indicate clickable */
     }
 
-   
+    /* Content Section Formatting */
     .content p {
-      line-height: 1.7; 
+      line-height: 1.7; /* Improved line spacing for readability */
       margin-bottom: 1em;
     }
     .content hr {
-      background-color: #eee; 
+      background-color: #eee; /* Lighter HR line */
       height: 1px;
-      margin: 2rem 0; 
+      margin: 2rem 0; /* More spacing around the HR */
     }
   </style>
 </head>
@@ -119,7 +120,7 @@
   <section class="hero is-primary is-bold">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">Car Buying Study</h1>
+        <h1 class="title">Smart Car Buying</h1>
       </div>
     </div>
   </section>
@@ -133,10 +134,7 @@
          We are researchers at Dartmouth College engaged in a study asking whether better information about the car buying process can make the experience better for consumers and save them money. Your participation is valuable and will help us gain insights into how individuals make decisions when buying cars. Participants in this study will receive $20 upon completion.
         </p>
         <p>
-         Please complete this initial screening survey to see if you are eligible to participate in this study! 
-        </p>
-        <p>
-         This survey should take about 5 minutes to complete. Your responses will be kept confidential and used for research purposes only.
+         Please complete this initial screening survey to see if you are eligible to participate in this study! This survey should take about 5 minutes to complete. Your responses will be kept confidential and used for research purposes only.
         </p>
          <hr>
       </div>
@@ -269,7 +267,7 @@
     const introExplanationContent = document.getElementById("intro-explanation-content"); // Get the intro explanation div
 
 
-    
+    // *** ADD THESE WEBPAGES LATER ***
     const targetWebpages = [
       "https://sites.dartmouth.edu/carbuyingstudy/sample-page/",
       "https://sites.dartmouth.edu/carbuyingstudy/auto-loan-grade/",
@@ -320,27 +318,25 @@
         const tempFormData = new FormData();
         tempFormData.append("purchase", selected.value);
         tempFormData.append("timestamp", timestampField.value); // Include timestamp here
+        tempFormData.append("redirectedToUrl", "N/A - Not Eligible"); // Mark as not eligible for redirection
 
         const formDataString = formatFormData(tempFormData);
 
         fetch(scriptURL, {
           method: "POST",
-          // Use redirect: 'follow' and explicit text/plain header like the working example
           redirect: "follow",
           body: formDataString,
           headers: {
             "Content-Type": "text/plain;charset=utf-8",
           },
         })
-        .then(() => { // Simple .then() as no-cors/redirect won't give usable response data
-             // Assuming success if no fetch error
+        .then(() => {
              formCard.classList.add("hidden");
              thankYouMessage.classList.remove("hidden");
         })
         .catch(error => {
             console.error('Error sending data for B/C:', error);
             alert('There was an error submitting your response.');
-             // Optionally show an error message div
         });
       }
     });
@@ -354,32 +350,34 @@
       // Collect all form data including the timestamp field
       const formData = new FormData(e.target);
 
+      // Randomly select a webpage
+      const randomIndex = Math.floor(Math.random() * targetWebpages.length);
+      const randomPage = targetWebpages[randomIndex];
+
+      // Add the selected URL to the form data BEFORE sending
+      formData.append("redirectedToUrl", randomPage); // <-- THIS IS THE NEW LINE
+
       // Manually format FormData into URL-encoded string
       const formDataString = formatFormData(formData);
 
       fetch(scriptURL, {
         method: "POST",
-        // Use redirect: 'follow' and explicit text/plain header like the working example
         redirect: "follow",
         body: formDataString,
         headers: {
           "Content-Type": "text/plain;charset=utf-8",
         },
       })
-      .then(() => { // Simple .then() as no-cors/redirect won't give usable response data
-           // Assuming success if no fetch error
+      .then(() => {
            formCard.classList.add("hidden");
            thankYouMessage.classList.remove("hidden"); // This will be briefly shown then redirected
 
-           // Randomly select a webpage and redirect
-           const randomIndex = Math.floor(Math.random() * targetWebpages.length);
-           const randomPage = targetWebpages[randomIndex];
-           window.location.href = randomPage; // Redirect the user
+           // Redirect the user AFTER the data is sent
+           window.location.href = randomPage;
       })
       .catch(error => {
           console.error('Error sending survey data:', error);
           alert('There was an error submitting your survey.');
-           // Optionally show an error message div
       });
     });
   </script>
