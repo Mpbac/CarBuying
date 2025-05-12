@@ -126,40 +126,38 @@
       margin: 2rem 0;
     }
 
-    /* --- START of CORRECTED Modal Styles --- */
-
-    /* Styles for the Modal's main content container (the pop-up box itself) */
+  
     .modal-content {
-      width: 90%;       /* Make the modal take up 90% of the viewport width */
-      max-width: 1200px; /* Set a reasonable maximum width for large screens */
-      height: 90%;      /* Make the modal take up 90% of the viewport height */
-      max-height: 900px; /* Set a reasonable maximum height for typical desktop screens */
+      width: 90%;       
+      max-width: 1900px; 
+      height: 90%;      
+      max-height: 1900px; 
 
-      /* These are critical for vertical flex layout */
+    
       display: flex;
       flex-direction: column;
     }
 
-    /* Styles for the inner box within the modal content */
+   
     .modal-content .box {
-      flex-grow: 1; /* Allows the box to expand and fill the available height in flex container */
+      flex-grow: 1; 
       padding: 40px;
-      display: flex; /* Use flexbox for the box content too */
+      display: flex; 
       flex-direction: column;
-      height: 100%; /* Ensure the box takes full height within modal-content */
-      /* THIS IS CRITICAL FOR SCROLLING WHEN CONTENT EXCEEDS HEIGHT */
+      height: 100%; 
+     
       overflow-y: auto;
     }
 
-    /* Styles for the iframe displaying the PDF */
+    
     .modal-content iframe {
-      flex-grow: 1; /* Allows the iframe to expand and fill the available height in flex container */
-      min-height: 700px; /* Set a guaranteed minimum height for the iframe for readability */
-      width: 100%;      /* Ensures the iframe takes full available width */
-      border: 1px solid #ddd; /* Keeping border for visual separation */
+      flex-grow: 1; 
+      min-height: 700px; 
+      width: 100%;     
+      border: 1px solid #ddd; 
       margin-bottom: 20px;
     }
-    /* --- END of CORRECTED Modal Styles --- */
+   
 
   </style>
 </head>
@@ -346,7 +344,7 @@
 
   <script>
     // Use the script URL that you know works with your Apps Script
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODRCAJ-1XYbh_R7tKGECykly/exec"; // Adjusted scriptURL to match your previous one
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODRCAJ-1XYbh_R7tKGECykly/exec"; 
     const timestampField = document.getElementById("timestampField");
     const form = document.getElementById("purchaseForm");
     const submitBtn = document.getElementById("submitBtn");
