@@ -126,19 +126,19 @@
     }
 
     /* Styles for the Modal */
-    .modal-content .box {
-        padding: 40px; /* Increased padding for better spacing */
-    }
+ .modal-content {
+  width: 80%; /* Make the modal take up 80% of the screen width */
+  max-width: 900px; /* Set a maximum width for very large screens (e.g., desktop) */
+  /* You can adjust 80% and 900px as needed. */
+  /* The default Bulma max-width is often around 640px */
+}
     .modal-content h3 {
         margin-bottom: 15px;
     }
     .modal-content p {
         margin-bottom: 10px;
     }
-  .modal-content iframe {
-    height: 600px; /* Increase height significantly */
-    width: 100%; /* Ensure it takes full available width */
-    border: none; /* Keep border: none as it is clean */
+.modal-content iframe {
     margin-bottom: 20px;
 }
   </style>
