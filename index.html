@@ -6,11 +6,11 @@
   <title>Car Buying Study</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
-    /* Custom Colors (Dartmouth & Forest Green) */
+    /* Custom Colors */
     :root {
-      --dartmouth-green: #00693e; /* Primary Dartmouth Green */
-      --forest-green: #228B22; /* A slightly lighter, more vibrant green for accents */
-      --off-white: #f8f8f8; /* A soft off-white for backgrounds */
+      --dartmouth-green: #00693e; 
+      --forest-green: #228B22; 
+      --off-white: #f8f8f8; 
     }
 
     body {
@@ -21,9 +21,9 @@
     .form-card {
       max-width: 700px;
       margin: 20px auto;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer, more pronounced shadow */
-      border-radius: 10px; /* More rounded corners */
-      overflow: hidden; /* Ensures shadow looks clean with rounded corners */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+      border-radius: 10px;
+      overflow: hidden; 
     }
     .hidden {
       display: none;
@@ -32,7 +32,7 @@
       margin: 20px auto;
       max-width: 600px;
       padding: 20px;
-      background-color: #d4edda; /* Keep a light green for success messages */
+      background-color: #d4edda; 
       color: #155724;
       border: 1px solid #c3e6cb;
       border-radius: 4px;
@@ -40,37 +40,37 @@
       text-align: center;
     }
 
-    /* Hero Section Styling */
+   
     .hero.is-primary.is-bold {
-      background-color: var(--dartmouth-green); /* Set to Dartmouth Green */
-      background-image: none; /* Ensure no gradient overrides the solid color */
+      background-color: var(--dartmouth-green);
+      background-image: none; 
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
 
-    /* Flexbox for the container to align logo and title */
+    
     .hero-body .container {
-      display: flex; /* Enable Flexbox */
-      align-items: center; /* Vertically align items in the center */
-      justify-content: center; /* Horizontally center the content (logo + title) */
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
     }
 
     .hero .title {
       color: white;
-      font-size: 2.5em; /* Slightly larger title */
+      font-size: 2.5em; 
       font-weight: 600;
-      margin-left: 1.5rem; /* Space between logo and title */
-      margin-bottom: 0; /* Remove default bottom margin from Bulma's title class */
+      margin-left: 1.5rem; 
+      margin-bottom: 0; 
     }
 
-    /* Styles for the Dartmouth Logo */
+   
     .banner-logo {
-      max-height: 70px; /* Adjust this value to make the logo larger or smaller */
-      width: auto; /* Maintain aspect ratio */
-      /* No margin-right needed here, as margin-left on title handles spacing */
+      max-height: 70px; 
+      width: auto; 
+    
     }
 
 
-    /* Button Styling */
+    
     .button.is-primary {
       background-color: var(--dartmouth-green);
       border-color: var(--dartmouth-green);
@@ -80,7 +80,7 @@
     }
     .button.is-primary:hover,
     .button.is-primary:focus {
-      background-color: #005a34; /* Slightly darker Dartmouth green on hover */
+      background-color: #005a34; 
       border-color: #005a34;
     }
 
@@ -93,18 +93,18 @@
     }
     .button.is-success:hover,
     .button.is-success:focus {
-      background-color: #1e7d1e; /* Slightly darker forest green on hover */
+      background-color: #1e7d1e; 
       border-color: #1e7d1e;
     }
 
-    /* Form Element Styling */
+  
     .label {
-      font-weight: 600; /* Slightly bolder labels */
-      color: #363636; /* Standard dark gray for text */
-      margin-bottom: 0.75rem; /* More space below labels */
+      font-weight: 600; 
+      color: #363636; 
+      margin-bottom: 0.75rem; 
     }
     .field {
-      margin-bottom: 1.5rem; /* More vertical space between form fields */
+      margin-bottom: 1.5rem; 
     }
 
     .input, .select select {
@@ -114,23 +114,23 @@
     }
     .input:focus, .select select:focus, .textarea:focus {
       border-color: var(--forest-green);
-      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25); /* Subtle focus shadow */
+      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25); 
     }
 
     .radio {
-      margin-right: 1.5em; /* More space between radio options */
-      cursor: pointer; /* Indicate clickable */
+      margin-right: 1.5em; 
+      cursor: pointer; 
     }
 
-    /* Content Section Formatting */
+    
     .content p {
-      line-height: 1.7; /* Improved line spacing for readability */
+      line-height: 1.7; 
       margin-bottom: 1em;
     }
     .content hr {
-      background-color: #eee; /* Lighter HR line */
+      background-color: #eee; 
       height: 1px;
-      margin: 2rem 0; /* More spacing around the HR */
+      margin: 2rem 0; 
     }
   </style>
 </head>
@@ -152,10 +152,23 @@
       <div id="intro-explanation-content" class="content">
         <h2></h2>
         <p>
-         We are researchers at Dartmouth College engaged in a study asking whether better information about the car buying process can make the experience better for consumers and save them money. Your participation is valuable and will help us gain insights into how individuals make decisions when buying cars. Participants in this study will receive $20 upon completion.
+        Are you buying a car within the next month?
+        </p>
+ <p>
+We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study. 
+ </p>
+     <p>    
+We need data for our study, and upon survey completion will pay you:
+
+<h3><strong>•</strong>$5 for taking a 3 minute survey today
+
+        <h3><strong>•</strong>$20 for sending us readable pictures with the details of any car purchase/financing transaction you make, if you do end up buying a car in the next month.
+      
+        <p>
+         Please complete this initial screening survey to see if you are eligible to participate in this study! 
         </p>
         <p>
-         Please complete this initial screening survey to see if you are eligible to participate in this study! This survey should take about 5 minutes to complete. Your responses will be kept confidential and used for research purposes only.
+  Your responses will be kept confidential and used for research purposes only.
         </p>
          <hr>
       </div>
@@ -169,7 +182,7 @@
             <div class="control">
               <label class="radio">
                 <input type="radio" name="purchase" value="A" required>
-                a. Will probably buy a new car soon
+                a. Will probably buy a new car within the next month
               </label><br>
               <label class="radio">
                 <input type="radio" name="purchase" value="B">
