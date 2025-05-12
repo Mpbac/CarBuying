@@ -6,7 +6,6 @@
   <title>Car Buying Study</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
-   
     :root {
       --dartmouth-green: #00693e;
       --forest-green: #228B22;
@@ -125,69 +124,68 @@
       margin: 2rem 0;
     }
 
-    
+
     .modal-content {
-      width: 90%;        
-      max-width: 1900px;  
-      height: 90%;        
-      max-height: 1900px;  
+      width: 90%;
+      max-width: 1900px;
+      height: 90%; 
+      max-height: 1900px; 
       display: flex;
       flex-direction: column;
     }
 
-    
+
     .modal-content .box {
-      flex-grow: 1;  
+      flex-grow: 1;
       padding: 40px;
-      display: flex;  
+      display: flex;
       flex-direction: column;
-      height: 100%;  
-      overflow-y: auto;  
-      position: relative;  
+      height: 100%; 
+      overflow-y: auto; 
+      position: relative;
     }
 
-    
+
     .modal-content iframe {
-      flex-grow: 1;  
-      min-height: 700px;  
-      width: 100%;        
-      border: 1px solid #ddd;  
-      margin-bottom: 0 !important;  
+      /* The specific iframe for PDF is styled inline to be absolute and fill its parent. */
+      /* This rule provides a fallback and the border. */
+      width: 100%;
+      border: 1px solid #ddd; /* This will apply to the PDF iframe */
+      margin-bottom: 0 !important;
     }
 
-     
-   .modal-content .box .sticky-consent-footer {  
+
+    .modal-content .box .sticky-consent-footer {
         position: relative;
-        bottom: -40px;  
-        left: -40px;  
-        right: -40px;  
-        width: calc(100% + 80px);  
-        background-color: white; 
-        padding: 20px 40px;  
-        border-top: 1px solid #eee;  
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);  
-        z-index: 10; 
-        margin-top: auto;  
+        left: -40px;
+        width: calc(100% + 80px);
+        background-color: white;
+        padding: 20px 40px;
+        border-top: 1px solid #eee;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 10;
+        margin-top: auto; /* This is key to push it to the bottom of the .box */
+
         display: flex;
-        flex-direction: column; 
-        align-items: center;   
+        flex-direction: column;
+        align-items: center;
     }
 
-    
+
     .sticky-consent-footer .consent-confirm-text {
-        margin-bottom: 15px !important;  
-        text-align: center;  
-        font-size: 0.9em;  
+        margin-bottom: 15px !important;
+        text-align: center;
+        font-size: 0.9em;
     }
 
-     
+
     .sticky-consent-footer .control {
-        width: 100%;  
-        text-align: center;  
+        width: 100%;
+        text-align: center;
     }
 
-   
-    .modal-content .box > p:last-of-type {
+
+    .modal-content .box > p:last-of-type { /* This was an existing rule, seems fine */
         margin-bottom: 0 !important;
     }
   </style>
@@ -212,16 +210,16 @@
         Are you buying a car within the next month?
         </p>
       <p>
-We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study. 
+We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study.
 </p>
-      <p>    
+      <p>
 We need data for our study, and upon survey completion will pay you:
 </p> <ul>
   <li>$5 for taking a 3 minute survey today</li>
   <li>$20 for sending us readable pictures with the details of any car purchase/financing transaction you make, if you do end up buying a car in the next month.</li>
 </ul>
 <p>
- Please complete this initial screening survey to see if you are eligible to participate in this study! 
+ Please complete this initial screening survey to see if you are eligible to participate in this study!
 </p>
         <p>
         Your responses will be kept confidential and used for research purposes only.
@@ -351,10 +349,9 @@ We need data for our study, and upon survey completion will pay you:
       <div class="box">
         <h3 class="title is-4">Consent Form</h3>
         <p>Please review the consent form below:</p>
-       <div class="pdf-viewer-container" style="flex-grow: 1; min-height: 300px; /* Or another value like 40vh */ position: relative; margin-bottom: 40px;">
+        <div class="pdf-viewer-container" style="flex-grow: 1; min-height: 300px; position: relative; margin-bottom: 20px;">
           <iframe src="Consent example-3.pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
         </div>
-        
         <div class="sticky-consent-footer">
           <p class="consent-confirm-text">By clicking "Consent", you confirm that you have read the consent form and agree to participate in the study as described.</p>
           <p class="control">
@@ -368,7 +365,6 @@ We need data for our study, and upon survey completion will pay you:
 
 
   <script>
-   
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
     const timestampField = document.getElementById("timestampField");
     const form = document.getElementById("purchaseForm");
@@ -379,23 +375,23 @@ We need data for our study, and upon survey completion will pay you:
     const surveySection = document.getElementById("survey-section");
     const introExplanationContent = document.getElementById("intro-explanation-content");
 
-   
+
     const consentModal = document.getElementById("consent-modal");
     const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
-    const consentStatusField = document.getElementById("consentStatusField"); 
+    const consentStatusField = document.getElementById("consentStatusField");
 
 
     const targetWebpages = [
-      "https://www.edmunds.com/car-buying/10-steps-to-buying-a-new-car.html",
-      "https://www.edmunds.com/car-buying/when-to-buy-your-next-car.html",
-      "https://www.edmunds.com/car-buying/what-fees-should-you-pay.html"
+      "https://sites.dartmouth.edu/carbuyingstudy/sample-page/",
+      "https://sites.dartmouth.edu/carbuyingstudy/auto-loan-grade/",
+      "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/"
     ];
 
-    
+
     function setTimestamp() {
       const now = new Date();
-      
+
       const timestampString = now.getFullYear() + '-' +
                                ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
                                ('0' + now.getDate()).slice(-2) + ' ' +
@@ -405,11 +401,11 @@ We need data for our study, and upon survey completion will pay you:
       timestampField.value = timestampString;
     }
 
-   
+
     function formatFormData(formData) {
       const keyValuePairs = [];
       for (const pair of formData.entries()) {
-          
+
           keyValuePairs.push(encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]));
       }
       return keyValuePairs.join("&");
@@ -428,15 +424,15 @@ We need data for our study, and upon survey completion will pay you:
       if (selected.value === "A") {
         questionSection.classList.add("hidden");
         introExplanationContent.classList.add("hidden");
-        consentModal.classList.add("is-active"); 
-        
+        consentModal.classList.add("is-active");
+
       } else {
-       
+
         const tempFormData = new FormData();
         tempFormData.append("purchase", selected.value);
         tempFormData.append("timestamp", timestampField.value);
-        tempFormData.append("redirectedToUrl", "N/A - Not Eligible"); 
-        tempFormData.append("consentStatus", "Not Required"); 
+        tempFormData.append("redirectedToUrl", "N/A - Not Eligible");
+        tempFormData.append("consentStatus", "Not Required");
 
         const formDataString = formatFormData(tempFormData);
 
@@ -459,11 +455,11 @@ We need data for our study, and upon survey completion will pay you:
       }
     });
 
-    
+
     consentBtn.addEventListener("click", function() {
       consentModal.classList.remove("is-active");
-      surveySection.classList.remove("hidden"); 
-      consentStatusField.value = "Consented"; 
+      surveySection.classList.remove("hidden");
+      consentStatusField.value = "Consented";
     });
 
     closeConsentModal.addEventListener("click", function() {
@@ -474,20 +470,20 @@ We need data for our study, and upon survey completion will pay you:
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      
+
       setTimestamp();
 
-      
+
       const formData = new FormData(e.target);
 
       // Randomly select a webpage
       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
       const randomPage = targetWebpages[randomIndex];
 
-      
+
       formData.append("redirectedToUrl", randomPage);
 
-      
+
       const formDataString = formatFormData(formData);
 
       fetch(scriptURL, {
@@ -500,9 +496,9 @@ We need data for our study, and upon survey completion will pay you:
       })
       .then(() => {
            formCard.classList.add("hidden");
-           thankYouMessage.classList.remove("hidden"); 
+           thankYouMessage.classList.remove("hidden");
 
-           
+
            window.location.href = randomPage;
       })
       .catch(error => {
