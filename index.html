@@ -31,13 +31,20 @@
       margin: 20px auto;
       max-width: 600px;
       padding: 20px;
-      background-color: #d4edda;
-      color: #155724;
+      background-color: #d4edda; /* Light green for success/info */
+      color: #155724; /* Dark green for text */
       border: 1px solid #c3e6cb;
       border-radius: 4px;
       font-weight: bold;
       text-align: center;
     }
+     /* Added style for potential error message box */
+    .message-box.is-danger {
+       background-color: #f8d7da; /* Light red for error */
+       color: #721c24; /* Dark red for text */
+       border-color: #f5c6cb;
+    }
+
 
     .hero.is-primary.is-bold {
       background-color: var(--dartmouth-green);
@@ -264,6 +271,7 @@
         <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
         <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
         <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
+        <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
 
 
         <div id="question-section">
@@ -377,6 +385,8 @@
   </div>
 
   <div id="thank-you" class="message-box hidden">Thank You for Your Response.</div>
+   <div id="duplicate-message" class="message-box is-danger hidden"></div>
+
 
   <div id="consent-modal" class="modal">
     <div class="modal-background"></div>
@@ -421,6 +431,7 @@
     const form = document.getElementById("purchaseForm");
     const submitBtn = document.getElementById("submitBtn"); // Submit initial question
     const thankYouMessage = document.getElementById("thank-you");
+    const duplicateMessage = document.getElementById("duplicate-message"); // Reference to the new duplicate message box
     const formCard = document.getElementById("form-card");
     const questionSection = document.getElementById("question-section");
     const surveySection = document.getElementById("survey-section");
@@ -441,6 +452,7 @@
     const consentStatusField = document.getElementById("consentStatusField");
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField"); // Field to store viewed URL
     const contentCertifiedField = document.getElementById("contentCertifiedField"); // Field to track certification
+    const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField"); // Field for timer
 
 
     // Array of target webpages to show randomly
@@ -451,6 +463,32 @@
     ];
 
     let selectedWebpageUrl = null; // Variable to store the randomly selected URL
+    let contentModalStartTime = null; // Variable for timer start time
+
+
+    // --- Client-Side Local Storage Check ---
+    // Run this code as soon as the script loads
+    if (localStorage.getItem('carStudyCompleted')) {
+      // Hide the form and show a message if the flag is found
+      console.log('Local Storage flag found: Survey already completed in this browser.');
+      formCard.classList.add('hidden');
+      // Use the thankYouMessage box, or create a dedicated "already completed" box
+      // Let's use the duplicate message box style for a clear message
+      duplicateMessage.classList.remove('hidden');
+      duplicateMessage.innerHTML = '<p>Thank you for your interest. Our records indicate that you have already completed this survey using this browser.</p>';
+      // Ensure the regular thank you message is hidden
+      thankYouMessage.classList.add('hidden');
+
+       // Prevent any form interaction
+       submitBtn.disabled = true; // Disable initial submit button
+       const surveySubmitBtn = form.querySelector('button[type="submit"]');
+       if(surveySubmitBtn) surveySubmitBtn.disabled = true; // Disable survey submit button if visible
+    } else {
+        // If the flag is NOT found, set the timestamp when the form is initially displayed
+        setTimestamp(); // Ensure timestamp is set on initial page load for a new participant
+        console.log('No Local Storage flag found. Setting initial timestamp.');
+    }
+    // --- End Client-Side Local Storage Check ---
 
 
     function setTimestamp() {
@@ -475,8 +513,25 @@
     }
 
 
+    // Function to calculate and record time on content modal
+    function recordContentModalTime() {
+        if (contentModalStartTime !== null) {
+            const now = new Date().getTime(); // Get current time in milliseconds
+            const duration = now - contentModalStartTime; // Calculate duration
+            timeOnContentPageMsField.value = duration; // Store duration in the hidden field
+            console.log(`Time on content modal: ${duration} ms`);
+            contentModalStartTime = null; // Reset timer start time
+        }
+    }
+
+
     // --- Event Listener for Initial Submit Button (screening question) ---
     submitBtn.addEventListener("click", function () {
+      // Clear any previous messages
+      duplicateMessage.classList.add('hidden');
+      thankYouMessage.classList.add('hidden');
+
+
       const selected = document.querySelector('input[name="purchase"]:checked');
       if (!selected) {
         alert("Please select an option.");
@@ -502,6 +557,7 @@
         tempFormData.append("viewedWebpageUrl", "N/A - Not Eligible"); // Mark URL as N/A
         tempFormData.append("consentStatus", "Not Applicable"); // Mark consent as N/A
         tempFormData.append("contentCertified", "Not Applicable"); // Mark certification as N/A
+        tempFormData.append("timeOnContentPageMs", "0"); // Time on content is 0
 
 
         const formDataString = formatFormData(tempFormData);
@@ -512,7 +568,6 @@
           redirect: "follow", // Follow redirects (typical for Apps Script)
           body: formDataString,
           headers: {
-            // Use application/x-www-form-urlencoded as jQuery did in the previous project
             'Content-Type': 'application/x-www-form-urlencoded'
           },
         })
@@ -520,19 +575,36 @@
              // Check if the response indicates success (e.g., status 200-299)
             if (!response.ok) {
                 // If response is not OK, try to read error message
-                return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
+                 // Assuming script returns JSON error now
+                return response.json().then(data => { // Try parsing JSON error
+                     throw new Error(`Server responded with status ${response.status}: ${data.message || 'Unknown error'}`);
+                 }).catch(() => { // Fallback if response wasn't JSON
+                     return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
+                 });
             }
-            return response.text(); // Or response.json() if your script returns JSON
+             // Assuming script always returns JSON now
+            return response.json(); // Parse the JSON response
 
         })
-        .then(() => {
-            // On successful submission for non-eligible
-            formCard.classList.add("hidden"); // Hide the form
-            thankYouMessage.classList.remove("hidden"); // Show thank you message
+        .then(data => { // 'data' is the parsed JSON object
+             console.log('Apps Script Response (B/C):', data);
+            if (data && data.status === "success") {
+                // On successful submission for non-eligible
+                formCard.classList.add("hidden"); // Hide the form
+                thankYouMessage.classList.remove("hidden"); // Show thank you message
+                 if (data.message) thankYouMessage.innerText = data.message;
+            } else {
+                // Should not happen for B/C success, but handle any non-success status
+                 let errorMessage = 'Submission failed.';
+                 if (data && data.message) errorMessage = data.message;
+                 console.error('Submission Error (B/C):', errorMessage);
+                 alert(errorMessage);
+            }
         })
         .catch(error => {
             console.error('Error sending data for B/C:', error);
-            alert('There was an error submitting your response: ' + error.message); // Display error message
+             // Display the error message from the thrown Error
+            alert('There was an error submitting your response: ' + error.message);
         });
       }
     });
@@ -545,8 +617,6 @@
 
       // Hide the Consent Modal
       consentModal.classList.remove("is-active");
-
-      // *** NEW LOGIC: Randomly select a webpage and show the Content Modal ***
 
       // Randomly select a webpage URL from the array
       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
@@ -561,27 +631,31 @@
       webpageIframe.src = selectedWebpageUrl;
       contentModal.classList.add("is-active"); // Show the content viewing modal
 
-      // *** END NEW LOGIC ***
+      // Start the timer when the content modal opens
+      contentModalStartTime = new Date().getTime();
+      console.log('Content modal opened, timer started.');
+
     });
 
     // Event listeners to close the consent modal (optional but good practice)
     closeConsentModal.addEventListener("click", function() {
         consentModal.classList.remove("is-active");
-        // Decide if you want to allow them to proceed or not if they close the modal without consenting
-        // For now, closing without consenting prevents proceeding.
+        // Decide if they can proceed without consent - currently, they cannot as surveySection is hidden.
     });
      // Close consent modal by clicking background
     consentModal.querySelector('.modal-background').addEventListener('click', function() {
          consentModal.classList.remove("is-active");
-         // Similar decision as above
+         // Decide if they can proceed without consent
     });
 
 
-    // --- NEW Event Listener for Certify Button (inside Content Modal) ---
+    // --- Event Listener for Certify Button (inside Content Modal) ---
     certifyBtn.addEventListener("click", function() {
         // User has certified viewing the content
         contentCertifiedField.value = "Yes"; // Update hidden field
         console.log('Content certified button clicked.');
+
+        recordContentModalTime(); // Stop timer and record time
 
         // Hide the Content Modal
         contentModal.classList.remove("is-active");
@@ -589,27 +663,40 @@
         webpageIframe.src = "";
 
 
-        // *** Now show the main survey section ***
+        // Now show the main survey section
         surveySection.classList.remove("hidden");
 
-        // You might want to ensure the initial explanation/question are hidden just in case
+        // Ensure the initial explanation/question are hidden just in case
         questionSection.classList.add("hidden");
         introExplanationContent.classList.add("hidden");
 
     });
 
      // Event listeners to close the content modal (optional but good practice)
+     // These also need to record the time if the user closes the modal
     closeContentModal.addEventListener("click", function() {
+        console.log('Content modal close button clicked.');
+        recordContentModalTime(); // Stop timer and record time
+
         contentModal.classList.remove("is-active");
         webpageIframe.src = ""; // Clear source if closed
-         // Decide if closing without certifying is allowed or prevents proceeding
-         // For now, closing without certifying prevents proceeding to survey.
+
+        // Decide if closing without certifying is allowed or prevents proceeding
+        // If you want to allow them to proceed without certifying, uncomment the line below:
+        // surveySection.classList.remove("hidden");
+        // However, based on the study design, requiring certification seems intended before proceeding to the survey.
     });
     // Close content modal by clicking background
      contentModal.querySelector('.modal-background').addEventListener('click', function() {
+        console.log('Content modal background clicked.');
+        recordContentModalTime(); // Stop timer and record time
+
         contentModal.classList.remove("is-active");
         webpageIframe.src = ""; // Clear source if closed
-         // Similar decision as above
+
+         // Decide if closing without certifying is allowed or prevents proceeding
+         // If you want to allow them to proceed without certifying, uncomment the line below:
+         // surveySection.classList.remove("hidden");
     });
 
 
@@ -617,15 +704,15 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault(); // Prevent the default form submission
 
+      // Clear any previous messages
+       duplicateMessage.classList.add('hidden');
+       thankYouMessage.classList.add('hidden');
+
 
       setTimestamp(); // Update timestamp just before final submission
 
-      // Get all form data, including the hidden fields we updated
+      // Get all form data, including the hidden fields we updated (timestamp, consent, url, certified, time)
       const formData = new FormData(e.target);
-
-      // The viewed webpage URL and certification status are already in hidden fields
-      // formData.append("viewedWebpageUrl", selectedWebpageUrl); // No longer needed, already in hidden field
-      // formData.append("contentCertified", "Yes"); // No longer needed, already in hidden field
 
       const formDataString = formatFormData(formData); // Format data for submission
 
@@ -636,30 +723,74 @@
         redirect: "follow",
         body: formDataString,
          headers: {
-            // Use application/x-www-form-urlencoded
             'Content-Type': 'application/x-www-form-urlencoded'
           },
       })
       .then(response => {
-           // Check if the response indicates success (e.g., status 200-299)
+           // Check if the response indicates success (status 200-299)
             if (!response.ok) {
                  // If response is not OK, try to read error message
-                return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
+                 // Assuming script returns JSON error now (e.g., for duplicate)
+                return response.json().then(data => { // Try parsing JSON error
+                     // Throw an Error that includes the status and message from the script
+                     throw new Error(`Server responded with status ${response.status}: ${data.message || 'Unknown error'}`);
+                 }).catch(() => { // Fallback if response wasn't JSON
+                     // If response is not JSON, just throw a generic error with status and response text snippet
+                     return response.text().then(text => {
+                          const snippet = text.substring(0, 150); // Take a snippet
+                           throw new Error(`Server responded with status ${response.status}. Raw response snippet: ${snippet}...`);
+                     });
+                 });
             }
-            return response.text(); // Or response.json() if your script returns JSON
+             // Assuming script always returns JSON now for success
+            return response.json(); // Parse the JSON response
       })
-      .then(() => {
-           // On successful final submission
-           formCard.classList.add("hidden"); // Hide the form
-           thankYouMessage.classList.remove("hidden"); // Show thank you message
+      .then(data => { // 'data' is the parsed JSON object from the script
+           console.log('Apps Script Response:', data); // Log the response
 
-           // !!! REMOVE THE REDIRECTION HERE !!!
-           // window.location.href = randomPage; // <-- REMOVE THIS LINE
+           // Check the status property in the JSON response
+           if (data && data.status === "success") {
+               // On successful final submission from the server
+               localStorage.setItem('carStudyCompleted', 'true'); // !!! Set the localStorage flag !!!
+               console.log('Local Storage flag set.');
 
+               formCard.classList.add("hidden"); // Hide the form
+               thankYouMessage.classList.remove("hidden"); // Show thank you message
+               // Display success message from script if available
+               if (data.message) {
+                   thankYouMessage.innerText = data.message;
+               }
+
+           } else if (data && data.status === "error") {
+              // This handles errors returned by the script as JSON (like duplicate email)
+              let errorMessage = 'Submission failed.';
+               if (data.message) {
+                   errorMessage = data.message; // Use the error message from the script
+               }
+               console.error('Submission Error (Script Returned Error Status):', errorMessage);
+
+               // Display the error message in the duplicate message box or a dedicated error box
+               duplicateMessage.classList.remove('hidden'); // Use the danger message box
+               duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>'; // Display the script's error message
+
+                formCard.classList.remove("hidden"); // Keep the form visible
+                thankYouMessage.classList.add("hidden"); // Hide thank you message
+
+           } else {
+               // Handle unexpected JSON response structure
+               console.error('Submission Error (Unexpected Script Response):', data);
+               alert('There was an unexpected response from the server.');
+                formCard.classList.remove("hidden"); // Keep the form visible
+                thankYouMessage.classList.add("hidden"); // Hide thank you message
+           }
       })
       .catch(error => {
-           console.error('Error sending survey data:', error);
-           alert('There was an error submitting your survey: ' + error.message); // Display error message
+           console.error('Fetch or Script Error:', error);
+            // This catch handles network errors or errors thrown in the .then() block (including errors from non-OK responses)
+           alert('There was an error submitting your survey: ' + error.message); // Display the error message
+            formCard.classList.remove("hidden"); // Keep the form visible
+            thankYouMessage.classList.add("hidden"); // Hide thank you message
+            duplicateMessage.classList.add('hidden'); // Hide duplicate message if it was showing
       });
     });
   </script>
