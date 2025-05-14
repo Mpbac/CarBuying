@@ -124,69 +124,110 @@
       margin: 2rem 0;
     }
 
-
+    /* --- Modal Styling --- */
+    /* Styles for the consent modal and the new content modal */
     .modal-content {
-      width: 90%;
-      max-width: 1900px;
-      height: 90%; 
-      max-height: 1900px; 
+      /* Adjusted for responsiveness and size */
+      width: 95%; /* Use percentage for width */
+      max-width: 1200px; /* Max width for large screens */
+      height: 95%; /* Use percentage for height */
+      max-height: 900px; /* Max height */
       display: flex;
       flex-direction: column;
     }
 
-
     .modal-content .box {
-      flex-grow: 1;
-      padding: 40px;
+      flex-grow: 1; /* Allow box to fill modal content */
+      padding: 20px; /* Adjust padding */
       display: flex;
       flex-direction: column;
-      height: 100%; 
-      overflow-y: auto; 
+      height: 100%;
+      overflow: hidden; /* Prevent scrollbars on the box itself */
       position: relative;
     }
 
-
-    .modal-content iframe {
-      /* The specific iframe for PDF is styled inline to be absolute and fill its parent. */
-      /* This rule provides a fallback and the border. */
-      width: 100%;
-      border: 1px solid #ddd; /* This will apply to the PDF iframe */
-      margin-bottom: 0 !important;
+    /* Specific container for the iframe to manage scrolling */
+    .iframe-container {
+      flex-grow: 1; /* Allow iframe container to fill available space */
+      overflow-y: auto; /* Add scrollbar to the container */
+      border: 1px solid #ddd; /* Add border */
+      margin-bottom: 15px; /* Space before the footer */
+      background-color: white; /* Background in case iframe doesn't cover */
     }
 
+    .modal-content iframe {
+      /* Styles for the iframe itself */
+      display: block; /* Remove extra space below iframe */
+      width: 100%;
+      min-height: 100%; /* Make sure iframe content stretches if needed */
+      border: none; /* Remove default iframe border */
+    }
 
-    .modal-content .box .sticky-consent-footer {
-        position: relative;
-        left: -40px;
-        width: calc(100% + 80px);
+    .sticky-footer {
+        position: sticky; /* Make the footer sticky within the scrollable container */
+        bottom: 0; /* Stick to the bottom */
+        left: -20px; /* Adjust for box padding */
+        width: calc(100% + 40px); /* Span full width plus padding */
         background-color: white;
-        padding: 20px 40px;
+        padding: 15px 20px; /* Add padding */
         border-top: 1px solid #eee;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        z-index: 10;
-        margin-top: auto; /* This is key to push it to the bottom of the .box */
+        z-index: 10; /* Ensure it's above iframe content */
 
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-
-    .sticky-consent-footer .consent-confirm-text {
-        margin-bottom: 15px !important;
+    .sticky-footer .confirm-text {
+        margin-bottom: 10px !important; /* Space below text */
         text-align: center;
         font-size: 0.9em;
     }
 
-
-    .sticky-consent-footer .control {
-        width: 100%;
+    .sticky-footer .control {
+        width: 100%; /* Allow button control to take width */
         text-align: center;
     }
 
+    /* Adjust modal close button position if needed for taller modals */
+    .modal .modal-close {
+        top: 10px;
+        right: 10px;
+    }
 
-    .modal-content .box > p:last-of-type { /* This was an existing rule, seems fine */
-        margin-bottom: 0 !important;
+
+    @media (max-width: 768px) {
+      .hero .title {
+         font-size: 1.8em;
+         margin-left: 1rem;
+      }
+       .hero-body .container {
+          flex-direction: column;
+          text-align: center;
+      }
+      .banner-logo {
+          margin-bottom: 10px;
+      }
+      .hero .title {
+          margin-left: 0;
+      }
+      .modal-content {
+          width: 95%;
+          height: 95%;
+      }
+       .modal-content .box {
+         padding: 15px; /* Reduced padding on small screens */
+       }
+        .sticky-footer {
+            left: -15px; /* Adjust for reduced padding */
+            width: calc(100% + 30px);
+            padding: 10px 15px;
+        }
+         .modal .modal-close {
+             top: 5px;
+             right: 5px;
+         }
     }
   </style>
 </head>
@@ -206,30 +247,24 @@
 
       <div id="intro-explanation-content" class="content">
         <h2></h2>
-        <p>
-        Are you buying a car within the next month?
-        </p>
-      <p>
-We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study.
-</p>
-      <p>
-We need data for our study, and upon survey completion will pay you:
-</p> <ul>
-  <li>$5 for taking a 3 minute survey today</li>
-  <li>$20 for sending us readable pictures with the details of any car purchase/financing transaction you make, if you do end up buying a car in the next month.</li>
-</ul>
-<p>
- Please complete this initial screening survey to see if you are eligible to participate in this study!
-</p>
-        <p>
-        Your responses will be kept confidential and used for research purposes only.
-        </p>
+        <p>Are you buying a car within the next month?</p>
+        <p>We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study.</p>
+        <p>We need data for our study, and upon survey completion will pay you:</p>
+        <ul>
+          <li>$5 for taking a 3 minute survey today</li>
+          <li>$20 for sending us readable pictures with the details of any car purchase/financing transaction you make, if you do end up buying a car in the next month.</li>
+        </ul>
+        <p>Please complete this initial screening survey to see if you are eligible to participate in this study!</p>
+        <p>Your responses will be kept confidential and used for research purposes only.</p>
         <hr>
       </div>
 
       <form id="purchaseForm">
         <input type="hidden" name="timestamp" id="timestampField">
         <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
+        <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
+        <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
+
 
         <div id="question-section">
           <div class="field">
@@ -350,10 +385,9 @@ We need data for our study, and upon survey completion will pay you:
         <h3 class="title is-4">Consent Form</h3>
         <p>Please review the consent form below:</p>
         <div class="pdf-viewer-container" style="flex-grow: 1; min-height: 300px; position: relative; margin-bottom: 20px;">
-          <iframe src="Consent example-3.pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+          <iframe src="Consent example-3.pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0"></iframe>
         </div>
-        <div class="sticky-consent-footer">
-          <p class="consent-confirm-text">By clicking "Consent", you confirm that you have read the consent form and agree to participate in the study as described.</p>
+        <div class="sticky-footer"> <p class="confirm-text">By clicking "Consent", you confirm that you have read the consent form and agree to participate in the study as described.</p>
           <p class="control">
             <button class="button is-success" id="consentBtn">Consent</button>
           </p>
@@ -362,36 +396,65 @@ We need data for our study, and upon survey completion will pay you:
     </div>
     <button class="modal-close is-large" aria-label="close" id="closeConsentModal"></button>
   </div>
-
-
-  <script>
+  <div id="content-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h3 class="title is-4">Review Required Content</h3>
+         <div class="iframe-container">
+           <iframe id="webpageIframe" src="" frameborder="0"></iframe>
+        </div>
+        <div class="sticky-footer"> <p class="confirm-text">By clicking "I Certify...", you confirm that you have reviewed the content shown above.</p>
+          <p class="control">
+            <button class="button is-success" id="certifyBtn">I certify that I have reviewed this content</button>
+          </p>
+        </div>
+      </div>
+    </div>
+     <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
+  </div>
+   <script>
+    // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
+
     const timestampField = document.getElementById("timestampField");
     const form = document.getElementById("purchaseForm");
-    const submitBtn = document.getElementById("submitBtn");
+    const submitBtn = document.getElementById("submitBtn"); // Submit initial question
     const thankYouMessage = document.getElementById("thank-you");
     const formCard = document.getElementById("form-card");
     const questionSection = document.getElementById("question-section");
     const surveySection = document.getElementById("survey-section");
     const introExplanationContent = document.getElementById("intro-explanation-content");
 
-
+    // Consent modal elements
     const consentModal = document.getElementById("consent-modal");
-    const consentBtn = document.getElementById("consentBtn");
+    const consentBtn = document.getElementById("consentBtn"); // Button inside consent modal
     const closeConsentModal = document.getElementById("closeConsentModal");
+
+    // New content modal elements
+    const contentModal = document.getElementById("content-modal"); // The new modal
+    const webpageIframe = document.getElementById("webpageIframe"); // The iframe inside the new modal
+    const certifyBtn = document.getElementById("certifyBtn"); // Button inside the new modal
+    const closeContentModal = document.getElementById("closeContentModal"); // Close button for new modal
+
+    // Hidden form fields
     const consentStatusField = document.getElementById("consentStatusField");
+    const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField"); // Field to store viewed URL
+    const contentCertifiedField = document.getElementById("contentCertifiedField"); // Field to track certification
 
 
+    // Array of target webpages to show randomly
     const targetWebpages = [
-      "https://www.edmunds.com/car-buying/10-steps-to-buying-a-new-car.html",
+       "https://www.edmunds.com/car-buying/10-steps-to-buying-a-new-car.html",
       "https://www.edmunds.com/car-buying/when-to-buy-your-next-car.html",
       "https://www.edmunds.com/car-buying/what-fees-should-you-pay.html"
     ];
 
+    let selectedWebpageUrl = null; // Variable to store the randomly selected URL
+
 
     function setTimestamp() {
       const now = new Date();
-
       const timestampString = now.getFullYear() + '-' +
                                ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
                                ('0' + now.getDate()).slice(-2) + ' ' +
@@ -402,16 +465,17 @@ We need data for our study, and upon survey completion will pay you:
     }
 
 
+    // Function to format form data for fetch (using URLSearchParams for robustness)
     function formatFormData(formData) {
-      const keyValuePairs = [];
-      for (const pair of formData.entries()) {
-
-          keyValuePairs.push(encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]));
-      }
-      return keyValuePairs.join("&");
+        const params = new URLSearchParams();
+        for (const pair of formData.entries()) {
+            params.append(pair[0], pair[1]);
+        }
+        return params.toString(); // Returns a=1&b=2&c=3 string
     }
 
 
+    // --- Event Listener for Initial Submit Button (screening question) ---
     submitBtn.addEventListener("click", function () {
       const selected = document.querySelector('input[name="purchase"]:checked');
       if (!selected) {
@@ -419,91 +483,183 @@ We need data for our study, and upon survey completion will pay you:
         return;
       }
 
-      setTimestamp();
+      setTimestamp(); // Set timestamp when initial question is answered
 
+      // If eligible (selected "A")
       if (selected.value === "A") {
+        // Hide introductory content and screening question
         questionSection.classList.add("hidden");
         introExplanationContent.classList.add("hidden");
+        // Show the Consent Modal
         consentModal.classList.add("is-active");
 
       } else {
-
+        // If not eligible (selected "B" or "C")
+        // Prepare data for immediate submission (only initial question and status)
         const tempFormData = new FormData();
         tempFormData.append("purchase", selected.value);
         tempFormData.append("timestamp", timestampField.value);
-        tempFormData.append("redirectedToUrl", "N/A - Not Eligible");
-        tempFormData.append("consentStatus", "Not Required");
+        tempFormData.append("viewedWebpageUrl", "N/A - Not Eligible"); // Mark URL as N/A
+        tempFormData.append("consentStatus", "Not Applicable"); // Mark consent as N/A
+        tempFormData.append("contentCertified", "Not Applicable"); // Mark certification as N/A
+
 
         const formDataString = formatFormData(tempFormData);
 
+        // Send data for non-eligible users
         fetch(scriptURL, {
           method: "POST",
-          redirect: "follow",
+          redirect: "follow", // Follow redirects (typical for Apps Script)
           body: formDataString,
           headers: {
-            "Content-Type": "text/plain;charset=utf-8",
+            // Use application/x-www-form-urlencoded as jQuery did in the previous project
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
         })
+        .then(response => {
+             // Check if the response indicates success (e.g., status 200-299)
+            if (!response.ok) {
+                // If response is not OK, try to read error message
+                return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
+            }
+            return response.text(); // Or response.json() if your script returns JSON
+
+        })
         .then(() => {
-            formCard.classList.add("hidden");
-            thankYouMessage.classList.remove("hidden");
+            // On successful submission for non-eligible
+            formCard.classList.add("hidden"); // Hide the form
+            thankYouMessage.classList.remove("hidden"); // Show thank you message
         })
         .catch(error => {
             console.error('Error sending data for B/C:', error);
-            alert('There was an error submitting your response.');
+            alert('There was an error submitting your response: ' + error.message); // Display error message
         });
       }
     });
 
 
+    // --- Event Listener for Consent Button (inside Consent Modal) ---
     consentBtn.addEventListener("click", function() {
+      // User has consented
+      consentStatusField.value = "Consented"; // Update hidden field
+
+      // Hide the Consent Modal
       consentModal.classList.remove("is-active");
-      surveySection.classList.remove("hidden");
-      consentStatusField.value = "Consented";
+
+      // *** NEW LOGIC: Randomly select a webpage and show the Content Modal ***
+
+      // Randomly select a webpage URL from the array
+      const randomIndex = Math.floor(Math.random() * targetWebpages.length);
+      selectedWebpageUrl = targetWebpages[randomIndex]; // Store the selected URL
+
+      // Update the hidden field in the form with the selected URL
+      viewedWebpageUrlField.value = selectedWebpageUrl;
+      console.log('Selected webpage URL:', selectedWebpageUrl);
+
+
+      // Set the iframe source and show the Content Modal
+      webpageIframe.src = selectedWebpageUrl;
+      contentModal.classList.add("is-active"); // Show the content viewing modal
+
+      // *** END NEW LOGIC ***
     });
 
+    // Event listeners to close the consent modal (optional but good practice)
     closeConsentModal.addEventListener("click", function() {
-      consentModal.classList.remove("is-active");
+        consentModal.classList.remove("is-active");
+        // Decide if you want to allow them to proceed or not if they close the modal without consenting
+        // For now, closing without consenting prevents proceeding.
+    });
+     // Close consent modal by clicking background
+    consentModal.querySelector('.modal-background').addEventListener('click', function() {
+         consentModal.classList.remove("is-active");
+         // Similar decision as above
     });
 
 
+    // --- NEW Event Listener for Certify Button (inside Content Modal) ---
+    certifyBtn.addEventListener("click", function() {
+        // User has certified viewing the content
+        contentCertifiedField.value = "Yes"; // Update hidden field
+        console.log('Content certified button clicked.');
+
+        // Hide the Content Modal
+        contentModal.classList.remove("is-active");
+         // Clear the iframe source after closing (optional cleanup)
+        webpageIframe.src = "";
+
+
+        // *** Now show the main survey section ***
+        surveySection.classList.remove("hidden");
+
+        // You might want to ensure the initial explanation/question are hidden just in case
+        questionSection.classList.add("hidden");
+        introExplanationContent.classList.add("hidden");
+
+    });
+
+     // Event listeners to close the content modal (optional but good practice)
+    closeContentModal.addEventListener("click", function() {
+        contentModal.classList.remove("is-active");
+        webpageIframe.src = ""; // Clear source if closed
+         // Decide if closing without certifying is allowed or prevents proceeding
+         // For now, closing without certifying prevents proceeding to survey.
+    });
+    // Close content modal by clicking background
+     contentModal.querySelector('.modal-background').addEventListener('click', function() {
+        contentModal.classList.remove("is-active");
+        webpageIframe.src = ""; // Clear source if closed
+         // Similar decision as above
+    });
+
+
+    // --- Event Listener for Main Survey Form Submission ---
     form.addEventListener("submit", function (e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent the default form submission
 
 
-      setTimestamp();
+      setTimestamp(); // Update timestamp just before final submission
 
-
+      // Get all form data, including the hidden fields we updated
       const formData = new FormData(e.target);
 
-      // Randomly select a webpage
-      const randomIndex = Math.floor(Math.random() * targetWebpages.length);
-      const randomPage = targetWebpages[randomIndex];
+      // The viewed webpage URL and certification status are already in hidden fields
+      // formData.append("viewedWebpageUrl", selectedWebpageUrl); // No longer needed, already in hidden field
+      // formData.append("contentCertified", "Yes"); // No longer needed, already in hidden field
+
+      const formDataString = formatFormData(formData); // Format data for submission
 
 
-      formData.append("redirectedToUrl", randomPage);
-
-
-      const formDataString = formatFormData(formData);
-
+      // Send the full survey data
       fetch(scriptURL, {
         method: "POST",
         redirect: "follow",
         body: formDataString,
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
+         headers: {
+            // Use application/x-www-form-urlencoded
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+      })
+      .then(response => {
+           // Check if the response indicates success (e.g., status 200-299)
+            if (!response.ok) {
+                 // If response is not OK, try to read error message
+                return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
+            }
+            return response.text(); // Or response.json() if your script returns JSON
       })
       .then(() => {
-           formCard.classList.add("hidden");
-           thankYouMessage.classList.remove("hidden");
+           // On successful final submission
+           formCard.classList.add("hidden"); // Hide the form
+           thankYouMessage.classList.remove("hidden"); // Show thank you message
 
+           // !!! REMOVE THE REDIRECTION HERE !!!
+           // window.location.href = randomPage; // <-- REMOVE THIS LINE
 
-           window.location.href = randomPage;
       })
       .catch(error => {
            console.error('Error sending survey data:', error);
-           alert('There was an error submitting your survey.');
+           alert('There was an error submitting your survey: ' + error.message); // Display error message
       });
     });
   </script>
