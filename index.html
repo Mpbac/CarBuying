@@ -272,6 +272,7 @@
         <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
         <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
         <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
+        <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
 
 
         <div id="question-section">
@@ -453,6 +454,7 @@
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField"); // Field to store viewed URL
     const contentCertifiedField = document.getElementById("contentCertifiedField"); // Field to track certification
     const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField"); // Field for timer
+    const clientFetchedIpField = document.getElementById('clientFetchedIpField'); // !!! NEW Field for Client-Fetched IP !!!
 
 
     // Array of target webpages to show randomly
@@ -472,12 +474,9 @@
       // Hide the form and show a message if the flag is found
       console.log('Local Storage flag found: Survey already completed in this browser.');
       formCard.classList.add('hidden');
-      // Use the thankYouMessage box, or create a dedicated "already completed" box
-      // Let's use the duplicate message box style for a clear message
-      duplicateMessage.classList.remove('hidden');
-      duplicateMessage.innerHTML = '<p>Thank you for your interest. Our records indicate that you have already completed this survey using this browser.</p>';
-      // Ensure the regular thank you message is hidden
-      thankYouMessage.classList.add('hidden');
+      duplicateMessage.classList.remove('hidden'); // Use the danger message box style
+      duplicateMessage.innerHTML = '<p>Thank you for your participation. Our records indicate that you have already completed this survey using this browser.</p>';
+      thankYouMessage.classList.add('hidden'); // Ensure the regular thank you message is hidden
 
        // Prevent any form interaction
        submitBtn.disabled = true; // Disable initial submit button
@@ -487,6 +486,8 @@
         // If the flag is NOT found, set the timestamp when the form is initially displayed
         setTimestamp(); // Ensure timestamp is set on initial page load for a new participant
         console.log('No Local Storage flag found. Setting initial timestamp.');
+         // Also attempt to fetch IP on initial load (optional, could fetch before submission too)
+         // Let's fetch it right before submission for freshness.
     }
     // --- End Client-Side Local Storage Check ---
 
@@ -524,6 +525,47 @@
         }
     }
 
+    // --- NEW Async function to fetch Client IP ---
+    async function fetchClientIp() {
+        const ipServices = [
+           'https://api64.ipify.org?format=json',
+           'https://jsonip.com/'
+           // Add more services here if needed as fallbacks
+           // Make sure they return JSON with an 'ip' field and are CORS-friendly
+        ];
+
+        let clientIp = 'N/A_ClientFetch_Failed';
+
+        for (const serviceUrl of ipServices) {
+            try {
+                console.log('Attempting to fetch IP from:', serviceUrl);
+                const response = await fetch(serviceUrl, { signal: AbortController.timeout(3000) }); // Add a timeout
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.ip) {
+                        clientIp = data.ip;
+                        console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
+                        break; // Stop after the first successful fetch
+                    } else {
+                         console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
+                    }
+                } else {
+                    console.warn('Failed to fetch IP from', serviceUrl, 'Status:', response.status);
+                }
+            } catch (error) {
+                 if (error.name === 'TimeoutError') {
+                    console.error('IP fetch timed out from:', serviceUrl);
+                } else {
+                    console.error('Error fetching IP from', serviceUrl, ':', error);
+                }
+            }
+        }
+         // Update the hidden field with the result (whether success or failure)
+        clientFetchedIpField.value = clientIp;
+        return clientIp; // Return the captured IP
+    }
+    // --- END NEW Async function to fetch Client IP ---
+
 
     // --- Event Listener for Initial Submit Button (screening question) ---
     submitBtn.addEventListener("click", function () {
@@ -558,6 +600,7 @@
         tempFormData.append("consentStatus", "Not Applicable"); // Mark consent as N/A
         tempFormData.append("contentCertified", "Not Applicable"); // Mark certification as N/A
         tempFormData.append("timeOnContentPageMs", "0"); // Time on content is 0
+        tempFormData.append("clientFetchedIp", "N/A_NotEligible"); // Mark IP as N/A for non-eligible
 
 
         const formDataString = formatFormData(tempFormData);
@@ -700,24 +743,37 @@
     });
 
 
-    // --- Event Listener for Main Survey Form Submission ---
-    form.addEventListener("submit", function (e) {
+    // --- Event Listener for Main Survey Form Submission (ASYNC) ---
+    // Made this function async to await the IP fetch
+    form.addEventListener("submit", async function (e) {
       e.preventDefault(); // Prevent the default form submission
 
       // Clear any previous messages
        duplicateMessage.classList.add('hidden');
        thankYouMessage.classList.add('hidden');
 
+       // Disable the submit button and show a loading indicator (optional but good for UX)
+       const submitButton = e.submitter; // The button that was clicked (the submit survey button)
+       if(submitButton) {
+           submitButton.classList.add('is-loading');
+           submitButton.disabled = true;
+       }
+
 
       setTimestamp(); // Update timestamp just before final submission
 
-      // Get all form data, including the hidden fields we updated (timestamp, consent, url, certified, time)
+      // !!! NEW: Fetch Client IP before sending the form !!!
+      // This will update the hidden clientFetchedIpField
+      await fetchClientIp(); // Wait for the IP fetch to complete
+
+
+      // Get all form data, including the hidden fields we updated (timestamp, consent, url, certified, time, and clientFetchedIp)
       const formData = new FormData(e.target);
 
       const formDataString = formatFormData(formData); // Format data for submission
 
 
-      // Send the full survey data
+      // Send the full survey data to Apps Script
       fetch(scriptURL, {
         method: "POST",
         redirect: "follow",
@@ -729,13 +785,10 @@
       .then(response => {
            // Check if the response indicates success (status 200-299)
             if (!response.ok) {
-                 // If response is not OK, try to read error message
-                 // Assuming script returns JSON error now (e.g., for duplicate)
-                return response.json().then(data => { // Try parsing JSON error
-                     // Throw an Error that includes the status and message from the script
+                 // If response is not OK, try to read error message (assuming script returns JSON error now)
+                return response.json().then(data => {
                      throw new Error(`Server responded with status ${response.status}: ${data.message || 'Unknown error'}`);
                  }).catch(() => { // Fallback if response wasn't JSON
-                     // If response is not JSON, just throw a generic error with status and response text snippet
                      return response.text().then(text => {
                           const snippet = text.substring(0, 150); // Take a snippet
                            throw new Error(`Server responded with status ${response.status}. Raw response snippet: ${snippet}...`);
@@ -751,13 +804,12 @@
            // Check the status property in the JSON response
            if (data && data.status === "success") {
                // On successful final submission from the server
-               localStorage.setItem('carStudyCompleted', 'true'); // !!! Set the localStorage flag !!!
+               localStorage.setItem('carStudyCompleted', 'true'); // Set the localStorage flag
                console.log('Local Storage flag set.');
 
                formCard.classList.add("hidden"); // Hide the form
                thankYouMessage.classList.remove("hidden"); // Show thank you message
-               // Display success message from script if available
-               if (data.message) {
+               if (data.message) { // Display success message from script
                    thankYouMessage.innerText = data.message;
                }
 
@@ -782,7 +834,7 @@
                alert('There was an unexpected response from the server.');
                 formCard.classList.remove("hidden"); // Keep the form visible
                 thankYouMessage.classList.add("hidden"); // Hide thank you message
-           }
+            }
       })
       .catch(error => {
            console.error('Fetch or Script Error:', error);
@@ -791,6 +843,13 @@
             formCard.classList.remove("hidden"); // Keep the form visible
             thankYouMessage.classList.add("hidden"); // Hide thank you message
             duplicateMessage.classList.add('hidden'); // Hide duplicate message if it was showing
+      })
+      .finally(() => {
+          // Re-enable the submit button regardless of success or failure
+          if(submitButton) {
+              submitButton.classList.remove('is-loading');
+              submitButton.disabled = false;
+          }
       });
     });
   </script>
