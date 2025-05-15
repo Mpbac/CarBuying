@@ -310,6 +310,11 @@
             <input class="input" type="email" name="email" required>
           </div>
 
+           <div class="field">
+            <label class="label">Phone Number</label>
+            <input class="input" type="tel" name="phoneNumber" required>  </div>
+
+
           <div class="field">
             <label class="label">Age</label>
             <input class="input" type="number" name="age" min="0" required>
@@ -454,7 +459,7 @@
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField"); // Field to store viewed URL
     const contentCertifiedField = document.getElementById("contentCertifiedField"); // Field to track certification
     const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField"); // Field for timer
-    const clientFetchedIpField = document.getElementById('clientFetchedIpField'); // !!! NEW Field for Client-Fetched IP !!!
+    const clientFetchedIpField = document.getElementById('clientFetchedIpField'); // Field for Client-Fetched IP
 
 
     // Array of target webpages to show randomly
@@ -486,8 +491,6 @@
         // If the flag is NOT found, set the timestamp when the form is initially displayed
         setTimestamp(); // Ensure timestamp is set on initial page load for a new participant
         console.log('No Local Storage flag found. Setting initial timestamp.');
-         // Also attempt to fetch IP on initial load (optional, could fetch before submission too)
-         // Let's fetch it right before submission for freshness.
     }
     // --- End Client-Side Local Storage Check ---
 
@@ -525,7 +528,7 @@
         }
     }
 
-    // --- NEW Async function to fetch Client IP ---
+    // --- Async function to fetch Client IP ---
     async function fetchClientIp() {
         const ipServices = [
            'https://api64.ipify.org?format=json',
@@ -539,7 +542,14 @@
         for (const serviceUrl of ipServices) {
             try {
                 console.log('Attempting to fetch IP from:', serviceUrl);
-                const response = await fetch(serviceUrl, { signal: AbortController.timeout(3000) }); // Add a timeout
+                // Using AbortController.timeout requires a modern browser environment
+                // Fallback for older environments might be needed or remove timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+                const response = await fetch(serviceUrl, { signal: controller.signal });
+                clearTimeout(timeoutId); // Clear timeout if fetch finishes in time
+
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.ip) {
@@ -553,8 +563,8 @@
                     console.warn('Failed to fetch IP from', serviceUrl, 'Status:', response.status);
                 }
             } catch (error) {
-                 if (error.name === 'TimeoutError') {
-                    console.error('IP fetch timed out from:', serviceUrl);
+                 if (error.name === 'AbortError') {
+                    console.error('IP fetch timed out or aborted from:', serviceUrl);
                 } else {
                     console.error('Error fetching IP from', serviceUrl, ':', error);
                 }
@@ -762,9 +772,10 @@
 
       setTimestamp(); // Update timestamp just before final submission
 
-      // !!! NEW: Fetch Client IP before sending the form !!!
+      // !!! Fetch Client IP before sending the form !!!
       // This will update the hidden clientFetchedIpField
-      await fetchClientIp(); // Wait for the IP fetch to complete
+      // Await ensures the fetch completes before getting form data
+      await fetchClientIp();
 
 
       // Get all form data, including the hidden fields we updated (timestamp, consent, url, certified, time, and clientFetchedIp)
@@ -846,10 +857,11 @@
       })
       .finally(() => {
           // Re-enable the submit button regardless of success or failure
-          if(submitButton) {
-              submitButton.classList.remove('is-loading');
-              submitButton.disabled = false;
-          }
+          const submitButton = e.submitter;
+           if(submitButton) { // Check if submitButton is defined
+                submitButton.classList.remove('is-loading');
+               submitButton.disabled = false;
+           }
       });
     });
   </script>
