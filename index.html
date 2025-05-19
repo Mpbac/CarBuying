@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Car Buying Study</title>
+  <title>Enrollment Form: Car Buying Study</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
     :root {
@@ -44,7 +44,6 @@
        color: #721c24; /* Dark red for text */
        border-color: #f5c6cb;
     }
-
 
     .hero.is-primary.is-bold {
       background-color: var(--dartmouth-green);
@@ -203,6 +202,13 @@
         right: 10px;
     }
 
+    /* Style for validation error messages */
+    .help.is-danger {
+        color: #f14668;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+    }
+
 
     @media (max-width: 768px) {
       .hero .title {
@@ -244,7 +250,7 @@
     <div class="hero-body">
       <div class="container">
         <img src="D-Pine_Rev.png" alt="Dartmouth College Logo" class="banner-logo">
-        <h1 class="title">Car Buying Study</h1>
+        <h1 class="title">Enrollment Form: Car Buying Study</h1>
       </div>
     </div>
   </section>
@@ -254,14 +260,12 @@
 
       <div id="intro-explanation-content" class="content">
         <h2></h2>
-        <p>Are you buying a car within the next month?</p>
         <p>We are researchers at Dartmouth College collecting data on car purchases and financing, for an academic study.</p>
-        <p>We need data for our study, and upon survey completion will pay you:</p>
+        <p>We need data for our study, and upon successful completion of this Enrollment Form, we will contact you about receiving:</p>
         <ul>
-          <li>$5 for taking a 3 minute survey today</li>
+          <li>$5 for completing this form today</li>
           <li>$20 for sending us readable pictures with the details of any car purchase/financing transaction you make, if you do end up buying a car in the next month.</li>
         </ul>
-        <p>Please complete this initial screening survey to see if you are eligible to participate in this study!</p>
         <p>Your responses will be kept confidential and used for research purposes only.</p>
         <hr>
       </div>
@@ -274,26 +278,49 @@
         <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
         <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
 
-
-        <div id="question-section">
-          <div class="field">
-            <label class="label">What are your vehicle purchase plans?</label>
-            <div class="control">
-              <label class="radio">
-                <input type="radio" name="purchase" value="A" required>
-                a. Will probably buy a new car within the next month
-              </label><br>
-              <label class="radio">
-                <input type="radio" name="purchase" value="B">
-                b. Will probably buy a used car soon
-              </label><br>
-              <label class="radio">
-                <input type="radio" name="purchase" value="C">
-                c. No plans to buy a car soon
-              </label>
-            </div>
+        <div class="field hidden">
+          <label class="label" for="honeypotField">Leave this field empty</label>
+          <div class="control">
+            <input class="input" type="text" name="honeypot" id="honeypotField" tabindex="-1" autocomplete="off">
           </div>
-          <button class="button is-primary" type="button" id="submitBtn">Submit</button>
+        </div>
+
+        <div id="age-check-section">
+           <div class="field">
+            <label class="label">Are you 18 years of age or older?</label>
+             <div class="control">
+              <label class="radio">
+                <input type="radio" name="age18OrOverInitial" value="Yes" required> Yes
+              </label>
+              <label class="radio">
+                <input type="radio" name="age18OrOverInitial" value="No"> No
+              </label>
+             </div>
+           </div>
+           <p class="help is-danger hidden" id="age18OrOverInitialError"></p>
+           <button class="button is-primary" type="button" id="nextBtn">Continue</button>
+        </div>
+
+
+        <div id="question-section" class="hidden"> <hr>
+            <div class="field">
+                <label class="label">What are your vehicle purchase plans?</label>
+                <div class="control">
+                <label class="radio">
+                    <input type="radio" name="purchase" value="A" required>
+                    a. Will probably buy a new car within the next month
+                </label><br>
+                <label class="radio">
+                    <input type="radio" name="purchase" value="B">
+                    b. Will probably buy a used car soon
+                </label><br>
+                <label class="radio">
+                    <input type="radio" name="C">
+                    c. No plans to buy a car soon
+                </label>
+                </div>
+            </div>
+            <button class="button is-primary" type="button" id="purchasePlanSubmitBtn">Submit Plans</button>
         </div>
 
         <div id="survey-section" class="hidden">
@@ -312,12 +339,15 @@
 
            <div class="field">
             <label class="label">Phone Number</label>
-            <input class="input" type="tel" name="phoneNumber" required>  </div>
+            <input class="input" type="tel" name="phoneNumber" required>
+             <p class="help is-danger hidden" id="phoneNumberError"></p>
+           </div>
 
 
           <div class="field">
             <label class="label">Age</label>
-            <input class="input" type="number" name="age" min="0" required>
+            <input class="input" type="number" name="age" min="18" max="99" required>
+             <p class="help is-danger hidden" id="ageError"></p>
           </div>
 
           <div class="field">
@@ -373,9 +403,49 @@
           </div>
 
           <div class="field">
-            <label class="label">Occupation / Industry</label>
-            <input class="input" type="text" name="occupation" required>
-          </div>
+             <label class="label">Occupation / Industry Role</label>
+             <div class="control">
+              <div class="select is-fullwidth">
+               <select name="occupation" required>
+                 <option value="">Select your occupation</option>
+                 <option value="Sales (Retail)">Sales (Retail)</option>
+                 <option value="Sales (Wholesale)">Sales (Wholesale)</option>
+                 <option value="Sales Manager">Sales Manager</option>
+                 <option value="Negotiator / Mediator">Negotiator / Mediator</option>
+                 <option value="Procurement / Purchasing Agent">Procurement / Purchasing Agent</option>
+                 <option value="Buyer">Buyer</option>
+                 <option value="Business Owner / Entrepreneur">Business Owner / Entrepreneur</option>
+                 <option value="Manager / Supervisor">Manager / Supervisor</option>
+                 <option value="Other White Collar Professional">Other White Collar Professional</option>
+                 <option value="Skilled Trades / Blue Collar">Skilled Trades / Blue Collar</option>
+                 <option value="Student">Student</option>
+                 <option value="Unemployed">Unemployed</option>
+                 <option value="Retired">Retired</option>
+                 <option value="Other">Other</option>
+               </select>
+              </div>
+             </div>
+           </div>
+
+           <div class="field">
+             <label class="label">Preferred method for follow-up contact:</label>
+              <div class="control">
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Email" required> Email
+               </label>
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Text (SMS)"> Text (SMS)
+               </label>
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Both Email and Text"> Both Email and Text
+               </label>
+              </div>
+            </div>
+
+            <div class="content is-small" style="margin-top: -0.5rem; margin-bottom: 1.5rem;">
+               <p><em>Note: If you choose Text (SMS), standard messaging and data rates may apply.</em></p>
+             </div>
+
 
           <div class="field">
             <label class="label">How many new vehicles have you purchased in your lifetime?</label>
@@ -383,7 +453,7 @@
           </div>
 
           <div class="field">
-            <button class="button is-success" type="submit">Submit Survey</button>
+            <button class="button is-success" type="submit">Submit Enrollment</button>
           </div>
         </div>
       </form>
@@ -435,31 +505,47 @@
 
     const timestampField = document.getElementById("timestampField");
     const form = document.getElementById("purchaseForm");
-    const submitBtn = document.getElementById("submitBtn"); // Submit initial question
     const thankYouMessage = document.getElementById("thank-you");
-    const duplicateMessage = document.getElementById("duplicate-message"); // Reference to the new duplicate message box
+    const duplicateMessage = document.getElementById("duplicate-message");
     const formCard = document.getElementById("form-card");
-    const questionSection = document.getElementById("question-section");
-    const surveySection = document.getElementById("survey-section");
     const introExplanationContent = document.getElementById("intro-explanation-content");
+
+    // New elements for initial age check
+    const ageCheckSection = document.getElementById("age-check-section");
+    const nextBtn = document.getElementById("nextBtn"); // Button for age check
+    const age18OrOverInitialError = document.getElementById('age18OrOverInitialError'); // Error for initial age check
+
+    // Existing elements for purchase plans (now shown after age check)
+    const questionSection = document.getElementById("question-section"); // Purchase plans section
+    const purchasePlanSubmitBtn = document.getElementById("purchasePlanSubmitBtn"); // Submit button for purchase plans
+
+    // Existing elements for survey section
+    const surveySection = document.getElementById("survey-section");
 
     // Consent modal elements
     const consentModal = document.getElementById("consent-modal");
-    const consentBtn = document.getElementById("consentBtn"); // Button inside consent modal
+    const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
 
     // New content modal elements
-    const contentModal = document.getElementById("content-modal"); // The new modal
-    const webpageIframe = document.getElementById("webpageIframe"); // The iframe inside the new modal
-    const certifyBtn = document.getElementById("certifyBtn"); // Button inside the new modal
-    const closeContentModal = document.getElementById("closeContentModal"); // Close button for new modal
+    const contentModal = document.getElementById("content-modal");
+    const webpageIframe = document.getElementById("webpageIframe");
+    const certifyBtn = document.getElementById("certifyBtn");
+    const closeContentModal = document.getElementById("closeContentModal");
 
     // Hidden form fields
     const consentStatusField = document.getElementById("consentStatusField");
-    const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField"); // Field to store viewed URL
-    const contentCertifiedField = document.getElementById("contentCertifiedField"); // Field to track certification
-    const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField"); // Field for timer
-    const clientFetchedIpField = document.getElementById('clientFetchedIpField'); // Field for Client-Fetched IP
+    const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField");
+    const contentCertifiedField = document.getElementById("contentCertifiedField");
+    const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField");
+    const clientFetchedIpField = document.getElementById('clientFetchedIpField');
+
+    // Bot protection field
+    const honeypotField = document.getElementById('honeypotField');
+
+    // Validation error elements for the *main survey* fields
+    const phoneNumberError = document.getElementById('phoneNumberError');
+    const ageError = document.getElementById('ageError');
 
 
     // Array of target webpages to show randomly
@@ -469,30 +555,35 @@
       "https://www.edmunds.com/car-buying/what-fees-should-you-pay.html"
     ];
 
-    let selectedWebpageUrl = null; // Variable to store the randomly selected URL
-    let contentModalStartTime = null; // Variable for timer start time
+    let selectedWebpageUrl = null;
+    let contentModalStartTime = null;
 
 
-    // --- Client-Side Local Storage Check ---
-    // Run this code as soon as the script loads
+    /*
+    // !!! TEMPORARILY DISABLED FOR TESTING !!!
     if (localStorage.getItem('carStudyCompleted')) {
-      // Hide the form and show a message if the flag is found
       console.log('Local Storage flag found: Survey already completed in this browser.');
       formCard.classList.add('hidden');
-      duplicateMessage.classList.remove('hidden'); // Use the danger message box style
+      duplicateMessage.classList.remove('hidden');
       duplicateMessage.innerHTML = '<p>Thank you for your participation. Our records indicate that you have already completed this survey using this browser.</p>';
-      thankYouMessage.classList.add('hidden'); // Ensure the regular thank you message is hidden
+      thankYouMessage.classList.add('hidden');
 
-       // Prevent any form interaction
-       submitBtn.disabled = true; // Disable initial submit button
+       nextBtn.disabled = true; // Disable initial next button
+       purchasePlanSubmitBtn.disabled = true; // Disable purchase plan submit button
        const surveySubmitBtn = form.querySelector('button[type="submit"]');
-       if(surveySubmitBtn) surveySubmitBtn.disabled = true; // Disable survey submit button if visible
+       if(surveySubmitBtn) surveySubmitBtn.disabled = true;
     } else {
-        // If the flag is NOT found, set the timestamp when the form is initially displayed
-        setTimestamp(); // Ensure timestamp is set on initial page load for a new participant
+        setTimestamp();
         console.log('No Local Storage flag found. Setting initial timestamp.');
     }
-    // --- End Client-Side Local Storage Check ---
+    // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
+    */
+
+     // If Local Storage check is disabled, ensure timestamp is set on load
+     if (!localStorage.getItem('carStudyCompleted')) {
+         setTimestamp();
+         console.log('Local Storage check disabled. Setting initial timestamp.');
+     }
 
 
     function setTimestamp() {
@@ -507,34 +598,29 @@
     }
 
 
-    // Function to format form data for fetch (using URLSearchParams for robustness)
     function formatFormData(formData) {
         const params = new URLSearchParams();
         for (const pair of formData.entries()) {
             params.append(pair[0], pair[1]);
         }
-        return params.toString(); // Returns a=1&b=2&c=3 string
+        return params.toString();
     }
 
 
-    // Function to calculate and record time on content modal
     function recordContentModalTime() {
         if (contentModalStartTime !== null) {
-            const now = new Date().getTime(); // Get current time in milliseconds
-            const duration = now - contentModalStartTime; // Calculate duration
-            timeOnContentPageMsField.value = duration; // Store duration in the hidden field
+            const now = new Date().getTime();
+            const duration = now - contentModalStartTime;
+            timeOnContentPageMsField.value = duration;
             console.log(`Time on content modal: ${duration} ms`);
-            contentModalStartTime = null; // Reset timer start time
+            contentModalStartTime = null;
         }
     }
 
-    // --- Async function to fetch Client IP ---
     async function fetchClientIp() {
         const ipServices = [
            'https://api64.ipify.org?format=json',
            'https://jsonip.com/'
-           // Add more services here if needed as fallbacks
-           // Make sure they return JSON with an 'ip' field and are CORS-friendly
         ];
 
         let clientIp = 'N/A_ClientFetch_Failed';
@@ -542,20 +628,18 @@
         for (const serviceUrl of ipServices) {
             try {
                 console.log('Attempting to fetch IP from:', serviceUrl);
-                // Using AbortController.timeout requires a modern browser environment
-                // Fallback for older environments might be needed or remove timeout
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
 
                 const response = await fetch(serviceUrl, { signal: controller.signal });
-                clearTimeout(timeoutId); // Clear timeout if fetch finishes in time
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.ip) {
                         clientIp = data.ip;
                         console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
-                        break; // Stop after the first successful fetch
+                        break;
                     } else {
                          console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
                     }
@@ -570,93 +654,202 @@
                 }
             }
         }
-         // Update the hidden field with the result (whether success or failure)
         clientFetchedIpField.value = clientIp;
-        return clientIp; // Return the captured IP
+        return clientIp;
     }
-    // --- END NEW Async function to fetch Client IP ---
+
+    // --- Client-Side Validation Function for main survey fields ---
+    function validateForm() {
+        let isValid = true;
+
+        // Hide all previous error messages
+        // Make sure this doesn't hide the initial age check error if it's still visible
+        document.querySelectorAll('#survey-section .help.is-danger').forEach(el => el.classList.add('hidden'));
+
+        // Validate Phone Number (10 digits, ignoring non-digits)
+        const phoneNumberInput = form.querySelector('input[name="phoneNumber"]');
+        const phoneNumber = phoneNumberInput.value;
+        const digitsOnly = phoneNumber.replace(/\D/g, '');
+        if (digitsOnly.length !== 10) {
+            phoneNumberError.textContent = 'Please enter a valid 10-digit phone number.';
+            phoneNumberError.classList.remove('hidden');
+            isValid = false;
+        }
+
+        // Validate Age (between 18 and 99)
+        const ageInput = form.querySelector('input[name="age"]');
+        const age = parseInt(ageInput.value, 10);
+        if (isNaN(age) || age < 18 || age > 99) {
+            ageError.textContent = 'Please enter an age between 18 and 99.';
+            ageError.classList.remove('hidden');
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
 
-    // --- Event Listener for Initial Submit Button (screening question) ---
-    submitBtn.addEventListener("click", function () {
+    // --- NEW: Event Listener for Initial Age Check "Continue" Button ---
+    nextBtn.addEventListener("click", function () {
+      // Clear any previous messages
+      duplicateMessage.classList.add('hidden');
+      thankYouMessage.classList.add('hidden');
+      age18OrOverInitialError.classList.add('hidden'); // Clear error for this section
+
+      const age18OrOverRadios = document.querySelectorAll('input[name="age18OrOverInitial"]');
+      let age18OrOverSelected = false;
+      let is18OrOver = null;
+      for(const radio of age18OrOverRadios) {
+          if(radio.checked) {
+              age18OrOverSelected = true;
+              is18OrOver = radio.value;
+              break;
+          }
+      }
+
+      setTimestamp(); // Set timestamp when this initial question is answered
+
+      if (!age18OrOverSelected) {
+           age18OrOverInitialError.textContent = 'Please confirm if you are 18 or older.';
+           age18OrOverInitialError.classList.remove('hidden');
+           return; // Stop here if not selected
+      } else if (is18OrOver === 'No') {
+           // Participant is under 18, disqualify and submit immediately
+           const tempFormData = new FormData();
+           tempFormData.append("age18OrOverInitial", is18OrOver);
+           tempFormData.append("timestamp", timestampField.value);
+           tempFormData.append("purchase", "N/A - Underage"); // Mark purchase as N/A
+           tempFormData.append("viewedWebpageUrl", "N/A - Underage");
+           tempFormData.append("consentStatus", "Not Applicable - Underage");
+           tempFormData.append("contentCertified", "Not Applicable - Underage");
+           tempFormData.append("timeOnContentPageMs", "0");
+           tempFormData.append("clientFetchedIp", "N/A_Underage");
+           tempFormData.append("fullName", "N/A");
+           tempFormData.append("email", "N/A");
+           tempFormData.append("phoneNumber", "N/A");
+           tempFormData.append("age", "N/A");
+           tempFormData.append("gender", "N/A");
+           tempFormData.append("race", "N/A");
+           tempFormData.append("hispanic", "N/A");
+           tempFormData.append("education", "N/A");
+           tempFormData.append("occupation", "N/A");
+           tempFormData.append("contactPreference", "N/A");
+           tempFormData.append("newVehiclesPurchased", "N/A");
+
+
+           const formDataString = formatFormData(tempFormData);
+
+           fetch(scriptURL, {
+              method: "POST",
+              redirect: "follow",
+              body: formDataString,
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+           })
+           .then(response => {
+              if (!response.ok) {
+                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { throw new Error(`Server status ${response.status}: ${text}`); }); });
+              }
+              return response.json();
+           })
+           .then(data => {
+               console.log('Apps Script Response (Underage):', data);
+               if (data && data.status === "success") {
+                   formCard.classList.add("hidden");
+                   duplicateMessage.classList.remove("hidden");
+                   duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, this study is only open to participants 18 years of age or older.</p>';
+               } else {
+                   let errorMessage = 'Submission failed for underage participant.';
+                   if (data && data.message) errorMessage = data.message;
+                   alert(errorMessage);
+               }
+           })
+           .catch(error => {
+               console.error('Error submitting underage data:', error);
+               alert('There was an error submitting your response: ' + error.message);
+           });
+           return; // Stop further processing as participant is disqualified
+      }
+
+      // If "Yes" is selected (eligible by age), proceed to purchase plans
+      ageCheckSection.classList.add("hidden");
+      questionSection.classList.remove("hidden");
+    });
+
+
+    // --- Event Listener for Purchase Plan Submit Button ---
+    purchasePlanSubmitBtn.addEventListener("click", function () {
       // Clear any previous messages
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
 
-
-      const selected = document.querySelector('input[name="purchase"]:checked');
-      if (!selected) {
-        alert("Please select an option.");
+      const selectedPurchasePlan = document.querySelector('input[name="purchase"]:checked');
+      if (!selectedPurchasePlan) {
+        alert("Please select your vehicle purchase plans.");
         return;
       }
 
-      setTimestamp(); // Set timestamp when initial question is answered
+      setTimestamp(); // Update timestamp when purchase plan is answered
 
-      // If eligible (selected "A")
-      if (selected.value === "A") {
-        // Hide introductory content and screening question
-        questionSection.classList.add("hidden");
-        introExplanationContent.classList.add("hidden");
-        // Show the Consent Modal
-        consentModal.classList.add("is-active");
+      // If eligible for study (selected "A")
+      if (selectedPurchasePlan.value === "A") {
+        questionSection.classList.add("hidden"); // Hide purchase plans
+        introExplanationContent.classList.add("hidden"); // Hide intro
+        consentModal.classList.add("is-active"); // Show Consent Modal
 
       } else {
         // If not eligible (selected "B" or "C")
-        // Prepare data for immediate submission (only initial question and status)
         const tempFormData = new FormData();
-        tempFormData.append("purchase", selected.value);
+        // Crucially, also include the age18OrOverInitial field value here
+        const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
+        tempFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "N/A"); // Include initial age check response
+        tempFormData.append("purchase", selectedPurchasePlan.value);
         tempFormData.append("timestamp", timestampField.value);
-        tempFormData.append("viewedWebpageUrl", "N/A - Not Eligible"); // Mark URL as N/A
-        tempFormData.append("consentStatus", "Not Applicable"); // Mark consent as N/A
-        tempFormData.append("contentCertified", "Not Applicable"); // Mark certification as N/A
-        tempFormData.append("timeOnContentPageMs", "0"); // Time on content is 0
-        tempFormData.append("clientFetchedIp", "N/A_NotEligible"); // Mark IP as N/A for non-eligible
+        tempFormData.append("viewedWebpageUrl", "N/A - Not Eligible by Purchase Plan");
+        tempFormData.append("consentStatus", "Not Applicable - Not Eligible");
+        tempFormData.append("contentCertified", "Not Applicable - Not Eligible");
+        tempFormData.append("timeOnContentPageMs", "0");
+        tempFormData.append("clientFetchedIp", "N/A_NotEligible");
+        tempFormData.append("fullName", "N/A");
+        tempFormData.append("email", "N/A");
+        tempFormData.append("phoneNumber", "N/A");
+        tempFormData.append("age", "N/A");
+        tempFormData.append("gender", "N/A");
+        tempFormData.append("race", "N/A");
+        tempFormData.append("hispanic", "N/A");
+        tempFormData.append("education", "N/A");
+        tempFormData.append("occupation", "N/A");
+        tempFormData.append("contactPreference", "N/A");
+        tempFormData.append("newVehiclesPurchased", "N/A");
 
 
         const formDataString = formatFormData(tempFormData);
 
-        // Send data for non-eligible users
         fetch(scriptURL, {
           method: "POST",
-          redirect: "follow", // Follow redirects (typical for Apps Script)
+          redirect: "follow",
           body: formDataString,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
         .then(response => {
-             // Check if the response indicates success (e.g., status 200-299)
             if (!response.ok) {
-                // If response is not OK, try to read error message
-                 // Assuming script returns JSON error now
-                return response.json().then(data => { // Try parsing JSON error
-                     throw new Error(`Server responded with status ${response.status}: ${data.message || 'Unknown error'}`);
-                 }).catch(() => { // Fallback if response wasn't JSON
-                     return response.text().then(text => { throw new Error(`Server responded with status ${response.status}: ${text}`); });
-                 });
+                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { throw new Error(`Server status ${response.status}: ${text}`); }); });
             }
-             // Assuming script always returns JSON now
-            return response.json(); // Parse the JSON response
-
+            return response.json();
         })
-        .then(data => { // 'data' is the parsed JSON object
-             console.log('Apps Script Response (B/C):', data);
+        .then(data => {
+            console.log('Apps Script Response (B/C):', data);
             if (data && data.status === "success") {
-                // On successful submission for non-eligible
-                formCard.classList.add("hidden"); // Hide the form
-                thankYouMessage.classList.remove("hidden"); // Show thank you message
-                 if (data.message) thankYouMessage.innerText = data.message;
+                formCard.classList.add("hidden");
+                duplicateMessage.classList.remove("hidden"); // Use the danger message box style
+                duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, this study is only open to participants planning to buy a new car within the next month.</p>';
             } else {
-                // Should not happen for B/C success, but handle any non-success status
                  let errorMessage = 'Submission failed.';
                  if (data && data.message) errorMessage = data.message;
-                 console.error('Submission Error (B/C):', errorMessage);
                  alert(errorMessage);
             }
         })
         .catch(error => {
             console.error('Error sending data for B/C:', error);
-             // Display the error message from the thrown Error
             alert('There was an error submitting your response: ' + error.message);
         });
       }
@@ -665,200 +858,157 @@
 
     // --- Event Listener for Consent Button (inside Consent Modal) ---
     consentBtn.addEventListener("click", function() {
-      // User has consented
-      consentStatusField.value = "Consented"; // Update hidden field
+      consentStatusField.value = "Consented";
 
-      // Hide the Consent Modal
       consentModal.classList.remove("is-active");
 
-      // Randomly select a webpage URL from the array
       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
-      selectedWebpageUrl = targetWebpages[randomIndex]; // Store the selected URL
+      selectedWebpageUrl = targetWebpages[randomIndex];
 
-      // Update the hidden field in the form with the selected URL
       viewedWebpageUrlField.value = selectedWebpageUrl;
       console.log('Selected webpage URL:', selectedWebpageUrl);
 
 
-      // Set the iframe source and show the Content Modal
       webpageIframe.src = selectedWebpageUrl;
-      contentModal.classList.add("is-active"); // Show the content viewing modal
+      contentModal.classList.add("is-active");
 
-      // Start the timer when the content modal opens
       contentModalStartTime = new Date().getTime();
       console.log('Content modal opened, timer started.');
 
     });
 
-    // Event listeners to close the consent modal (optional but good practice)
     closeConsentModal.addEventListener("click", function() {
         consentModal.classList.remove("is-active");
-        // Decide if they can proceed without consent - currently, they cannot as surveySection is hidden.
     });
-     // Close consent modal by clicking background
     consentModal.querySelector('.modal-background').addEventListener('click', function() {
          consentModal.classList.remove("is-active");
-         // Decide if they can proceed without consent
     });
 
 
     // --- Event Listener for Certify Button (inside Content Modal) ---
     certifyBtn.addEventListener("click", function() {
-        // User has certified viewing the content
-        contentCertifiedField.value = "Yes"; // Update hidden field
+        contentCertifiedField.value = "Yes";
         console.log('Content certified button clicked.');
 
-        recordContentModalTime(); // Stop timer and record time
+        recordContentModalTime();
 
-        // Hide the Content Modal
         contentModal.classList.remove("is-active");
-         // Clear the iframe source after closing (optional cleanup)
         webpageIframe.src = "";
 
-
-        // Now show the main survey section
         surveySection.classList.remove("hidden");
-
-        // Ensure the initial explanation/question are hidden just in case
-        questionSection.classList.add("hidden");
         introExplanationContent.classList.add("hidden");
+        questionSection.classList.add("hidden"); // Ensure purchase plans section is hidden too
 
     });
 
-     // Event listeners to close the content modal (optional but good practice)
-     // These also need to record the time if the user closes the modal
     closeContentModal.addEventListener("click", function() {
         console.log('Content modal close button clicked.');
-        recordContentModalTime(); // Stop timer and record time
-
+        recordContentModalTime();
         contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; // Clear source if closed
-
-        // Decide if closing without certifying is allowed or prevents proceeding
-        // If you want to allow them to proceed without certifying, uncomment the line below:
-        // surveySection.classList.remove("hidden");
-        // However, based on the study design, requiring certification seems intended before proceeding to the survey.
+        webpageIframe.src = "";
     });
-    // Close content modal by clicking background
-     contentModal.querySelector('.modal-background').addEventListener('click', function() {
+    contentModal.querySelector('.modal-background').addEventListener('click', function() {
         console.log('Content modal background clicked.');
-        recordContentModalTime(); // Stop timer and record time
-
+        recordContentModalTime();
         contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; // Clear source if closed
-
-         // Decide if closing without certifying is allowed or prevents proceeding
-         // If you want to allow them to proceed without certifying, uncomment the line below:
-         // surveySection.classList.remove("hidden");
+        webpageIframe.src = "";
     });
 
 
     // --- Event Listener for Main Survey Form Submission (ASYNC) ---
-    // Made this function async to await the IP fetch
     form.addEventListener("submit", async function (e) {
-      e.preventDefault(); // Prevent the default form submission
+      e.preventDefault();
 
-      // Clear any previous messages
-       duplicateMessage.classList.add('hidden');
-       thankYouMessage.classList.add('hidden');
+      duplicateMessage.classList.add('hidden');
+      thankYouMessage.classList.add('hidden');
 
-       // Disable the submit button and show a loading indicator (optional but good for UX)
-       const submitButton = e.submitter; // The button that was clicked (the submit survey button)
+       if (!validateForm()) {
+           console.log('Client-side validation failed. Not submitting.');
+           const submitButton = e.submitter;
+            if(submitButton) {
+                submitButton.classList.remove('is-loading');
+               submitButton.disabled = false;
+           }
+           return;
+       }
+
+       const submitButton = e.submitter;
        if(submitButton) {
            submitButton.classList.add('is-loading');
            submitButton.disabled = true;
        }
 
+      setTimestamp();
 
-      setTimestamp(); // Update timestamp just before final submission
-
-      // !!! Fetch Client IP before sending the form !!!
-      // This will update the hidden clientFetchedIpField
-      // Await ensures the fetch completes before getting form data
       await fetchClientIp();
 
-
-      // Get all form data, including the hidden fields we updated (timestamp, consent, url, certified, time, and clientFetchedIp)
       const formData = new FormData(e.target);
+      // Append the initial age check response to the main form data
+      const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
+      if (age18OrOverInitial) {
+        formData.append("age18OrOverInitial", age18OrOverInitial.value);
+      } else {
+        formData.append("age18OrOverInitial", "Not Provided"); // Fallback if not selected for some reason
+      }
 
-      const formDataString = formatFormData(formData); // Format data for submission
 
+      const formDataString = formatFormData(formData);
 
-      // Send the full survey data to Apps Script
       fetch(scriptURL, {
         method: "POST",
         redirect: "follow",
         body: formDataString,
-         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
+         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       })
       .then(response => {
-           // Check if the response indicates success (status 200-299)
             if (!response.ok) {
-                 // If response is not OK, try to read error message (assuming script returns JSON error now)
-                return response.json().then(data => {
-                     throw new Error(`Server responded with status ${response.status}: ${data.message || 'Unknown error'}`);
-                 }).catch(() => { // Fallback if response wasn't JSON
-                     return response.text().then(text => {
-                          const snippet = text.substring(0, 150); // Take a snippet
-                           throw new Error(`Server responded with status ${response.status}. Raw response snippet: ${snippet}...`);
-                     });
-                 });
+                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 150); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
             }
-             // Assuming script always returns JSON now for success
-            return response.json(); // Parse the JSON response
+            return response.json();
       })
-      .then(data => { // 'data' is the parsed JSON object from the script
-           console.log('Apps Script Response:', data); // Log the response
+      .then(data => {
+           console.log('Apps Script Response:', data);
 
-           // Check the status property in the JSON response
            if (data && data.status === "success") {
-               // On successful final submission from the server
-               localStorage.setItem('carStudyCompleted', 'true'); // Set the localStorage flag
+               localStorage.setItem('carStudyCompleted', 'true');
                console.log('Local Storage flag set.');
 
-               formCard.classList.add("hidden"); // Hide the form
-               thankYouMessage.classList.remove("hidden"); // Show thank you message
-               if (data.message) { // Display success message from script
+               formCard.classList.add("hidden");
+               thankYouMessage.classList.remove("hidden");
+               if (data.message) {
                    thankYouMessage.innerText = data.message;
                }
 
            } else if (data && data.status === "error") {
-              // This handles errors returned by the script as JSON (like duplicate email)
               let errorMessage = 'Submission failed.';
                if (data.message) {
-                   errorMessage = data.message; // Use the error message from the script
+                   errorMessage = data.message;
                }
                console.error('Submission Error (Script Returned Error Status):', errorMessage);
 
-               // Display the error message in the duplicate message box or a dedicated error box
-               duplicateMessage.classList.remove('hidden'); // Use the danger message box
-               duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>'; // Display the script's error message
+               duplicateMessage.classList.remove('hidden');
+               duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
 
-                formCard.classList.remove("hidden"); // Keep the form visible
-                thankYouMessage.classList.add("hidden"); // Hide thank you message
+                formCard.classList.remove("hidden");
+                thankYouMessage.classList.add("hidden");
 
            } else {
-               // Handle unexpected JSON response structure
                console.error('Submission Error (Unexpected Script Response):', data);
                alert('There was an unexpected response from the server.');
-                formCard.classList.remove("hidden"); // Keep the form visible
-                thankYouMessage.classList.add("hidden"); // Hide thank you message
+                formCard.classList.remove("hidden");
+                thankYouMessage.classList.add("hidden");
             }
       })
       .catch(error => {
            console.error('Fetch or Script Error:', error);
-            // This catch handles network errors or errors thrown in the .then() block (including errors from non-OK responses)
-           alert('There was an error submitting your survey: ' + error.message); // Display the error message
-            formCard.classList.remove("hidden"); // Keep the form visible
-            thankYouMessage.classList.add("hidden"); // Hide thank you message
-            duplicateMessage.classList.add('hidden'); // Hide duplicate message if it was showing
+           alert('There was an error submitting your survey: ' + error.message);
+            formCard.classList.remove("hidden");
+            thankYouMessage.classList.add("hidden");
+            duplicateMessage.classList.add('hidden');
       })
       .finally(() => {
-          // Re-enable the submit button regardless of success or failure
           const submitButton = e.submitter;
-           if(submitButton) { // Check if submitButton is defined
+           if(submitButton) {
                 submitButton.classList.remove('is-loading');
                submitButton.disabled = false;
            }
