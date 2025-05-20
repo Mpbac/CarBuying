@@ -31,17 +31,17 @@
       margin: 20px auto;
       max-width: 600px;
       padding: 20px;
-      background-color: #d4edda; /* Light green for success/info */
-      color: #155724; /* Dark green for text */
+      background-color: #d4edda; 
+      color: #155724; 
       border: 1px solid #c3e6cb;
       border-radius: 4px;
       font-weight: bold;
       text-align: center;
     }
-     /* Added style for potential error message box */
+     
     .message-box.is-danger {
-       background-color: #f8d7da; /* Light red for error */
-       color: #721c24; /* Dark red for text */
+       background-color: #f8d7da; 
+       color: #721c24;  
        border-color: #f5c6cb;
     }
 
@@ -130,55 +130,54 @@
       margin: 2rem 0;
     }
 
-    /* --- Modal Styling --- */
-    /* Styles for the consent modal and the new content modal */
+    
     .modal-content {
-      /* Adjusted for responsiveness and size */
-      width: 95%; /* Use percentage for width */
-      max-width: 1200px; /* Max width for large screens */
-      height: 95%; /* Use percentage for height */
-      max-height: 900px; /* Max height */
+      
+      width: 95%;  
+      max-width: 1200px;  
+      height: 95%; 
+      max-height: 900px;  
       display: flex;
       flex-direction: column;
     }
 
     .modal-content .box {
-      flex-grow: 1; /* Allow box to fill modal content */
-      padding: 20px; /* Adjust padding */
+      flex-grow: 1; 
+      padding: 20px;  
       display: flex;
       flex-direction: column;
       height: 100%;
-      overflow: hidden; /* Prevent scrollbars on the box itself */
+      overflow: hidden;  
       position: relative;
     }
 
-    /* Specific container for the iframe to manage scrolling */
+     
     .iframe-container {
-      flex-grow: 1; /* Allow iframe container to fill available space */
-      overflow-y: auto; /* Add scrollbar to the container */
-      border: 1px solid #ddd; /* Add border */
-      margin-bottom: 15px; /* Space before the footer */
-      background-color: white; /* Background in case iframe doesn't cover */
+      flex-grow: 1;  
+      overflow-y: auto;  
+      border: 1px solid #ddd; 
+      margin-bottom: 15px;  
+      background-color: white;  
     }
 
     .modal-content iframe {
-      /* Styles for the iframe itself */
-      display: block; /* Remove extra space below iframe */
+       
+      display: block;  
       width: 100%;
-      min-height: 100%; /* Make sure iframe content stretches if needed */
-      border: none; /* Remove default iframe border */
+      min-height: 100%;  
+      border: none;  
     }
 
     .sticky-footer {
-        position: sticky; /* Make the footer sticky within the scrollable container */
-        bottom: 0; /* Stick to the bottom */
-        left: -20px; /* Adjust for box padding */
-        width: calc(100% + 40px); /* Span full width plus padding */
+        position: sticky;  
+        bottom: 0;  
+        left: -20px;  
+        width: calc(100% + 40px);  
         background-color: white;
-        padding: 15px 20px; /* Add padding */
+        padding: 15px 20px;  
         border-top: 1px solid #eee;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        z-index: 10; /* Ensure it's above iframe content */
+        z-index: 10;  
 
         display: flex;
         flex-direction: column;
@@ -186,23 +185,23 @@
     }
 
     .sticky-footer .confirm-text {
-        margin-bottom: 10px !important; /* Space below text */
+        margin-bottom: 10px !important; 
         text-align: center;
         font-size: 0.9em;
     }
 
     .sticky-footer .control {
-        width: 100%; /* Allow button control to take width */
+        width: 100%;  
         text-align: center;
     }
 
-    /* Adjust modal close button position if needed for taller modals */
+    
     .modal .modal-close {
         top: 10px;
         right: 10px;
     }
 
-    /* Style for validation error messages */
+    
     .help.is-danger {
         color: #f14668;
         font-size: 0.875em;
@@ -230,10 +229,10 @@
           height: 95%;
       }
        .modal-content .box {
-         padding: 15px; /* Reduced padding on small screens */
+         padding: 15px;  
        }
         .sticky-footer {
-            left: -15px; /* Adjust for reduced padding */
+            left: -15px;  
             width: calc(100% + 30px);
             padding: 10px 15px;
         }
@@ -505,7 +504,7 @@
        <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
   </div>
      <script>
-    // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
+    
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
 
     const timestampField = document.getElementById("timestampField");
@@ -515,30 +514,30 @@
     const formCard = document.getElementById("form-card");
     const introExplanationContent = document.getElementById("intro-explanation-content");
 
-    // New elements for initial age check
+     
     const ageCheckSection = document.getElementById("age-check-section");
     const nextBtn = document.getElementById("nextBtn"); // Button for age check
     const age18OrOverInitialError = document.getElementById('age18OrOverInitialError'); // Error for initial age check
 
-    // Existing elements for purchase plans (now shown after age check)
+     
     const questionSection = document.getElementById("question-section"); // Purchase plans section
     const purchasePlanSubmitBtn = document.getElementById("purchasePlanSubmitBtn"); // Submit button for purchase plans
 
-    // Existing elements for survey section
+    
     const surveySection = document.getElementById("survey-section");
 
-    // Consent modal elements
+    
     const consentModal = document.getElementById("consent-modal");
     const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
 
-    // New content modal elements
+     
     const contentModal = document.getElementById("content-modal");
     const webpageIframe = document.getElementById("webpageIframe");
     const certifyBtn = document.getElementById("certifyBtn");
     const closeContentModal = document.getElementById("closeContentModal");
 
-    // Hidden form fields
+     
     const consentStatusField = document.getElementById("consentStatusField");
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField");
     const contentCertifiedField = document.getElementById("contentCertifiedField");
@@ -548,14 +547,14 @@
     // Bot protection field
     const honeypotField = document.getElementById('honeypotField');
 
-    // Validation error elements for the *main survey* fields
+    
     const phoneNumberError = document.getElementById('phoneNumberError');
     const ageError = document.getElementById('ageError');
 
 
-    // Array of target webpages to show randomly
+     
     const targetWebpages = [
-        "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
+      "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
       "https://sites.dartmouth.edu/carbuyingstudy/auto-loan-grade/",
       "https://sites.dartmouth.edu/carbuyingstudy/sample-page/"
     ];
@@ -565,7 +564,7 @@
 
 
     /*
-    // !!! TEMPORARILY DISABLED FOR TESTING !!!
+    // !!! DISABLED FOR TESTING !!!
     if (localStorage.getItem('carStudyCompleted')) {
       console.log('Local Storage flag found: Survey already completed in this browser.');
       formCard.classList.add('hidden');
@@ -581,7 +580,7 @@
         setTimestamp();
         console.log('No Local Storage flag found. Setting initial timestamp.');
     }
-    // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
+    // !!! !!!
     */
 
       // If Local Storage check is disabled, ensure timestamp is set on load
@@ -663,12 +662,11 @@
         return clientIp;
     }
 
-    // --- Client-Side Validation Function for main survey fields ---
+     
     function validateForm() {
         let isValid = true;
 
-        // Hide all previous error messages
-        // Make sure this doesn't hide the initial age check error if it's still visible
+        
         document.querySelectorAll('#survey-section .help.is-danger').forEach(el => el.classList.add('hidden'));
 
         // Validate Phone Number (10 digits, ignoring non-digits)
@@ -694,7 +692,7 @@
     }
 
 
-    // --- NEW: Event Listener for Initial Age Check "Continue" Button ---
+    
     nextBtn.addEventListener("click", function () {
       // Clear any previous messages
       duplicateMessage.classList.add('hidden');
@@ -712,7 +710,7 @@
           }
       }
 
-      setTimestamp(); // Set timestamp when this initial question is answered
+      setTimestamp();
 
       if (!age18OrOverSelected) {
            age18OrOverInitialError.textContent = 'Please confirm if you are 18 or older.';
@@ -772,16 +770,16 @@
                console.error('Error submitting underage data:', error);
                alert('There was an error submitting your response: ' + error.message);
            });
-           return; // Stop further processing as participant is disqualified
+           return; 
       }
 
-      // If "Yes" is selected (eligible by age), proceed to purchase plans
+     
       ageCheckSection.classList.add("hidden");
       questionSection.classList.remove("hidden");
     });
 
 
-    // --- Event Listener for Purchase Plan Submit Button ---
+  
     purchasePlanSubmitBtn.addEventListener("click", function () {
       // Clear any previous messages
       duplicateMessage.classList.add('hidden');
@@ -802,9 +800,9 @@
         consentModal.classList.add("is-active"); // Show Consent Modal
 
       } else {
-        // If not eligible (selected "B" or "C")
+       
         const tempFormData = new FormData();
-        // Crucially, also include the age18OrOverInitial field value here
+        //  include the age18OrOverInitial field value 
         const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
         tempFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "N/A"); // Include initial age check response
         tempFormData.append("purchase", selectedPurchasePlan.value);
@@ -865,7 +863,7 @@
     consentBtn.addEventListener("click", function() {
       consentStatusField.value = "Consented";
 
-      // --- NEW: Trigger PDF Download ---
+      // --- Trigger PDF Download ---
       const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; // Path to your consent PDF
       const link = document.createElement('a');
       link.href = pdfUrl;
@@ -873,7 +871,7 @@
       document.body.appendChild(link); // Append to body (required for Firefox)
       link.click(); // Programmatically click the link
       document.body.removeChild(link); // Clean up the temporary link
-      // --- END NEW: Trigger PDF Download ---
+      // ---  ---
 
       consentModal.classList.remove("is-active");
 
