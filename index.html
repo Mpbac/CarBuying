@@ -487,9 +487,9 @@
     <div class="modal-content">
       <div class="box">
         <h3 class="title is-4">Review Required Content</h3>
-         <div class="iframe-container">
-           <iframe id="webpageIframe" src="" frameborder="0"></iframe>
-        </div>
+           <div class="iframe-container">
+             <iframe id="webpageIframe" src="" frameborder="0"></iframe>
+          </div>
         <div class="sticky-footer"> <p class="confirm-text">By clicking "I Certify...", you confirm that you have reviewed the content shown above.</p>
           <p class="control">
             <button class="button is-success" id="certifyBtn">I certify that I have reviewed this content</button>
@@ -497,9 +497,9 @@
         </div>
       </div>
     </div>
-     <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
+       <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
   </div>
-   <script>
+     <script>
     // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
 
@@ -550,7 +550,7 @@
 
     // Array of target webpages to show randomly
     const targetWebpages = [
-       "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
+        "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
       "https://sites.dartmouth.edu/carbuyingstudy/auto-loan-grade/",
       "https://sites.dartmouth.edu/carbuyingstudy/sample-page/"
     ];
@@ -568,10 +568,10 @@
       duplicateMessage.innerHTML = '<p>Thank you for your participation. Our records indicate that you have already completed this survey using this browser.</p>';
       thankYouMessage.classList.add('hidden');
 
-       nextBtn.disabled = true; // Disable initial next button
-       purchasePlanSubmitBtn.disabled = true; // Disable purchase plan submit button
-       const surveySubmitBtn = form.querySelector('button[type="submit"]');
-       if(surveySubmitBtn) surveySubmitBtn.disabled = true;
+        nextBtn.disabled = true; // Disable initial next button
+        purchasePlanSubmitBtn.disabled = true; // Disable purchase plan submit button
+        const surveySubmitBtn = form.querySelector('button[type="submit"]');
+        if(surveySubmitBtn) surveySubmitBtn.disabled = true;
     } else {
         setTimestamp();
         console.log('No Local Storage flag found. Setting initial timestamp.');
@@ -579,11 +579,11 @@
     // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
     */
 
-     // If Local Storage check is disabled, ensure timestamp is set on load
-     if (!localStorage.getItem('carStudyCompleted')) {
-         setTimestamp();
-         console.log('Local Storage check disabled. Setting initial timestamp.');
-     }
+      // If Local Storage check is disabled, ensure timestamp is set on load
+      if (!localStorage.getItem('carStudyCompleted')) {
+          setTimestamp();
+          console.log('Local Storage check disabled. Setting initial timestamp.');
+      }
 
 
     function setTimestamp() {
@@ -740,16 +740,16 @@
            const formDataString = formatFormData(tempFormData);
 
            fetch(scriptURL, {
-              method: "POST",
-              redirect: "follow",
-              body: formDataString,
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+               method: "POST",
+               redirect: "follow",
+               body: formDataString,
+               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
            })
            .then(response => {
-              if (!response.ok) {
-                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { throw new Error(`Server status ${response.status}: ${text}`); }); });
-              }
-              return response.json();
+               if (!response.ok) {
+                   return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { throw new Error(`Server status ${response.status}: ${text}`); }); });
+               }
+               return response.json();
            })
            .then(data => {
                console.log('Apps Script Response (Underage):', data);
@@ -860,6 +860,16 @@
     consentBtn.addEventListener("click", function() {
       consentStatusField.value = "Consented";
 
+      // --- NEW: Trigger PDF Download ---
+      const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; // Path to your consent PDF
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = 'CarBuyingStudy_ConsentForm.pdf'; // Desired filename for download
+      document.body.appendChild(link); // Append to body (required for Firefox)
+      link.click(); // Programmatically click the link
+      document.body.removeChild(link); // Clean up the temporary link
+      // --- END NEW: Trigger PDF Download ---
+
       consentModal.classList.remove("is-active");
 
       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
@@ -962,7 +972,7 @@
       })
       .then(response => {
             if (!response.ok) {
-                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 150); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
+                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
             }
             return response.json();
       })
