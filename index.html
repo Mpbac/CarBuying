@@ -31,17 +31,17 @@
       margin: 20px auto;
       max-width: 600px;
       padding: 20px;
-      background-color: #d4edda; 
-      color: #155724; 
+      background-color: #d4edda;
+      color: #155724;
       border: 1px solid #c3e6cb;
       border-radius: 4px;
       font-weight: bold;
       text-align: center;
     }
-     
+
     .message-box.is-danger {
-       background-color: #f8d7da; 
-       color: #721c24;  
+       background-color: #f8d7da;
+       color: #721c24;
        border-color: #f5c6cb;
     }
 
@@ -130,54 +130,54 @@
       margin: 2rem 0;
     }
 
-    
+
     .modal-content {
-      
-      width: 95%;  
-      max-width: 1600px;  
-      height: 95%; 
-      max-height: 1200px;  
+
+      width: 95%;
+      max-width: 1600px;
+      height: 95%;
+      max-height: 1200px;
       display: flex;
       flex-direction: column;
     }
 
     .modal-content .box {
-      flex-grow: 1; 
-      padding: 20px;  
+      flex-grow: 1;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       height: 100%;
-      overflow: hidden;  
+      overflow: hidden;
       position: relative;
     }
 
-     
+
     .iframe-container {
-      flex-grow: 1;  
-      overflow-y: auto;  
-      border: 1px solid #ddd; 
-      margin-bottom: 15px;  
-      background-color: white;  
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      background-color: white;
     }
 
     .modal-content iframe {
-       
-      display: block;  
+
+      display: block;
       width: 100%;
-      min-height: 100%;  
-      border: none;  
+      min-height: 100%;
+      border: none;
     }
 
     .sticky-footer {
-        position: sticky;  
-        bottom: 0;  
-        left: -20px;  
-        width: calc(100% + 40px);  
+        position: sticky;
+        bottom: 0;
+        left: -20px;
+        width: calc(100% + 40px);
         background-color: white;
-        padding: 15px 20px;  
+        padding: 15px 20px;
         border-top: 1px solid #eee;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        z-index: 10;  
+        z-index: 10;
 
         display: flex;
         flex-direction: column;
@@ -185,23 +185,23 @@
     }
 
     .sticky-footer .confirm-text {
-        margin-bottom: 10px !important; 
+        margin-bottom: 10px !important;
         text-align: center;
         font-size: 0.9em;
     }
 
     .sticky-footer .control {
-        width: 100%;  
+        width: 100%;
         text-align: center;
     }
 
-    
+
     .modal .modal-close {
         top: 10px;
         right: 10px;
     }
 
-    
+
     .help.is-danger {
         color: #f14668;
         font-size: 0.875em;
@@ -211,28 +211,28 @@
 
     @media (max-width: 768px) {
       .hero .title {
-         font-size: 1.8em;
-         margin-left: 1rem;
+           font-size: 1.8em;
+           margin-left: 1rem;
       }
        .hero-body .container {
-          flex-direction: column;
-          text-align: center;
+           flex-direction: column;
+           text-align: center;
       }
       .banner-logo {
-          margin-bottom: 10px;
+           margin-bottom: 10px;
       }
       .hero .title {
-          margin-left: 0;
+           margin-left: 0;
       }
       .modal-content {
-          width: 95%;
-          height: 95%;
+           width: 95%;
+           height: 95%;
       }
        .modal-content .box {
-         padding: 15px;  
+         padding: 15px;
        }
         .sticky-footer {
-            left: -15px;  
+            left: -15px;
             width: calc(100% + 30px);
             padding: 10px 15px;
         }
@@ -314,7 +314,7 @@
                     b. Will probably buy a used car within the next month
                 </label><br>
                 <label class="radio">
-                    <input type="radio" name="purchase">
+                    <input type="radio" name="purchase" value="C">
                     c. No plans to buy a car within the next month
                 </label>
                 </div>
@@ -406,6 +406,7 @@
              <div class="control">
               <div class="select is-fullwidth">
                <select name="occupation" required>
+                 <option value="">Select your occupation</option>
                  <option value="Information Technology & Software Development">Information Technology & Software Development</option>
                  <option value="Engineering & Technical">Engineering & Technical</option>
                  <option value="Science & Research">Science & Research</option>
@@ -423,8 +424,8 @@
                  <option value="Transportation & Logistics">Transportation & Logistics</option>
                  <option value="Public Service & Government">Public Service & Government</option>
                  <option value="Student">Student</option>
-                 <option value="Unemployed">Unemployed</option>
-                 <option value="Retired">Retired</option>
+                 <option value="Unemployed">Unemployed</option>
+                 <option value="Retired">Retired</option>
                  <option value="Other">Other</option>
                </select>
               </div>
@@ -465,9 +466,19 @@
   </div>
 
   <div id="thank-you" class="message-box hidden">Thank You for Your Response.</div>
-   <div id="duplicate-message" class="message-box is-danger hidden"></div>
+  <div id="duplicate-message" class="message-box is-danger hidden"></div>
 
+  <div id="consent-required-message" class="message-box is-danger hidden">
+    <p class="title is-5 has-text-danger">Consent Required</p>
+    <p>To participate in this study and proceed with the enrollment form, you must provide your consent.</p>
+    <button class="button is-primary mt-4" id="reopenConsentBtn">Review Consent Form</button>
+  </div>
 
+  <div id="content-required-message" class="message-box is-danger hidden">
+    <p class="title is-5 has-text-danger">Content Review Required</p>
+    <p>You must review the provided content to proceed with the study.</p>
+    <button class="button is-primary mt-4" id="reopenContentBtn">Review Content</button>
+  </div>
   <div id="consent-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-content">
@@ -504,7 +515,7 @@
        <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
   </div>
      <script>
-    
+    // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
 
     const timestampField = document.getElementById("timestampField");
@@ -514,30 +525,30 @@
     const formCard = document.getElementById("form-card");
     const introExplanationContent = document.getElementById("intro-explanation-content");
 
-     
+    // New elements for initial age check
     const ageCheckSection = document.getElementById("age-check-section");
     const nextBtn = document.getElementById("nextBtn"); // Button for age check
     const age18OrOverInitialError = document.getElementById('age18OrOverInitialError'); // Error for initial age check
 
-     
+    // Existing elements for purchase plans (now shown after age check)
     const questionSection = document.getElementById("question-section"); // Purchase plans section
     const purchasePlanSubmitBtn = document.getElementById("purchasePlanSubmitBtn"); // Submit button for purchase plans
 
-    
+    // Existing elements for survey section
     const surveySection = document.getElementById("survey-section");
 
-    
+    // Consent modal elements
     const consentModal = document.getElementById("consent-modal");
     const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
 
-     
+    // New content modal elements
     const contentModal = document.getElementById("content-modal");
     const webpageIframe = document.getElementById("webpageIframe");
     const certifyBtn = document.getElementById("certifyBtn");
     const closeContentModal = document.getElementById("closeContentModal");
 
-     
+    // Hidden form fields
     const consentStatusField = document.getElementById("consentStatusField");
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField");
     const contentCertifiedField = document.getElementById("contentCertifiedField");
@@ -547,14 +558,22 @@
     // Bot protection field
     const honeypotField = document.getElementById('honeypotField');
 
-    
+    // Validation error elements for the *main survey* fields
     const phoneNumberError = document.getElementById('phoneNumberError');
     const ageError = document.getElementById('ageError');
 
+    // NEW: Consent Required Message elements
+    const consentRequiredMessage = document.getElementById('consent-required-message');
+    const reopenConsentBtn = document.getElementById('reopenConsentBtn');
 
-     
+    // NEW: Content Required Message elements
+    const contentRequiredMessage = document.getElementById('content-required-message');
+    const reopenContentBtn = document.getElementById('reopenContentBtn');
+
+
+    // Array of target webpages to show randomly
     const targetWebpages = [
-      "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
+        "https://sites.dartmouth.edu/carbuyingstudy/avoid-hidden-fees-and-dealer-traps/",
       "https://sites.dartmouth.edu/carbuyingstudy/auto-loan-grade/",
       "https://sites.dartmouth.edu/carbuyingstudy/sample-page/"
     ];
@@ -564,7 +583,7 @@
 
 
     /*
-    // !!! DISABLED FOR TESTING !!!
+    // !!! TEMPORARILY DISABLED FOR TESTING !!!
     if (localStorage.getItem('carStudyCompleted')) {
       console.log('Local Storage flag found: Survey already completed in this browser.');
       formCard.classList.add('hidden');
@@ -580,7 +599,7 @@
         setTimestamp();
         console.log('No Local Storage flag found. Setting initial timestamp.');
     }
-    // !!! !!!
+    // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
     */
 
       // If Local Storage check is disabled, ensure timestamp is set on load
@@ -662,11 +681,12 @@
         return clientIp;
     }
 
-     
+    // --- Client-Side Validation Function for main survey fields ---
     function validateForm() {
         let isValid = true;
 
-        
+        // Hide all previous error messages
+        // Make sure this doesn't hide the initial age check error if it's still visible
         document.querySelectorAll('#survey-section .help.is-danger').forEach(el => el.classList.add('hidden'));
 
         // Validate Phone Number (10 digits, ignoring non-digits)
@@ -692,12 +712,14 @@
     }
 
 
-    
+    // --- NEW: Event Listener for Initial Age Check "Continue" Button ---
     nextBtn.addEventListener("click", function () {
       // Clear any previous messages
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
       age18OrOverInitialError.classList.add('hidden'); // Clear error for this section
+      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+      contentRequiredMessage.classList.add('hidden'); // Hide content required message if visible
 
       const age18OrOverRadios = document.querySelectorAll('input[name="age18OrOverInitial"]');
       let age18OrOverSelected = false;
@@ -770,20 +792,22 @@
                console.error('Error submitting underage data:', error);
                alert('There was an error submitting your response: ' + error.message);
            });
-           return; 
-      }
+           return;
+       }
 
-     
-      ageCheckSection.classList.add("hidden");
-      questionSection.classList.remove("hidden");
+       // If "Yes" is selected (eligible by age), proceed to purchase plans
+       ageCheckSection.classList.add("hidden");
+       questionSection.classList.remove("hidden");
     });
 
 
-  
+    // Event Listener for Purchase Plan Submit Button
     purchasePlanSubmitBtn.addEventListener("click", function () {
       // Clear any previous messages
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
+      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+      contentRequiredMessage.classList.add('hidden'); // Hide content required message if visible
 
       const selectedPurchasePlan = document.querySelector('input[name="purchase"]:checked');
       if (!selectedPurchasePlan) {
@@ -800,9 +824,9 @@
         consentModal.classList.add("is-active"); // Show Consent Modal
 
       } else {
-       
+        // If not eligible (selected "B" or "C")
         const tempFormData = new FormData();
-        //  include the age18OrOverInitial field value 
+        // include the age18OrOverInitial field value
         const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
         tempFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "N/A"); // Include initial age check response
         tempFormData.append("purchase", selectedPurchasePlan.value);
@@ -862,8 +886,9 @@
     // --- Event Listener for Consent Button (inside Consent Modal) ---
     consentBtn.addEventListener("click", function() {
       consentStatusField.value = "Consented";
+      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
 
-      // --- Trigger PDF Download ---
+      // --- NEW: Trigger PDF Download ---
       const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; // Path to your consent PDF
       const link = document.createElement('a');
       link.href = pdfUrl;
@@ -871,7 +896,7 @@
       document.body.appendChild(link); // Append to body (required for Firefox)
       link.click(); // Programmatically click the link
       document.body.removeChild(link); // Clean up the temporary link
-      // ---  ---
+      // --- END NEW: Trigger PDF Download ---
 
       consentModal.classList.remove("is-active");
 
@@ -890,11 +915,24 @@
 
     });
 
-    closeConsentModal.addEventListener("click", function() {
+    // Modified close handlers for consent modal
+    function handleConsentModalClose() {
         consentModal.classList.remove("is-active");
-    });
-    consentModal.querySelector('.modal-background').addEventListener('click', function() {
-         consentModal.classList.remove("is-active");
+        if (consentStatusField.value !== "Consented") {
+            // If consent was not given, show the consent required message
+            formCard.classList.add("hidden"); // Hide the main form
+            consentRequiredMessage.classList.remove('hidden'); // Show the consent required message
+        }
+    }
+
+    closeConsentModal.addEventListener("click", handleConsentModalClose);
+    consentModal.querySelector('.modal-background').addEventListener('click', handleConsentModalClose);
+
+    // NEW: Event listener for the "Review Consent Form" button
+    reopenConsentBtn.addEventListener('click', function() {
+        consentRequiredMessage.classList.add('hidden'); // Hide the consent required message
+        formCard.classList.remove("hidden"); // Ensure the main form container is visible
+        consentModal.classList.add('is-active'); // Re-open the consent modal
     });
 
 
@@ -911,20 +949,35 @@
         surveySection.classList.remove("hidden");
         introExplanationContent.classList.add("hidden");
         questionSection.classList.add("hidden"); // Ensure purchase plans section is hidden too
-
+        consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+        contentRequiredMessage.classList.add('hidden'); // Hide content required message if visible
+        formCard.classList.remove("hidden"); // Show the main form again
     });
 
-    closeContentModal.addEventListener("click", function() {
+    // Modified close handlers for content modal
+    function handleContentModalClose() {
         console.log('Content modal close button clicked.');
         recordContentModalTime();
         contentModal.classList.remove("is-active");
-        webpageIframe.src = "";
-    });
-    contentModal.querySelector('.modal-background').addEventListener('click', function() {
-        console.log('Content modal background clicked.');
-        recordContentModalTime();
-        contentModal.classList.remove("is-active");
-        webpageIframe.src = "";
+        webpageIframe.src = ""; // Clear iframe src
+
+        if (contentCertifiedField.value !== "Yes") {
+            // If content was not certified, show the content required message
+            formCard.classList.add("hidden"); // Hide the main form
+            contentRequiredMessage.classList.remove('hidden'); // Show the content required message
+        }
+    }
+
+    closeContentModal.addEventListener("click", handleContentModalClose);
+    contentModal.querySelector('.modal-background').addEventListener('click', handleContentModalClose);
+
+    // NEW: Event listener for the "Review Content" button
+    reopenContentBtn.addEventListener('click', function() {
+        contentRequiredMessage.classList.add('hidden'); // Hide the content required message
+        formCard.classList.remove("hidden"); // Ensure the main form container is visible
+        contentModal.classList.add('is-active'); // Re-open the content modal
+        webpageIframe.src = selectedWebpageUrl; // Reload the content
+        contentModalStartTime = new Date().getTime(); // Restart timer
     });
 
 
@@ -934,6 +987,8 @@
 
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
+      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+      contentRequiredMessage.classList.add('hidden'); // Hide content required message if visible
 
        if (!validateForm()) {
            console.log('Client-side validation failed. Not submitting.');
@@ -944,6 +999,20 @@
            }
            return;
        }
+
+       // Ensure content was certified before final submission
+       if (contentCertifiedField.value !== "Yes") {
+            // Show content required message instead of just an alert
+            formCard.classList.add("hidden");
+            contentRequiredMessage.classList.remove('hidden');
+            const submitButton = e.submitter;
+            if(submitButton) {
+                submitButton.classList.remove('is-loading');
+                submitButton.disabled = false;
+            }
+            return;
+       }
+
 
        const submitButton = e.submitter;
        if(submitButton) {
@@ -1015,7 +1084,7 @@
       .catch(error => {
            console.error('Fetch or Script Error:', error);
            alert('There was an error submitting your survey: ' + error.message);
-            formCard.classList.remove("hidden");
+            formCard.classList.add("hidden");
             thankYouMessage.classList.add("hidden");
             duplicateMessage.classList.add('hidden');
       })
