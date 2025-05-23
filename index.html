@@ -944,7 +944,7 @@
       const link = document.createElement('a');
       link.href = pdfUrl;
       link.download = 'CarBuyingStudy_ConsentForm.pdf'; // Desired filename for download
-      document.body.appendChild(link); // Append to body (required for Firefox)
+      document.body.appendChild(link); (required for Firefox)
       link.click(); // Programmatically click the link
       document.body.removeChild(link); // Clean up the temporary link
       // --- END Trigger PDF Download ---
@@ -991,6 +991,11 @@
         // Now that content is reviewed, submit the full form data
         // Use the currentFormData which was prepared when demographicsSubmitBtn was clicked
         if (currentFormData) {
+            // Update currentFormData with the latest values of fields that changed during content review
+            currentFormData.set("contentCertified", contentCertifiedField.value);
+            currentFormData.set("timeOnContentPageMs", timeOnContentPageMsField.value);
+            currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); // Already set, but good to ensure latest
+
             await fetchClientIp(); // Ensure IP is fetched right before final submission
 
             const formDataString = formatFormData(currentFormData); // Format the stored FormData
@@ -1168,9 +1173,6 @@
     contentModal.classList.add("hidden"); // Ensure modals are hidden
 
   </script>
-
-</body>
-</html>
 
 </body>
 </html>
