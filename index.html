@@ -290,7 +290,7 @@
                 <input type="radio" name="age18OrOverInitial" value="Yes" required> Yes
               </label>
               <label class="radio">
-                <input type="radio" name="age18OrOverInitial" value="No"> No
+                <input type="radio" name="age18OrOverInitial" value="No" required> No
               </label>
              </div>
            </div>
@@ -480,10 +480,6 @@
                </label>
               </div>
             </div>
-
-            <div class="content is-small" style="margin-top: -0.5rem; margin-bottom: 1.5rem;">
-               <p><em>Note: If you choose Text (SMS), standard messaging and data rates may apply.</em></p>
-             </div>
 
 
           <div class="field">
@@ -869,19 +865,25 @@
       age18OrOverInitialError.classList.add('hidden'); // Clear error
 
       const age18OrOverSelected = document.querySelector('input[name="age18OrOverInitial"]:checked');
+      console.log('Age question "Next" button clicked.');
 
       if (!age18OrOverSelected) {
+           console.log('No age option selected.');
            age18OrOverInitialError.textContent = 'Please confirm if you are 18 or older.';
            age18OrOverInitialError.classList.remove('hidden');
            return;
       }
 
+      console.log('Selected age option:', age18OrOverSelected.value);
+
       if (age18OrOverSelected.value === 'No') {
+          console.log('User selected "No" for age. Disqualifying.');
           submitDisqualification("Under 18");
           return;
       }
 
       // If eligible for age, move to next question
+      console.log('User selected "Yes" for age. Proceeding to purchase plan section.');
       ageCheckSection.classList.add("hidden");
       purchasePlanSection.classList.remove("hidden");
     });
@@ -944,7 +946,7 @@
       const link = document.createElement('a');
       link.href = pdfUrl;
       link.download = 'CarBuyingStudy_ConsentForm.pdf'; // Desired filename for download
-      document.body.appendChild(link); (required for Firefox)
+      document.body.appendChild(link); // required for Firefox
       link.click(); // Programmatically click the link
       document.body.removeChild(link); // Clean up the temporary link
       // --- END Trigger PDF Download ---
