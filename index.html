@@ -492,7 +492,7 @@
           </div>
 
           <div class="field">
-            <button class="button is-success" type="submit">Submit Enrollment</button>
+            <button class="button is-success" type="submit" id="demographicsSubmitBtn">Submit Enrollment</button>
           </div>
         </div>
       </form>
@@ -502,7 +502,7 @@
   <div id="thank-you" class="message-box hidden">
     <p class="title is-5 has-text-success">Thank you for completing the initial enrollment.</p>
     <p>Please look out for an email with further instructions.</p>
-    </div>
+  </div>
 
 
   <div id="duplicate-message" class="message-box is-danger hidden"></div>
@@ -577,6 +577,7 @@
     const ageNextBtn = document.getElementById("ageNextBtn");
     const purchaseNextBtn = document.getElementById("purchaseNextBtn");
     const paymentNextBtn = document.getElementById("paymentNextBtn");
+    const demographicsSubmitBtn = document.getElementById("demographicsSubmitBtn"); // New reference to demographics submit button
 
     const age18OrOverInitialError = document.getElementById('age18OrOverInitialError');
     const purchaseInitialError = document.getElementById('purchaseInitialError');
@@ -627,6 +628,7 @@
 
     let selectedWebpageUrl = null; // Store the chosen URL for the content modal
     let contentModalStartTime = null; // Used for time tracking in content modal
+    let currentFormData = null; // To store form data temporarily before final submission
 
 
     /*
@@ -639,8 +641,7 @@
       thankYouMessage.classList.add('hidden');
 
         ageNextBtn.disabled = true; // Disable initial next button
-        const surveySubmitBtn = form.querySelector('button[type="submit"]');
-        if(surveySubmitBtn) surveySubmitBtn.disabled = true;
+        demographicsSubmitBtn.disabled = true; // Disable demographics submit button
     } else {
         setTimestamp();
         console.log('No Local Storage flag found. Setting initial timestamp.');
@@ -838,6 +839,7 @@
         tempFormData.append("contactPreference", "N/A");
         tempFormData.append("newVehiclesPurchased", "N/A");
 
+
         const formDataString = formatFormData(tempFormData);
 
         try {
@@ -976,27 +978,85 @@
     });
 
 
-    // Event Listener for Certify Button (inside Content Modal)
-    certifyBtn.addEventListener("click", function() {
+    // --- Event Listener for Certify Button (inside Content Modal) ---
+    certifyBtn.addEventListener("click", async function() {
         contentCertifiedField.value = "Yes";
         console.log('Content certified button clicked.');
 
-        recordContentModalTime();
+        recordContentModalTime(); // Record the time spent on content
 
         contentModal.classList.remove("is-active");
         webpageIframe.src = ""; // Clear iframe src
 
-        // After certifying content, show the final thank you message
-        thankYouMessage.classList.remove("hidden");
-        formCard.classList.add("hidden"); // Hide the main form
-        localStorage.setItem('carStudyCompleted', 'true'); // Set completion flag AFTER all steps
-        console.log('Local Storage flag set.');
+        // Now that content is reviewed, submit the full form data
+        // Use the currentFormData which was prepared when demographicsSubmitBtn was clicked
+        if (currentFormData) {
+            await fetchClientIp(); // Ensure IP is fetched right before final submission
+
+            const formDataString = formatFormData(currentFormData); // Format the stored FormData
+
+            demographicsSubmitBtn.classList.add('is-loading'); // Show loading state for original submit button
+            demographicsSubmitBtn.disabled = true;
+
+            fetch(scriptURL, {
+                method: "POST",
+                redirect: "follow",
+                body: formDataString,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            })
+            .then(response => {
+                if (!response.ok) {
+                     return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Apps Script Response (Final Form Submission):', data);
+
+                if (data && data.status === "success") {
+                    console.log('Full form submitted successfully.');
+                    thankYouMessage.classList.remove("hidden");
+                    formCard.classList.add("hidden");
+                    localStorage.setItem('carStudyCompleted', 'true'); // Set completion flag AFTER all steps
+                    console.log('Local Storage flag set.');
+                } else if (data && data.status === "error") {
+                    let errorMessage = 'Final submission failed.';
+                    if (data.message) {
+                        errorMessage = data.message;
+                    }
+                    console.error('Final Submission Error (Script Returned Error Status):', errorMessage);
+                    duplicateMessage.classList.remove('hidden');
+                    duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
+                    formCard.classList.remove("hidden");
+                    thankYouMessage.classList.add("hidden");
+                } else {
+                    console.error('Final Submission Error (Unexpected Script Response):', data);
+                    alert('There was an unexpected response from the server during final submission.');
+                    formCard.classList.remove("hidden");
+                    thankYouMessage.classList.add("hidden");
+                }
+            })
+            .catch(error => {
+                console.error('Final Fetch or Script Error:', error);
+                alert('There was an error during final submission: ' + error.message);
+                formCard.classList.add("hidden");
+                thankYouMessage.classList.add("hidden");
+                duplicateMessage.classList.add('hidden');
+            })
+            .finally(() => {
+                demographicsSubmitBtn.classList.remove('is-loading');
+                demographicsSubmitBtn.disabled = false;
+            });
+        } else {
+            console.error("currentFormData was null. Cannot submit form.");
+            alert("An internal error occurred. Please refresh and try again.");
+        }
     });
 
     // Modified close handlers for content modal
     function handleContentModalClose() {
         console.log('Content modal close button clicked.');
-        recordContentModalTime();
+        recordContentModalTime(); // Still record time, even if not certified
         contentModal.classList.remove("is-active");
         webpageIframe.src = ""; // Clear iframe src
 
@@ -1020,7 +1080,7 @@
     });
 
 
-    // --- Event Listener for Main Survey Form Submission (ASYNC) ---
+    // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -1031,7 +1091,7 @@
 
 
        if (!validateForm()) {
-           console.log('Client-side validation failed. Not submitting.');
+           console.log('Client-side validation failed. Not proceeding to content modal.');
            const submitButton = e.submitter;
             if(submitButton) {
                 submitButton.classList.remove('is-loading');
@@ -1040,7 +1100,7 @@
            return;
        }
 
-       // Ensure consent was given before final submission
+       // Ensure consent was given before proceeding
        if (consentStatusField.value !== "Consented") {
             formCard.classList.add("hidden");
             consentRequiredMessage.classList.remove('hidden');
@@ -1052,108 +1112,49 @@
             return;
        }
 
-       const submitButton = e.submitter;
-       if(submitButton) {
-           submitButton.classList.add('is-loading');
-           submitButton.disabled = true;
+       // Temporarily store the form data. Final submission will happen after content review.
+       currentFormData = new FormData(e.target);
+
+       // Append the initial eligibility responses to the temporary form data
+       const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
+       if (age18OrOverInitial) {
+         currentFormData.append("age18OrOverInitial", age18OrOverInitial.value);
+       } else {
+         currentFormData.append("age18OrOverInitial", "Not Provided");
+       }
+       const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
+       if (purchaseInitial) {
+         currentFormData.append("purchaseInitial", purchaseInitial.value);
+       } else {
+         currentFormData.append("purchaseInitial", "Not Provided");
+       }
+       const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
+       if (paymentPlanInitial) {
+         currentFormData.append("paymentPlanInitial", paymentPlanInitial.value);
+       } else {
+         currentFormData.append("paymentPlanInitial", "Not Provided");
        }
 
-      setTimestamp();
+       setTimestamp(); // Update timestamp for the full form data
+       currentFormData.set("timestamp", timestampField.value); // Use set to update existing
 
-      await fetchClientIp();
+       // Select a random URL for the content modal
+       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
+       selectedWebpageUrl = targetWebpages[randomIndex];
+       viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
+       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); // Also add to stored FormData
 
-      const formData = new FormData(e.target);
-      // Append the initial age and purchase/payment check responses to the main form data
-      // These should already be set from the sequential eligibility flow
-      const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
-      if (age18OrOverInitial) {
-        formData.append("age18OrOverInitial", age18OrOverInitial.value);
-      } else {
-        formData.append("age18OrOverInitial", "Not Provided"); // Fallback if not selected for some reason
-      }
-      const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
-      if (purchaseInitial) {
-        formData.append("purchaseInitial", purchaseInitial.value);
-      } else {
-        formData.append("purchaseInitial", "Not Provided");
-      }
-      const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
-      if (paymentPlanInitial) {
-        formData.append("paymentPlanInitial", paymentPlanInitial.value);
-      } else {
-        formData.append("paymentPlanInitial", "Not Provided");
-      }
+       webpageIframe.src = selectedWebpageUrl;
+       contentModal.classList.remove("hidden"); // Ensure content modal is not hidden by CSS
+       contentModal.classList.add("is-active"); // Show the content modal
 
+       contentModalStartTime = new Date().getTime(); // Start timer for content review
+       console.log('Demographics valid. Now opening content modal. Timer started.');
 
-      const formDataString = formatFormData(formData);
-
-      fetch(scriptURL, {
-        method: "POST",
-        redirect: "follow",
-        body: formDataString,
-         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      })
-      .then(response => {
-            if (!response.ok) {
-                 return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
-            }
-            return response.json();
-      })
-      .then(data => {
-           console.log('Apps Script Response (Demographics Submission):', data);
-
-           if (data && data.status === "success") {
-               console.log('Demographics submitted. Now opening content modal.');
-
-               formCard.classList.add("hidden"); // Hide the demographics form
-
-               // Select a random URL for the content modal
-               const randomIndex = Math.floor(Math.random() * targetWebpages.length);
-               selectedWebpageUrl = targetWebpages[randomIndex];
-               viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
-
-               webpageIframe.src = selectedWebpageUrl;
-               contentModal.classList.remove("hidden"); // Ensure content modal is not hidden by CSS
-               contentModal.classList.add("is-active"); // Show the content modal
-
-               contentModalStartTime = new Date().getTime(); // Start timer for content review
-               console.log('Content modal opened, timer started.');
-
-           } else if (data && data.status === "error") {
-              let errorMessage = 'Submission failed.';
-               if (data.message) {
-                   errorMessage = data.message;
-               }
-               console.error('Submission Error (Script Returned Error Status):', errorMessage);
-
-               duplicateMessage.classList.remove('hidden');
-               duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
-
-                formCard.classList.remove("hidden"); // Keep form visible on error
-                thankYouMessage.classList.add("hidden"); // Keep thank you hidden on error
-
-           } else {
-               console.error('Submission Error (Unexpected Script Response):', data);
-               alert('There was an unexpected response from the server.');
-                formCard.classList.remove("hidden"); // Keep form visible on error
-                thankYouMessage.classList.add("hidden"); // Keep thank you hidden on error
-            }
-      })
-      .catch(error => {
-           console.error('Fetch or Script Error:', error);
-           alert('There was an error submitting your survey: ' + error.message);
-            formCard.classList.add("hidden"); // Hide form on error
-            thankYouMessage.classList.add("hidden"); // Hide thank you on error
-            duplicateMessage.classList.add('hidden'); // Show generic error message
-      })
-      .finally(() => {
-          const submitButton = e.submitter;
-           if(submitButton) {
-                submitButton.classList.remove('is-loading');
-               submitButton.disabled = false;
-           }
-      });
+       // Hide the demographics section while content modal is open
+       surveySection.classList.add("hidden");
     });
+
 
     // --- Initial Page Load Setup ---
     // Ensure only the first eligibility question is visible initially
@@ -1167,6 +1168,9 @@
     contentModal.classList.add("hidden"); // Ensure modals are hidden
 
   </script>
+
+</body>
+</html>
 
 </body>
 </html>
