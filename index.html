@@ -863,7 +863,11 @@
             duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, you do not meet the eligibility criteria for this study at this time.</p>';
         } catch (error) {
             console.error('Error submitting ineligible data:', error);
-            alert('There was an error submitting your response: ' + error.message);
+            // MODIFIED: Display the custom message instead of the generic alert for disqualification errors
+            formCard.classList.add("hidden"); // Hide the form
+            duplicateMessage.classList.remove("hidden"); // Show the message box
+            duplicateMessage.innerHTML = '<p>Thank you, but you do not match the criteria for the survey.</p>'; // Your custom message
+            thankYouMessage.classList.add("hidden"); // Ensure thank you message is hidden
         }
     }
 
@@ -1048,17 +1052,20 @@
                     thankYouMessage.classList.add("hidden");
                 } else {
                     console.error('Final Submission Error (Unexpected Script Response):', data);
-                    alert('There was an unexpected response from the server during final submission.');
+                    // MODIFIED: Display a custom error message for unexpected script response
+                    duplicateMessage.classList.remove('hidden');
+                    duplicateMessage.innerHTML = '<p>An unexpected error occurred during submission. Please try again later.</p>';
                     formCard.classList.remove("hidden");
                     thankYouMessage.classList.add("hidden");
                 }
             })
             .catch(error => {
                 console.error('Final Fetch or Script Error:', error);
-                alert('There was an error during final submission: ' + error.message);
-                formCard.classList.add("hidden");
+                // MODIFIED: Display a custom error message for network/fetch errors
+                duplicateMessage.classList.remove('hidden');
+                duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p>';
+                formCard.classList.remove("hidden");
                 thankYouMessage.classList.add("hidden");
-                duplicateMessage.classList.add('hidden');
             })
             .finally(() => {
                 demographicsSubmitBtn.classList.remove('is-loading');
@@ -1066,7 +1073,11 @@
             });
         } else {
             console.error("currentFormData was null. Cannot submit form.");
-            alert("An internal error occurred. Please refresh and try again.");
+            // MODIFIED: Display a custom error message for null currentFormData
+            duplicateMessage.classList.remove('hidden');
+            duplicateMessage.innerHTML = '<p>An internal error occurred. Please refresh the page and try again.</p>';
+            formCard.classList.remove("hidden");
+            thankYouMessage.classList.add("hidden");
         }
     });
 
@@ -1188,3 +1199,4 @@
 
 </body>
 </html>
+
