@@ -855,7 +855,11 @@
             duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, you do not meet the eligibility criteria for this study at this time.</p>';
         } catch (error) {
             console.error('Error submitting ineligible data:', error);
-            alert('There was an error submitting your response: ' + error.message);
+            // MODIFIED: Display the custom message instead of the generic alert
+            formCard.classList.add("hidden"); // Hide the form
+            duplicateMessage.classList.remove("hidden"); // Show the message box
+            duplicateMessage.innerHTML = '<p>Thank you, but you do not match the criteria for the survey.</p>'; // Your custom message
+            thankYouMessage.classList.add("hidden"); // Ensure thank you message is hidden
         }
     }
 
