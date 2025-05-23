@@ -651,10 +651,6 @@
           console.log('Local Storage check disabled. Setting initial timestamp.');
       }
 
-    // Call fetchClientIp on page load to start the process early.
-    // This gives the asynchronous IP fetch time to complete while the user fills out the form.
-    document.addEventListener('DOMContentLoaded', fetchClientIp);
-
 
     function setTimestamp() {
       const now = new Date();
@@ -690,28 +686,27 @@
 
     async function fetchClientIp() {
         const ipServices = [
-           'https://api64.ipify.org?format=json', // Primary service
-           'https://jsonip.com/'                  // Secondary service
+           'https://api64.ipify.org?format=json',
+           'https://jsonip.com/'
         ];
 
-        let clientIp = 'N/A_ClientFetch_Failed'; // Default value if all attempts fail
+        let clientIp = 'N/A_ClientFetch_Failed';
 
         for (const serviceUrl of ipServices) {
             try {
                 console.log('Attempting to fetch IP from:', serviceUrl);
                 const controller = new AbortController();
-                // Set a timeout for each IP fetch attempt
-                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3-second timeout
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
 
                 const response = await fetch(serviceUrl, { signal: controller.signal });
-                clearTimeout(timeoutId); // Clear timeout if fetch completes before it
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.ip) {
                         clientIp = data.ip;
                         console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
-                        break; // Successfully fetched, exit loop
+                        break;
                     } else {
                          console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
                     }
@@ -726,9 +721,8 @@
                 }
             }
         }
-        // Always update the hidden field with the result (either IP or failure message)
         clientFetchedIpField.value = clientIp;
-        return clientIp; // Return the fetched IP or failure string
+        return clientIp;
     }
 
     // --- Client-Side Validation Function for main survey fields ---
@@ -827,9 +821,7 @@
         tempFormData.append("viewedWebpageUrl", "N/A - Ineligible");
         tempFormData.append("contentCertified", "Not Applicable - Ineligible");
         tempFormData.append("timeOnContentPageMs", "0");
-        // Ensure IP is fetched and included even for disqualified submissions
-        await fetchClientIp(); // Wait for IP fetch to complete
-        tempFormData.append("clientFetchedIp", clientFetchedIpField.value); // Add the fetched IP (or failure message)
+        tempFormData.append("clientFetchedIp", "N/A_Ineligible");
         tempFormData.append("fullName", "N/A"); // Fill with N/A for disqualified
         tempFormData.append("email", "N/A");
         tempFormData.append("phoneNumber", "N/A");
@@ -998,17 +990,15 @@
         contentModal.classList.remove("is-active");
         webpageIframe.src = ""; // Clear iframe src
 
-        // currentFormData was prepared when demographicsSubmitBtn was clicked
+        // Now that content is reviewed, submit the full form data
+        // Use the currentFormData which was prepared when demographicsSubmitBtn was clicked
         if (currentFormData) {
             // Update currentFormData with the latest values of fields that changed during content review
             currentFormData.set("contentCertified", contentCertifiedField.value);
             currentFormData.set("timeOnContentPageMs", timeOnContentPageMsField.value);
             currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); // Already set, but good to ensure latest
 
-            // !!! IMPORTANT: Ensure IP is fetched and the hidden field is updated
-            // before the final form data is serialized and sent.
-            await fetchClientIp(); // Wait for the asynchronous IP fetch to complete
-            currentFormData.set("clientFetchedIp", clientFetchedIpField.value); // Update currentFormData with the value from the hidden field
+            await fetchClientIp(); // Ensure IP is fetched right before final submission
 
             const formDataString = formatFormData(currentFormData); // Format the stored FormData
 
