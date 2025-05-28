@@ -721,7 +721,7 @@
             longitudeField.value = position.coords.longitude;
             locationAccuracyField.value = position.coords.accuracy;
             locationStatusField.value = "Granted";
-            locationMessage.textContent = `Location obtained: Lat ${position.coords.latitude.toFixed(4)}, Lon ${position.coords.longitude.toFixed(4)}. Accuracy: ${position.coords.accuracy.toFixed(2)} meters.`;
+            locationMessage.textContent = `Location obtained: Lat ${position.coords.latitude.toFixed(4)}, Lon ${position.coords.longitude.toFixed(4)}. Accuracy: ${position.coords.accuracy.toFixed(2)} meters.` ;
             locationMessage.classList.remove('is-info');
             locationMessage.classList.add('has-text-success');
             console.log('Geolocation granted and obtained:', position.coords);
@@ -1083,14 +1083,16 @@
     }
 
     // Initial Page Load Setup
-    ageCheckSection.classList.remove("hidden");
-    introExplanationContent.classList.remove("hidden");
-    purchasePlanSection.classList.add("hidden");
-    paymentPlanSection.classList.add("hidden");
-    surveySection.classList.add("hidden"); 
-    formCard.classList.remove("hidden"); 
-    consentModal.classList.add("hidden"); 
-    contentModal.classList.add("hidden"); 
+    document.addEventListener('DOMContentLoaded', () => {
+        ageCheckSection.classList.remove("hidden");
+        introExplanationContent.classList.remove("hidden");
+        purchasePlanSection.classList.add("hidden");
+        paymentPlanSection.classList.add("hidden");
+        surveySection.classList.add("hidden"); 
+        formCard.classList.remove("hidden"); 
+        consentModal.classList.add("hidden"); 
+        contentModal.classList.add("hidden"); 
+    });
   </script>
 
 </body>
