@@ -422,33 +422,33 @@
               <div class="select is-fullwidth">
                <select name="occupation" required>
                  <option value="">Select your occupation</option>
-  <option value="11-0000">Management Occupations</option>
-  <option value="13-0000">Business and Financial Operations Occupations</option>
-  <option value="15-0000">Computer and Mathematical Occupations</option>
-  <option value="17-0000">Architecture and Engineering Occupations</option>
-  <option value="19-0000">Life, Physical, and Social Science Occupations</option>
-  <option value="21-0000">Community and Social Service Occupations</option>
-  <option value="23-0000">Legal Occupations</option>
-  <option value="25-0000">Educational Instruction and Library Occupations</option>
-  <option value="27-0000">Arts, Design, Entertainment, Sports, and Media Occupations</option>
-  <option value="29-0000">Healthcare Practitioners and Technical Occupations</option>
-  <option value="31-0000">Healthcare Support Occupations</option>
-  <option value="33-0000">Protective Service Occupations</option>
-  <option value="35-0000">Food Preparation and Serving Related Occupations</option>
-  <option value="37-0000">Building and Grounds Cleaning and Maintenance Occupations</option>
-  <option value="39-0000">Personal Care and Service Occupations</option>
-  <option value="41-0000">Sales and Related Occupations</option>
-  <option value="43-0000">Office and Administrative Support Occupations</option>
-  <option value="45-0000">Farming, Fishing, and Forestry Occupations</option>
-  <option value="47-0000">Construction and Extraction Occupations</option>
-  <option value="49-0000">Installation, Maintenance, and Repair Occupations</option>
-  <option value="51-0000">Production Occupations</option>
-  <option value="53-0000">Transportation and Material Moving Occupations</option>
-  <option value="55-0000">Military Specific Occupations</option>
-  <option value="Student">Student</option>
-  <option value="Unemployed">Unemployed</option>
-  <option value="Retired">Retired</option>
-  <option value="Other">Other</option>
+                  <option value="11-0000">Management Occupations</option>
+                  <option value="13-0000">Business and Financial Operations Occupations</option>
+                  <option value="15-0000">Computer and Mathematical Occupations</option>
+                  <option value="17-0000">Architecture and Engineering Occupations</option>
+                  <option value="19-0000">Life, Physical, and Social Science Occupations</option>
+                  <option value="21-0000">Community and Social Service Occupations</option>
+                  <option value="23-0000">Legal Occupations</option>
+                  <option value="25-0000">Educational Instruction and Library Occupations</option>
+                  <option value="27-0000">Arts, Design, Entertainment, Sports, and Media Occupations</option>
+                  <option value="29-0000">Healthcare Practitioners and Technical Occupations</option>
+                  <option value="31-0000">Healthcare Support Occupations</option>
+                  <option value="33-0000">Protective Service Occupations</option>
+                  <option value="35-0000">Food Preparation and Serving Related Occupations</option>
+                  <option value="37-0000">Building and Grounds Cleaning and Maintenance Occupations</option>
+                  <option value="39-0000">Personal Care and Service Occupations</option>
+                  <option value="41-0000">Sales and Related Occupations</option>
+                  <option value="43-0000">Office and Administrative Support Occupations</option>
+                  <option value="45-0000">Farming, Fishing, and Forestry Occupations</option>
+                  <option value="47-0000">Construction and Extraction Occupations</option>
+                  <option value="49-0000">Installation, Maintenance, and Repair Occupations</option>
+                  <option value="51-0000">Production Occupations</option>
+                  <option value="53-0000">Transportation and Material Moving Occupations</option>
+                  <option value="55-0000">Military Specific Occupations</option>
+                  <option value="Student">Student</option>
+                  <option value="Unemployed">Unemployed</option>
+                  <option value="Retired">Retired</option>
+                  <option value="Other">Other</option>
                </select>
               </div>
              </div>
@@ -490,13 +490,13 @@
               </div>
             </div>
 
-        <input type="hidden" name="latitude" id="latitudeField" value="N/A">
-        <input type="hidden" name="longitude" id="longitudeField" value="N/A">
-        <input type="hidden" name="locationAccuracy" id="locationAccuracyField" value="N/A">
-        <input type="hidden" name="locationStatus" id="locationStatusField" value="Pending">
+          <input type="hidden" name="latitude" id="latitudeField" value="N/A">
+          <input type="hidden" name="longitude" id="longitudeField" value="N/A">
+          <input type="hidden" name="locationAccuracy" id="locationAccuracyField" value="N/A">
+          <input type="hidden" name="locationStatus" id="locationStatusField" value="Pending">
 
-        <div class="field">
-            <p class="help is-info" id="locationMessage">Attempting to get your location for research purposes...</p>
+          <div class="field">
+              <p class="help is-info" id="locationMessage">Attempting to get your location for research purposes...</p>
           </div>
           <div class="field">
             <label class="label">How many new vehicles have you purchased in your lifetime?</label>
@@ -709,96 +709,105 @@
         }
     }
 
-function getLocation() {
-    if (navigator.geolocation) {
-        locationMessage.textContent = 'Please allow location access to continue.';
-        locationMessage.classList.add('is-info'); // Add info styling
-        locationMessage.classList.remove('is-danger'); // Remove any previous error styling
+    function getLocation() {
+        if (navigator.geolocation) {
+            locationMessage.textContent = 'Please allow location access to continue. This is for research purposes and helps us understand regional differences.';
+            locationMessage.classList.remove('is-danger', 'has-text-success');
+            locationMessage.classList.add('is-info'); 
 
-        // Set a timeout for the geolocation request
-        const geoTimeout = setTimeout(() => {
-            locationMessage.textContent = 'Location request timed out. You can proceed without location.';
-            locationMessage.classList.remove('is-info');
-            locationMessage.classList.add('is-danger');
-            locationStatusField.value = 'Timeout';
-        }, 10000); // 10 seconds timeout
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                clearTimeout(geoTimeout); // Clear the timeout if successful
-                latitudeField.value = position.coords.latitude;
-                longitudeField.value = position.coords.longitude;
-                locationAccuracyField.value = position.coords.accuracy;
-                locationStatusField.value = 'Granted';
-                locationMessage.textContent = 'Location acquired. Thank you!';
-                locationMessage.classList.remove('is-info', 'is-danger');
-                locationMessage.classList.add('has-text-success'); // Indicate success visually
-                console.log('Geolocation granted:', position.coords);
-            },
-            (error) => {
-                clearTimeout(geoTimeout); // Clear the timeout if an error occurs
-                let status = 'Denied';
-                let errorMessage = 'Location access denied by user. You can proceed without location.';
-                if (error.code === error.PERMISSION_DENIED) {
-                    status = 'Denied';
-                    errorMessage = 'Location access denied by user. You can proceed without location.';
-                } else if (error.code === error.POSITION_UNAVAILABLE) {
-                    status = 'Unavailable';
-                    errorMessage = 'Location information is unavailable. You can proceed without location.';
-                } else if (error.code === error.TIMEOUT) {
-                    status = 'Timeout';
-                    errorMessage = 'Location request timed out. You can proceed without location.';
-                }
+            const geoTimeout = setTimeout(() => {
+                locationMessage.textContent = 'Location request timed out. You can proceed without location.';
+                locationMessage.classList.remove('is-info', 'has-text-success');
+                locationMessage.classList.add('is-danger');
+                locationStatusField.value = 'Timeout';
+                // Ensure N/A is set for coordinates on timeout
                 latitudeField.value = 'N/A';
                 longitudeField.value = 'N/A';
                 locationAccuracyField.value = 'N/A';
-                locationStatusField.value = status;
-                locationMessage.textContent = errorMessage;
-                locationMessage.classList.remove('is-info', 'has-text-success');
-                locationMessage.classList.add('is-danger');
-                console.error('Geolocation error:', error);
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000, // 10 seconds to get the location
-                maximumAge: 0 // Do not use a cached position
-            }
-        );
-    } else {
-        latitudeField.value = 'N/A';
-        longitudeField.value = 'N/A';
-        locationAccuracyField.value = 'N/A';
-        locationStatusField.value = 'Unsupported';
-        locationMessage.textContent = 'Geolocation is not supported by your browser. You can proceed without location.';
-        locationMessage.classList.remove('is-info');
-        locationMessage.classList.add('is-danger');
-        console.warn('Geolocation is not supported by this browser.');
+            }, 15000); // 15 seconds timeout (increased slightly)
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    clearTimeout(geoTimeout); 
+                    latitudeField.value = position.coords.latitude;
+                    longitudeField.value = position.coords.longitude;
+                    locationAccuracyField.value = position.coords.accuracy;
+                    locationStatusField.value = 'Granted';
+                    locationMessage.textContent = 'Location acquired. Thank you!';
+                    locationMessage.classList.remove('is-info', 'is-danger');
+                    locationMessage.classList.add('has-text-success'); 
+                    console.log('Geolocation granted:', position.coords);
+                },
+                (error) => {
+                    clearTimeout(geoTimeout); 
+                    let status = 'Denied_Unknown'; // Default error status
+                    let errorMessage = 'Could not retrieve location. You can proceed without location.';
+                    
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            status = 'Denied_User';
+                            errorMessage = 'Location access denied by user. You can proceed without location.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            status = 'Unavailable';
+                            errorMessage = 'Location information is unavailable. You can proceed without location.';
+                            break;
+                        case error.TIMEOUT:
+                            status = 'Timeout_API'; // Differentiate from our manual timeout
+                            errorMessage = 'Location request timed out (API). You can proceed without location.';
+                            break;
+                    }
+                    
+                    latitudeField.value = 'N/A';
+                    longitudeField.value = 'N/A';
+                    locationAccuracyField.value = 'N/A';
+                    locationStatusField.value = status;
+                    locationMessage.textContent = errorMessage;
+                    locationMessage.classList.remove('is-info', 'has-text-success');
+                    locationMessage.classList.add('is-danger');
+                    console.error('Geolocation error:', error.message, '(Code:', error.code, ')');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000, 
+                    maximumAge: 0 
+                }
+            );
+        } else {
+            latitudeField.value = 'N/A';
+            longitudeField.value = 'N/A';
+            locationAccuracyField.value = 'N/A';
+            locationStatusField.value = 'Unsupported';
+            locationMessage.textContent = 'Geolocation is not supported by your browser. You can proceed without location.';
+            locationMessage.classList.remove('is-info', 'has-text-success');
+            locationMessage.classList.add('is-danger');
+            console.warn('Geolocation is not supported by this browser.');
+        }
     }
-}
+
     async function fetchClientIp() {
         const ipServices = [
-           'https://api64.ipify.org?format=json', // Primary service
-           'https://jsonip.com/'                  // Secondary service
+           'https://api64.ipify.org?format=json', 
+           'https://jsonip.com/'                  
         ];
 
-        let clientIp = 'N/A_ClientFetch_Failed'; // Default value if all attempts fail
+        let clientIp = 'N/A_ClientFetch_Failed'; 
 
         for (const serviceUrl of ipServices) {
             try {
                 console.log('Attempting to fetch IP from:', serviceUrl);
                 const controller = new AbortController();
-                // Set a timeout for each IP fetch attempt
-                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3-second timeout
+                const timeoutId = setTimeout(() => controller.abort(), 3000); 
 
                 const response = await fetch(serviceUrl, { signal: controller.signal });
-                clearTimeout(timeoutId); // Clear timeout if fetch completes before it
+                clearTimeout(timeoutId); 
 
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.ip) {
                         clientIp = data.ip;
                         console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
-                        break; // Successfully fetched, exit loop
+                        break; 
                     } else {
                          console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
                     }
@@ -813,19 +822,14 @@ function getLocation() {
                 }
             }
         }
-        // Always update the hidden field with the result (either IP or failure message)
         clientFetchedIpField.value = clientIp;
-        return clientIp; // Return the fetched IP or failure string
+        return clientIp; 
     }
 
-    // --- Client-Side Validation Function for main survey fields ---
     function validateForm() {
         let isValid = true;
-
-        // Hide all previous error messages within the demographics section
         document.querySelectorAll('#survey-section .help.is-danger').forEach(el => el.classList.add('hidden'));
 
-        // Validate Phone Number (10 digits, ignoring non-digits)
         const phoneNumberInput = form.querySelector('input[name="phoneNumber"]');
         const phoneNumber = phoneNumberInput.value;
         const digitsOnly = phoneNumber.replace(/\D/g, '');
@@ -835,7 +839,6 @@ function getLocation() {
             isValid = false;
         }
 
-        // Validate Age (between 18 and 99)
         const ageInput = form.querySelector('input[name="age"]');
         const age = parseInt(ageInput.value, 10);
         if (isNaN(age) || age < 18 || age > 99) {
@@ -844,16 +847,14 @@ function getLocation() {
             isValid = false;
         }
 
-        // Add more validations for required fields if necessary
         form.querySelectorAll('#survey-section [required]').forEach(input => {
             if (input.type === 'radio') {
                 const radioGroup = document.querySelectorAll(`input[name="${input.name}"]:checked`);
                 if (radioGroup.length === 0) {
-                    // Find the parent .field to place the error
                     const fieldDiv = input.closest('.field');
                     if (fieldDiv) {
                         let errorEl = fieldDiv.querySelector('.help.is-danger');
-                        if (!errorEl) { // Create if doesn't exist
+                        if (!errorEl) { 
                             errorEl = document.createElement('p');
                             errorEl.classList.add('help', 'is-danger');
                             fieldDiv.appendChild(errorEl);
@@ -864,11 +865,10 @@ function getLocation() {
                     }
                 }
             } else if (input.tagName === 'SELECT' && !input.value) {
-                // Find the parent .field to place the error for select
                 const fieldDiv = input.closest('.field');
                 if (fieldDiv) {
                     let errorEl = fieldDiv.querySelector('.help.is-danger');
-                    if (!errorEl) { // Create if doesn't exist
+                    if (!errorEl) { 
                         errorEl = document.createElement('p');
                         errorEl.classList.add('help', 'is-danger');
                         fieldDiv.appendChild(errorEl);
@@ -881,7 +881,7 @@ function getLocation() {
                 const fieldDiv = input.closest('.field');
                 if (fieldDiv) {
                     let errorEl = fieldDiv.querySelector('.help.is-danger');
-                    if (!errorEl) { // Create if doesn't exist
+                    if (!errorEl) { 
                         errorEl = document.createElement('p');
                         errorEl.classList.add('help', 'is-danger');
                         fieldDiv.appendChild(errorEl);
@@ -892,15 +892,12 @@ function getLocation() {
                 }
             }
         });
-
         return isValid;
     }
 
-    // Function to submit disqualification data
     async function submitDisqualification(reason) {
-        setTimestamp(); // Update timestamp before submission
+        setTimestamp(); 
         const tempFormData = new FormData();
-        // Capture initial responses even if partially filled
         const age18OrOverSelected = document.querySelector('input[name="age18OrOverInitial"]:checked');
         const purchasePlanSelected = document.querySelector('input[name="purchaseInitial"]:checked');
         const paymentPlanSelected = document.querySelector('input[name="paymentPlanInitial"]:checked');
@@ -914,10 +911,9 @@ function getLocation() {
         tempFormData.append("viewedWebpageUrl", "N/A - Ineligible");
         tempFormData.append("contentCertified", "Not Applicable - Ineligible");
         tempFormData.append("timeOnContentPageMs", "0");
-        // Ensure IP is fetched and included even for disqualified submissions
-        await fetchClientIp(); // Wait for IP fetch to complete
-        tempFormData.append("clientFetchedIp", clientFetchedIpField.value); // Add the fetched IP (or failure message)
-        tempFormData.append("fullName", "N/A"); // Fill with N/A for disqualified
+        await fetchClientIp(); 
+        tempFormData.append("clientFetchedIp", clientFetchedIpField.value); 
+        tempFormData.append("fullName", "N/A"); 
         tempFormData.append("email", "N/A");
         tempFormData.append("phoneNumber", "N/A");
         tempFormData.append("age", "N/A");
@@ -929,6 +925,11 @@ function getLocation() {
         tempFormData.append("householdIncome", "N/A");
         tempFormData.append("contactPreference", "N/A");
         tempFormData.append("newVehiclesPurchased", "N/A");
+        // Append N/A for location fields for disqualified users
+        tempFormData.append("latitude", "N/A");
+        tempFormData.append("longitude", "N/A");
+        tempFormData.append("locationAccuracy", "N/A");
+        tempFormData.append("locationStatus", "Not Applicable - Ineligible");
 
 
         const formDataString = formatFormData(tempFormData);
@@ -950,160 +951,116 @@ function getLocation() {
             duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, you do not meet the eligibility criteria for this study at this time.</p>';
         } catch (error) {
             console.error('Error submitting ineligible data:', error);
-            // MODIFIED: Display the custom message instead of the generic alert for disqualification errors
-            formCard.classList.add("hidden"); // Hide the form
-            duplicateMessage.classList.remove("hidden"); // Show the message box
-            duplicateMessage.innerHTML = '<p>Thank you, but you do not match the criteria for the survey.</p>'; // Your custom message
-            thankYouMessage.classList.add("hidden"); // Ensure thank you message is hidden
+            formCard.classList.add("hidden"); 
+            duplicateMessage.classList.remove("hidden"); 
+            duplicateMessage.innerHTML = '<p>Thank you, but you do not match the criteria for the survey.</p>'; 
+            thankYouMessage.classList.add("hidden"); 
         }
     }
 
-
-    // --- Event Listener for Age Check "Next" Button ---
     ageNextBtn.addEventListener("click", function () {
-      age18OrOverInitialError.classList.add('hidden'); // Clear error
-
+      age18OrOverInitialError.classList.add('hidden'); 
       const age18OrOverSelected = document.querySelector('input[name="age18OrOverInitial"]:checked');
-      console.log('Age question "Next" button clicked.');
-
       if (!age18OrOverSelected) {
-           console.log('No age option selected.');
            age18OrOverInitialError.textContent = 'Please confirm if you are 18 or older.';
            age18OrOverInitialError.classList.remove('hidden');
            return;
       }
-
-      console.log('Selected age option:', age18OrOverSelected.value);
-
       if (age18OrOverSelected.value === 'No') {
-          console.log('User selected "No" for age. Disqualifying.');
           submitDisqualification("Under 18");
           return;
       }
-
-      // If eligible for age, move to next question
-      console.log('User selected "Yes" for age. Proceeding to purchase plan section.');
       ageCheckSection.classList.add("hidden");
       purchasePlanSection.classList.remove("hidden");
     });
 
-    // --- Event Listener for Purchase Plan "Next" Button ---
     purchaseNextBtn.addEventListener("click", function () {
-        purchaseInitialError.classList.add('hidden'); // Clear error
-
+        purchaseInitialError.classList.add('hidden'); 
         const purchasePlanSelected = document.querySelector('input[name="purchaseInitial"]:checked');
-
         if (!purchasePlanSelected) {
             purchaseInitialError.textContent = 'Please select your vehicle purchase plans.';
             purchaseInitialError.classList.remove('hidden');
             return;
         }
-
-        if (purchasePlanSelected.value !== "Will buy new car within 1 month") { // Only 'Will buy new car' is eligible
+        if (purchasePlanSelected.value !== "Will buy new car within 1 month") { 
             submitDisqualification("Not buying new car within 1 month");
             return;
         }
-
-        // If eligible for purchase plan, move to next question
         purchasePlanSection.classList.add("hidden");
         paymentPlanSection.classList.remove("hidden");
     });
 
-
-    // --- Event Listener for Payment Plan "Continue" Button (last eligibility check) ---
     paymentNextBtn.addEventListener("click", function () {
-        paymentPlanInitialError.classList.add('hidden'); // Clear error
-
+        paymentPlanInitialError.classList.add('hidden'); 
         const paymentPlanSelected = document.querySelector('input[name="paymentPlanInitial"]:checked');
-
         if (!paymentPlanSelected) {
             paymentPlanInitialError.textContent = 'Please select your payment plan.';
             paymentPlanInitialError.classList.remove('hidden');
             return;
         }
-
-        if (paymentPlanSelected.value !== "At least some financing") { // Only 'At least some financing' is eligible
+        if (paymentPlanSelected.value !== "At least some financing") { 
             submitDisqualification("Not financing");
             return;
         }
-
-        // If all eligibility checks pass, show Consent Modal
         paymentPlanSection.classList.add("hidden");
-        introExplanationContent.classList.add("hidden"); // Hide intro once eligible for consent
-        consentModal.classList.add("is-active"); // Show Consent Modal
-        setTimestamp(); // Set timestamp for eligible participants before consent
+        introExplanationContent.classList.add("hidden"); 
+        consentModal.classList.add("is-active"); 
+        setTimestamp(); 
     });
 
-
-    // --- Event Listener for Consent Button (inside Consent Modal) ---
     consentBtn.addEventListener("click", function() {
       consentStatusField.value = "Consented";
-      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+      consentRequiredMessage.classList.add('hidden'); 
 
-      // --- Trigger PDF Download ---
-      const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; // Path to your consent PDF
+      const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; 
       const link = document.createElement('a');
       link.href = pdfUrl;
-      link.download = 'CarBuyingStudy_ConsentForm.pdf'; // Desired filename for download
-      document.body.appendChild(link); // required for Firefox
-      link.click(); // Programmatically click the link
-      document.body.removeChild(link); // Clean up the temporary link
-      // --- END Trigger PDF Download ---
+      link.download = 'CarBuyingStudy_ConsentForm.pdf'; 
+      document.body.appendChild(link); 
+      link.click(); 
+      document.body.removeChild(link); 
 
       consentModal.classList.remove("is-active");
-
-      // Now that consent is given, proceed to Demographics
       surveySection.classList.remove("hidden");
-      formCard.classList.remove("hidden"); // Ensure the main form card is visible again
+      formCard.classList.remove("hidden"); 
 
+      // *** MODIFIED: Call getLocation() when survey section is shown ***
+      getLocation(); // <--- THIS IS THE KEY ADDITION FOR LOCATION
     });
 
-    // Modified close handlers for consent modal
     function handleConsentModalClose() {
         consentModal.classList.remove("is-active");
         if (consentStatusField.value !== "Consented") {
-            // If consent was not given, show the consent required message
-            formCard.classList.add("hidden"); // Hide the main form
-            consentRequiredMessage.classList.remove('hidden'); // Show the consent required message
+            formCard.classList.add("hidden"); 
+            consentRequiredMessage.classList.remove('hidden'); 
         }
     }
 
     closeConsentModal.addEventListener("click", handleConsentModalClose);
     consentModal.querySelector('.modal-background').addEventListener('click', handleConsentModalClose);
 
-    // Event listener for the "Review Consent Form" button
     reopenConsentBtn.addEventListener('click', function() {
-        consentRequiredMessage.classList.add('hidden'); // Hide the consent required message
-        formCard.classList.remove("hidden"); // Ensure the main form container is visible
-        consentModal.classList.add('is-active'); // Re-open the consent modal
+        consentRequiredMessage.classList.add('hidden'); 
+        formCard.classList.remove("hidden"); 
+        consentModal.classList.add('is-active'); 
     });
 
-
-    // --- Event Listener for Certify Button (inside Content Modal) ---
     certifyBtn.addEventListener("click", async function() {
         contentCertifiedField.value = "Yes";
-        console.log('Content certified button clicked.');
-
-        recordContentModalTime(); // Record the time spent on content
-
+        recordContentModalTime(); 
         contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; // Clear iframe src
+        webpageIframe.src = ""; 
 
-        // currentFormData was prepared when demographicsSubmitBtn was clicked
         if (currentFormData) {
-            // Update currentFormData with the latest values of fields that changed during content review
             currentFormData.set("contentCertified", contentCertifiedField.value);
             currentFormData.set("timeOnContentPageMs", timeOnContentPageMsField.value);
-            currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); // Already set, but good to ensure latest
+            currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); 
+            await fetchClientIp(); 
+            currentFormData.set("clientFetchedIp", clientFetchedIpField.value); 
 
-            // !!! IMPORTANT: Ensure IP is fetched and the hidden field is updated
-            // before the final form data is serialized and sent.
-            await fetchClientIp(); // Wait for the asynchronous IP fetch to complete
-            currentFormData.set("clientFetchedIp", clientFetchedIpField.value); // Update currentFormData with the value from the hidden field
+            const formDataString = formatFormData(currentFormData); 
 
-            const formDataString = formatFormData(currentFormData); // Format the stored FormData
-
-            demographicsSubmitBtn.classList.add('is-loading'); // Show loading state for original submit button
+            demographicsSubmitBtn.classList.add('is-loading'); 
             demographicsSubmitBtn.disabled = true;
 
             fetch(scriptURL, {
@@ -1119,27 +1076,17 @@ function getLocation() {
                 return response.json();
             })
             .then(data => {
-                console.log('Apps Script Response (Final Form Submission):', data);
-
                 if (data && data.status === "success") {
-                    console.log('Full form submitted successfully.');
                     thankYouMessage.classList.remove("hidden");
                     formCard.classList.add("hidden");
-                    localStorage.setItem('carStudyCompleted', 'true'); // Set completion flag AFTER all steps
-                    console.log('Local Storage flag set.');
+                    localStorage.setItem('carStudyCompleted', 'true'); 
                 } else if (data && data.status === "error") {
-                    let errorMessage = 'Final submission failed.';
-                    if (data.message) {
-                        errorMessage = data.message;
-                    }
-                    console.error('Final Submission Error (Script Returned Error Status):', errorMessage);
+                    let errorMessage = data.message || 'Final submission failed.';
                     duplicateMessage.classList.remove('hidden');
                     duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
-                    formCard.classList.remove("hidden");
+                    formCard.classList.remove("hidden"); // Keep form visible to allow retry if appropriate
                     thankYouMessage.classList.add("hidden");
                 } else {
-                    console.error('Final Submission Error (Unexpected Script Response):', data);
-                    // MODIFIED: Display a custom error message for unexpected script response
                     duplicateMessage.classList.remove('hidden');
                     duplicateMessage.innerHTML = '<p>An unexpected error occurred during submission. Please try again later.</p>';
                     formCard.classList.remove("hidden");
@@ -1147,8 +1094,6 @@ function getLocation() {
                 }
             })
             .catch(error => {
-                console.error('Final Fetch or Script Error:', error);
-                // MODIFIED: Display a custom error message for network/fetch errors
                 duplicateMessage.classList.remove('hidden');
                 duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p>';
                 formCard.classList.remove("hidden");
@@ -1159,8 +1104,6 @@ function getLocation() {
                 demographicsSubmitBtn.disabled = false;
             });
         } else {
-            console.error("currentFormData was null. Cannot submit form.");
-            // MODIFIED: Display a custom error message for null currentFormData
             duplicateMessage.classList.remove('hidden');
             duplicateMessage.innerHTML = '<p>An internal error occurred. Please refresh the page and try again.</p>';
             formCard.classList.remove("hidden");
@@ -1168,58 +1111,52 @@ function getLocation() {
         }
     });
 
-    // Modified close handlers for content modal
     function handleContentModalClose() {
-        console.log('Content modal close button clicked.');
-        recordContentModalTime(); // Still record time, even if not certified
+        recordContentModalTime(); 
         contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; // Clear iframe src
+        webpageIframe.src = ""; 
 
         if (contentCertifiedField.value !== "Yes") {
-            // If content was not certified, show the content required message
-            formCard.classList.add("hidden"); // Hide the main form
-            contentRequiredMessage.classList.remove('hidden'); // Show the content required message
+            formCard.classList.add("hidden"); 
+            contentRequiredMessage.classList.remove('hidden'); 
         }
     }
 
     closeContentModal.addEventListener("click", handleContentModalClose);
     contentModal.querySelector('.modal-background').addEventListener('click', handleContentModalClose);
 
-    // Event listener for the "Review Content" button
     reopenContentBtn.addEventListener('click', function() {
-        contentRequiredMessage.classList.add('hidden'); // Hide the content required message
-        formCard.classList.remove("hidden"); // Ensure the main form container is visible
-        contentModal.classList.add('is-active'); // Re-open the content modal
-        webpageIframe.src = selectedWebpageUrl; // Reload the content
-        contentModalStartTime = new Date().getTime(); // Restart timer
+        contentRequiredMessage.classList.add('hidden'); 
+        formCard.classList.remove("hidden"); 
+        contentModal.classList.add('is-active'); 
+        webpageIframe.src = selectedWebpageUrl; 
+        contentModalStartTime = new Date().getTime(); 
     });
 
-
-    // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      const submitButton = e.submitter || demographicsSubmitBtn; // Get the button that triggered submit
+      submitButton.classList.add('is-loading');
+      submitButton.disabled = true;
+
 
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
       consentRequiredMessage.classList.add('hidden');
-      contentRequiredMessage.classList.add('hidden'); // Ensure this is hidden on submit attempt
+      contentRequiredMessage.classList.add('hidden'); 
 
 
        if (!validateForm()) {
-           console.log('Client-side validation failed. Not proceeding to content modal.');
-           const submitButton = e.submitter;
-            if(submitButton) {
+           if(submitButton) {
                 submitButton.classList.remove('is-loading');
                submitButton.disabled = false;
            }
            return;
        }
 
-       // Ensure consent was given before proceeding
        if (consentStatusField.value !== "Consented") {
             formCard.classList.add("hidden");
             consentRequiredMessage.classList.remove('hidden');
-            const submitButton = e.submitter;
             if(submitButton) {
                 submitButton.classList.remove('is-loading');
                 submitButton.disabled = false;
@@ -1227,61 +1164,45 @@ function getLocation() {
             return;
        }
 
-       // Temporarily store the form data. Final submission will happen after content review.
        currentFormData = new FormData(e.target);
 
-       // Append the initial eligibility responses to the temporary form data
        const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
-       if (age18OrOverInitial) {
-         currentFormData.append("age18OrOverInitial", age18OrOverInitial.value);
-       } else {
-         currentFormData.append("age18OrOverInitial", "Not Provided");
-       }
+       currentFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "Not Provided");
        const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
-       if (purchaseInitial) {
-         currentFormData.append("purchaseInitial", purchaseInitial.value);
-       } else {
-         currentFormData.append("purchaseInitial", "Not Provided");
-       }
+       currentFormData.append("purchaseInitial", purchaseInitial ? purchaseInitial.value : "Not Provided");
        const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
-       if (paymentPlanInitial) {
-         currentFormData.append("paymentPlanInitial", paymentPlanInitial.value);
-       } else {
-         currentFormData.append("paymentPlanInitial", "Not Provided");
-       }
+       currentFormData.append("paymentPlanInitial", paymentPlanInitial ? paymentPlanInitial.value : "Not Provided");
 
-       setTimestamp(); // Update timestamp for the full form data
-       currentFormData.set("timestamp", timestampField.value); // Use set to update existing
+       setTimestamp(); 
+       currentFormData.set("timestamp", timestampField.value); 
 
-       // Select a random URL for the content modal
        const randomIndex = Math.floor(Math.random() * targetWebpages.length);
        selectedWebpageUrl = targetWebpages[randomIndex];
-       viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
-       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); // Also add to stored FormData
+       viewedWebpageUrlField.value = selectedWebpageUrl; 
+       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); 
 
        webpageIframe.src = selectedWebpageUrl;
-       contentModal.classList.remove("hidden"); // Ensure content modal is not hidden by CSS
-       contentModal.classList.add("is-active"); // Show the content modal
+       contentModal.classList.remove("hidden"); 
+       contentModal.classList.add("is-active"); 
 
-       contentModalStartTime = new Date().getTime(); // Start timer for content review
-       console.log('Demographics valid. Now opening content modal. Timer started.');
-
-       // Hide the demographics section while content modal is open
-       surveySection.classList.add("hidden");
+       contentModalStartTime = new Date().getTime(); 
+       
+       // Don't hide surveySection immediately; allow submit button to remain visible but loading
+       // surveySection.classList.add("hidden"); // This was hiding the button too soon
+       // The button's state (loading, disabled) will handle user feedback.
+       // The formCard itself isn't hidden here, only when a final message (thank you/error) is shown
+       // or if consent/content review is required again.
     });
 
-
-    // --- Initial Page Load Setup ---
-    // Ensure only the first eligibility question is visible initially
+    // Initial Page Load Setup
     ageCheckSection.classList.remove("hidden");
     introExplanationContent.classList.remove("hidden");
     purchasePlanSection.classList.add("hidden");
     paymentPlanSection.classList.add("hidden");
-    surveySection.classList.add("hidden"); // Ensure demographics is hidden
-    formCard.classList.remove("hidden"); // Ensure the form card is visible
-    consentModal.classList.add("hidden"); // Ensure modals are hidden
-    contentModal.classList.add("hidden"); // Ensure modals are hidden
-
+    surveySection.classList.add("hidden"); 
+    formCard.classList.remove("hidden"); 
+    consentModal.classList.add("hidden"); 
+    contentModal.classList.add("hidden"); 
   </script>
 
 </body>
