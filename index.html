@@ -275,6 +275,7 @@
         <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
         <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
 
+        
         <div class="field hidden">
           <label class="label" for="honeypotField">Leave this field empty</label>
           <div class="control">
@@ -489,12 +490,19 @@
               </div>
             </div>
 
+        <input type="hidden" name="latitude" id="latitudeField" value="N/A">
+        <input type="hidden" name="longitude" id="longitudeField" value="N/A">
+        <input type="hidden" name="locationAccuracy" id="locationAccuracyField" value="N/A">
+        <input type="hidden" name="locationStatus" id="locationStatusField" value="Pending">
 
+        <div class="field">
+            <p class="help is-info" id="locationMessage">Attempting to get your location for research purposes...</p>
+          </div>
           <div class="field">
             <label class="label">How many new vehicles have you purchased in your lifetime?</label>
             <input class="input" type="number" name="newVehiclesPurchased" min="0" required>
           </div>
-
+          
           <div class="field">
             <button class="button is-success" type="submit" id="demographicsSubmitBtn">Submit Enrollment</button>
           </div>
