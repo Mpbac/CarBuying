@@ -34,852 +34,1174 @@
       background-color: #d4edda;
       color: #155724;
       border: 1px solid #c3e6cb;
-      border-radius: 8px;
-      text-align: center;
+      border-radius: 4px;
       font-weight: bold;
-    }
-    .message-box.is-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border-color: #f5c6cb;
-    }
-    .message-box.is-success {
-        background-color: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb;
-    }
-    .title.is-4 {
-      color: var(--dartmouth-green);
       text-align: center;
-      padding: 20px 0 10px;
-      background-color: white;
-      border-bottom: 1px solid #e0e0e0;
     }
-    .content-area {
-      padding: 30px;
-      background-color: white;
+
+    .message-box.is-danger {
+       background-color: #f8d7da;
+       color: #721c24;
+       border-color: #f5c6cb;
     }
-    .field:not(:last-child) {
-      margin-bottom: 1.5rem;
+
+    .hero.is-primary.is-bold {
+      background-color: var(--dartmouth-green);
+      background-image: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    .control .input, .control .textarea, .control .select select {
-      border-color: #dbdbdb;
-      box-shadow: none;
+
+    .hero-body .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .control .input:focus, .control .textarea:focus, .control .select select:focus {
-      border-color: var(--dartmouth-green);
-      box-shadow: 0 0 0 0.125em rgba(0, 105, 62, 0.25);
+
+    .hero .title {
+      color: white;
+      font-size: 2.5em;
+      font-weight: 600;
+      margin-left: 1.5rem;
+      margin-bottom: 0;
     }
+
+    .banner-logo {
+      max-height: 70px;
+      width: auto;
+    }
+
     .button.is-primary {
       background-color: var(--dartmouth-green);
-      border-color: transparent;
-      transition: background-color 0.3s;
+      border-color: var(--dartmouth-green);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .button.is-primary:hover {
-      background-color: #004d2e;
+    .button.is-primary:hover,
+    .button.is-primary:focus {
+      background-color: #005a34;
+      border-color: #005a34;
     }
-    .help {
-      font-size: 0.85em;
-      margin-top: 5px;
-      color: #666;
+
+    .button.is-success {
+      background-color: var(--forest-green);
+      border-color: var(--forest-green);
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .modal-card-body {
-        max-height: 80vh; /* Limit height */
-        overflow-y: auto; /* Enable scrolling */
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    .button.is-success:hover,
+    .button.is-success:focus {
+      background-color: #1e7d1e;
+      border-color: #1e7d1e;
     }
-    .is-fixed-bottom {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+
+    .label {
+      font-weight: 600;
+      color: #363636;
+      margin-bottom: 0.75rem;
+    }
+    .field {
+      margin-bottom: 1.5rem;
+    }
+
+    .input, .select select {
+      border-color: #dbdbdb;
+      box-shadow: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .input:focus, .select select:focus, .textarea:focus {
+      border-color: var(--forest-green);
+      box-shadow: 0 0 0 0.125em rgba(34, 139, 34, 0.25);
+    }
+
+    .radio {
+      margin-right: 1.5em;
+      cursor: pointer;
+    }
+
+    .content p {
+      line-height: 1.7;
+      margin-bottom: 1em;
+    }
+    .content hr {
+      background-color: #eee;
+      height: 1px;
+      margin: 2rem 0;
+    }
+
+
+    .modal-content {
+      width: 95%;
+      max-width: 1600px;
+      height: 95%;
+      max-height: 1200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-content .box {
+      flex-grow: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+
+    .iframe-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
       background-color: white;
-      padding: 10px;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
+    }
+
+    .modal-content iframe {
+      display: block;
+      width: 100%;
+      min-height: 100%;
+      border: none;
+    }
+
+    .sticky-footer {
+        position: sticky;
+        bottom: 0;
+        left: -20px;
+        width: calc(100% + 40px);
+        background-color: white;
+        padding: 15px 20px;
+        border-top: 1px solid #eee;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 10;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sticky-footer .confirm-text {
+        margin-bottom: 10px !important;
+        text-align: center;
+        font-size: 0.9em;
+    }
+
+    .sticky-footer .control {
+        width: 100%;
+        text-align: center;
+    }
+
+
+    .modal .modal-close {
+        top: 10px;
+        right: 10px;
+    }
+
+
+    .help.is-danger {
+        color: #f14668;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+    }
+
+
+    @media (max-width: 768px) {
+      .hero .title {
+           font-size: 1.8em;
+           margin-left: 1rem;
+      }
+       .hero-body .container {
+           flex-direction: column;
+           text-align: center;
+      }
+      .banner-logo {
+           margin-bottom: 10px;
+      }
+      .hero .title {
+           margin-left: 0;
+      }
+      .modal-content {
+           width: 95%;
+           height: 95%;
+      }
+       .modal-content .box {
+         padding: 15px;
+       }
+        .sticky-footer {
+            left: -15px;
+            width: calc(100% + 30px);
+            padding: 10px 15px;
+        }
+         .modal .modal-close {
+             top: 5px;
+             right: 5px;
+         }
     }
   </style>
 </head>
 <body>
 
-  <div class="form-card" id="formCard">
-    <h4 class="title is-4">Car Buying Study Enrollment Form</h4>
-    <div class="content-area">
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <img src="D-Pine_Rev.png" alt="Dartmouth College Logo" class="banner-logo">
+        <h1 class="title">Enrollment Form: Car Buying Study</h1>
+      </div>
+    </div>
+  </section>
 
-      <div id="ageCheckSection">
-        <div class="field">
-          <label class="label">Are you 18 years of age or older?</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="age18OrOver" value="Yes" required> Yes
-            </label>
-            <label class="radio">
-              <input type="radio" name="age18OrOver" value="No"> No
-            </label>
-          </div>
-          <p class="help" id="ageEligibilityMessage" style="color: red; display: none;">Sorry, you must be 18 years or older to participate.</p>
-        </div>
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary" id="ageNextBtn">Next</button>
-          </div>
-        </div>
+  <div class="card form-card" id="form-card">
+    <div class="card-content">
+
+      <div id="intro-explanation-content" class="content">
+        <h2></h2>
+        <p>Researchers at Dartmouth College are collecting information on car purchases and would like to pay YOU for your help.</p>
+        <p>Answer just three questions to find out if you qualify to receive:</p>
+        <ul>
+          <li>$5 for completing a very short survey</li>
+          <li>$20 for texting or emailing us readable pictures with the details of your car purchase and financing details.</li>
+        </ul>
+        <p>Your responses will be kept confidential and used for research purposes only.</p>
+        <hr>
       </div>
 
-      <div id="purchasePlanSection" class="hidden">
-        <div class="field">
-          <label class="label">Are you planning to purchase a car within the next 6 months?</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="purchasePlan" value="Yes" required> Yes
-            </label>
-            <label class="radio">
-              <input type="radio" name="purchasePlan" value="No"> No
-            </label>
-            <label class="radio">
-              <input type="radio" name="purchasePlan" value="Maybe"> Maybe
-            </label>
-          </div>
-          <p class="help" id="purchaseEligibilityMessage" style="color: red; display: none;">Sorry, this study is for individuals planning to purchase a car within the next 6 months.</p>
-        </div>
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary" id="purchaseNextBtn">Next</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="paymentPlanSection" class="hidden">
-        <div class="field">
-          <label class="label">Do you plan to finance, lease, or pay in cash for your next vehicle purchase?</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="paymentPlan" value="Finance" required> Finance
-            </label>
-            <label class="radio">
-              <input type="radio" name="paymentPlan" value="Lease"> Lease
-            </label>
-            <label class="radio">
-              <input type="radio" name="paymentPlan" value="Cash"> Cash
-            </label>
-          </div>
-          <p class="help" id="paymentEligibilityMessage" style="color: red; display: none;">Sorry, your payment plan does not align with the study requirements.</p>
-        </div>
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary" id="paymentNextBtn">Continue to Consent</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal" id="consentModal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Informed Consent for Car Buying Study</p>
-          </header>
-          <section class="modal-card-body">
-            <div class="content">
-              <h4>Study Title: The Car Buying Study</h4>
-              <p>You are invited to participate in a research study being conducted by Dartmouth College. Your participation is entirely voluntary. Please read the following information carefully.</p>
-
-              <h5>Purpose of the Study:</h5>
-              <p>The purpose of this study is to understand the factors that influence consumers' car buying decisions, including the role of online information, dealerships, and financing options.</p>
-
-              <h5>What will I do if I participate?</h5>
-              <ol>
-                <li>You will first complete an enrollment form to determine eligibility.</li>
-                <li>If eligible, you will provide your informed consent to participate.</li>
-                <li>You will then be asked to review content related to car buying.</li>
-                <li>After reviewing the content, you will answer a series of demographic questions.</li>
-                <li>Finally, you will submit your responses.</li>
-                <li>(Optional) If you buy a car in the next month, you can return to provide details of your purchase for additional compensation.</li>
-              </ol>
-
-              <h5>Compensation:</h5>
-              <ul>
-                <li>Upon successful completion of the enrollment form, content review, and demographic survey, you will receive $5 via PayPal.</li>
-                <li>If you proceed to purchase a vehicle within the next month and provide documentation of the purchase, you will receive an additional $20 via PayPal.</li>
-              </ul>
-
-              <h5>Confidentiality:</h5>
-              <p>All information you provide will be kept confidential to the extent permitted by law. Your responses will be anonymized for analysis, and any personally identifiable information (e.g., email, phone number, IP address, geolocation) will be stored separately from your survey responses and used only for compensation, follow-up, and to prevent duplicate entries. Data will be stored on secure, password-protected servers at Dartmouth College.</p>
-
-              <h5>Risks and Benefits:</h5>
-              <p>There are no anticipated risks beyond those encountered in daily internet use. The direct benefit to you is the compensation described above. The broader benefit is contributing to academic research on consumer behavior in the automotive market.</p>
-
-              <h5>Voluntary Participation:</h5>
-              <p>Participation in this study is completely voluntary. You may withdraw at any time without penalty or loss of benefits. You may skip any question you do not wish to answer.</p>
-
-              <h5>Contact Information:</h5>
-              <p>If you have any questions about this research, you may contact [Your Name/Research Team Name] at carbuyingstudy@dartmouth.edu.</p>
-              <p>If you have any questions about your rights as a research participant, you may contact the Dartmouth College Institutional Review Board (IRB) at [IRB contact info - if applicable, otherwise omit or use a general IRB contact if required by your institution].</p>
-
-              <hr>
-              <p><strong>By clicking "I Consent" below, you acknowledge that you have read and understood the information provided, and you voluntarily agree to participate in this study.</strong></p>
-            </div>
-          </section>
-          <footer class="modal-card-foot is-fixed-bottom">
-            <button class="button is-success" id="consentBtn">I Consent</button>
-            <button class="button" id="declineConsentBtn">Decline</button>
-          </footer>
-        </div>
-      </div>
-
-      <div class="message-box is-danger hidden" id="disqualificationMessage">
-        <p>Sorry, you do not meet the eligibility requirements for this study. Thank you for your interest.</p>
-        <button class="button is-small is-danger mt-3" id="restartFormBtn">Restart Form</button>
-      </div>
-
-      <div id="introExplanationContent" class="hidden">
-        <p>Thank you for your interest in the Car Buying Study!</p>
-        <p>We are conducting research to understand consumer decision-making when purchasing a vehicle. Your participation involves completing a short enrollment form, reviewing some content, and answering a few demographic questions. Eligible participants will receive $5 via PayPal upon completion of the initial survey. If you purchase a car within the next month, you may also be eligible for an additional $20.</p>
-        <p>Please provide the following information to proceed.</p>
-      </div>
-
-
-      <div class="modal" id="contentModal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Please review the content below</p>
-          </header>
-          <section class="modal-card-body has-text-centered">
-            <iframe id="webpageIframe" style="width:100%; height:60vh; border:none;"></iframe>
-            <div class="field mt-4">
-              <label class="checkbox">
-                <input type="checkbox" id="contentCertifiedCheckbox" required>
-                I certify that I have read and reviewed the content above.
-              </label>
-              <p class="help is-danger hidden" id="contentCertifiedMessage">Please certify that you have reviewed the content to proceed.</p>
-            </div>
-          </section>
-          <footer class="modal-card-foot is-fixed-bottom">
-            <button class="button is-primary" id="contentReviewedBtn">Continue to Demographics</button>
-          </footer>
-        </div>
-      </div>
-
-
-      <form id="submissionForm" class="hidden">
-
+      <form id="purchaseForm">
         <input type="hidden" name="timestamp" id="timestampField">
-        <input type="hidden" name="disqualificationReason" id="disqualificationReasonField" value="Not Disqualified">
-        <input type="hidden" name="age18OrOverInitial" id="age18OrOverInitialField">
-        <input type="hidden" name="purchaseInitial" id="purchaseInitialField">
-        <input type="hidden" name="paymentPlanInitial" id="paymentPlanInitialField">
-        <input type="hidden" name="consentStatus" id="consentStatusField" value="No Consent">
-        <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField">
+        <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
+        <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
+        <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
         <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
         <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
-        <input type="hidden" name="honeypot" id="honeypotField" value=""> <input type="hidden" name="latitude" id="latitudeField" value="N/A">
-        <input type="hidden" name="longitude" id="longitudeField" value="N/A">
-        <input type="hidden" name="locationAccuracy" id="locationAccuracyField" value="N/A">
-        <input type="hidden" name="locationStatus" id="locationStatusField" value="Pending">
 
-        <div class="field">
-          <p class="help is-info" id="locationMessage">Attempting to get your location for research purposes...</p>
-        </div>
-        <h5 class="title is-5">Participant Information (Demographics)</h5>
-
-        <div class="field">
-          <label class="label">Full Name</label>
+        <div class="field hidden">
+          <label class="label" for="honeypotField">Leave this field empty</label>
           <div class="control">
-            <input class="input" type="text" name="fullName" placeholder="Your Full Name" required>
+            <input class="input" type="text" name="honeypot" id="honeypotField" tabindex="-1" autocomplete="off">
           </div>
         </div>
 
-        <div class="field">
-          <label class="label">Email</label>
-          <div class="control">
-            <input class="input" type="email" name="email" placeholder="email@example.com" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Phone Number (Optional for SMS follow-up)</label>
-          <div class="control">
-            <input class="input" type="tel" name="phoneNumber" placeholder="e.g., 123-456-7890">
-          </div>
-          <p class="help">We may use this to send follow-up texts if you opt-in.</p>
-        </div>
-
-        <div class="field">
-          <label class="label">Age</label>
-          <div class="control">
-            <input class="input" type="number" name="age" min="18" max="100" placeholder="e.g., 30" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Gender</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="gender" value="Male" required> Male
-            </label>
-            <label class="radio">
-              <input type="radio" name="gender" value="Female"> Female
-            </label>
-            <label class="radio">
-              <input type="radio" name="gender" value="Non-binary"> Non-binary
-            </label>
-            <label class="radio">
-              <input type="radio" name="gender" value="Prefer not to say"> Prefer not to say
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Race/Ethnicity (Select all that apply)</label>
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="American Indian or Alaska Native"> American Indian or Alaska Native
-            </label><br>
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="Asian"> Asian
-            </label><br>
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="Black or African American"> Black or African American
-            </label><br>
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="Native Hawaiian or Other Pacific Islander"> Native Hawaiian or Other Pacific Islander
-            </label><br>
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="White"> White
-            </label><br>
-            <label class="checkbox">
-              <input type="checkbox" name="race" value="Other"> Other
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Are you of Hispanic, Latino, or Spanish origin?</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="hispanic" value="Yes" required> Yes
-            </label>
-            <label class="radio">
-              <input type="radio" name="hispanic" value="No"> No
-            </label>
-            <label class="radio">
-              <input type="radio" name="hispanic" value="Prefer not to say"> Prefer not to say
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Highest level of education completed</label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select name="education" required>
-                <option value="">Select an option</option>
-                <option value="Less than High School">Less than High School</option>
-                <option value="High School Diploma/GED">High School Diploma/GED</option>
-                <option value="Some College (no degree)">Some College (no degree)</option>
-                <option value="Associate's Degree">Associate's Degree</option>
-                <option value="Bachelor's Degree">Bachelor's Degree</option>
-                <option value="Master's Degree">Master's Degree</option>
-                <option value="Doctorate or Professional Degree">Doctorate or Professional Degree</option>
-              </select>
-            </div>
-        </div>
-      </div>
-
-        <div class="field">
-          <label class="label">Current Occupation</label>
-          <div class="control">
-            <input class="input" type="text" name="occupation" placeholder="e.g., Engineer, Student, Retired" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Approximate annual household income</label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select name="householdIncome" required>
-                <option value="">Select an option</option>
-                <option value="Under $25,000">Under $25,000</option>
-                <option value="$25,000 - $49,999">$25,000 - $49,999</option>
-                <option value="$50,000 - $74,999">$50,000 - $74,999</option>
-                <option value="$75,000 - $99,999">$75,000 - $99,999</option>
-                <option value="$100,000 - $149,999">$100,000 - $149,999</option>
-                <option value="$150,000 - $199,999">$150,000 - $199,999</option>
-                <option value="$200,000 or more">$200,000 or more</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Preferred method for follow-up contact:</label>
+        <div id="age-check-section">
+           <div class="field">
+            <label class="label">Are you 18 years of age or older?</label>
              <div class="control">
               <label class="radio">
-                <input type="radio" name="contactPreference" value="Email" required> Email
+                <input type="radio" name="age18OrOverInitial" value="Yes" required> Yes
               </label>
               <label class="radio">
-                <input type="radio" name="contactPreference" value="Text (SMS)"> Text (SMS)
-              </label>
-              <label class="radio">
-                <input type="radio" name="contactPreference" value="Both Email and Text"> Both Email and Text
+                <input type="radio" name="age18OrOverInitial" value="No" required> No
               </label>
              </div>
            </div>
+           <p class="help is-danger hidden" id="age18OrOverInitialError"></p>
+           <button class="button is-primary" type="button" id="ageNextBtn">Next</button>
+        </div>
 
+        <div id="purchase-plan-section" class="hidden">
+           <div class="field">
+                <label class="label">What are your vehicle purchase plans?</label>
+                <div class="control">
+                <label class="radio">
+                    <input type="radio" name="purchaseInitial" value="Will buy new car within 1 month" required>
+                    Will probably buy a new car within the next month
+                </label><br>
+                <label class="radio">
+                    <input type="radio" name="purchaseInitial" value="Will buy used car within 1 month">
+                    Will probably buy a used car within the next month
+                </label><br>
+                <label class="radio">
+                    <input type="radio" name="purchaseInitial" value="No plans to buy car within 1 month">
+                    No plans to buy a car within the next month
+                </label>
+                </div>
+            </div>
+            <p class="help is-danger hidden" id="purchaseInitialError"></p>
+            <button class="button is-primary" type="button" id="purchaseNextBtn">Next</button>
+        </div>
 
-        <div class="field">
-          <label class="label">How many new vehicles have you purchased in your lifetime?</label>
-          <div class="control">
-            <input class="input" type="number" name="newVehiclesPurchased" min="0" required>
-          </div>
+        <div id="payment-plan-section" class="hidden">
+            <div class="field">
+                <label class="label">How do you plan to pay for your car?</label>
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" name="paymentPlanInitial" value="All cash" required> All cash
+                    </label><br>
+                    <label class="radio">
+                        <input type="radio" name="paymentPlanInitial" value="At least some financing"> At least some financing
+                    </label>
+                </div>
+            </div>
+            <p class="help is-danger hidden" id="paymentPlanInitialError"></p>
+            <button class="button is-primary" type="button" id="paymentNextBtn">Continue</button>
         </div>
 
 
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary is-fullwidth" type="submit">Submit Enrollment</button>
+        <div id="survey-section" class="hidden">
+          <hr>
+          <h3 class="title is-5">Contact & Demographic Information</h3>
+
+          <div class="field">
+            <label class="label">Full Name</label>
+            <input class="input" type="text" name="fullName" required>
+          </div>
+
+          <div class="field">
+            <label class="label">Email</label>
+            <input class="input" type="email" name="email" required>
+          </div>
+
+           <div class="field">
+            <label class="label">Phone Number</label>
+            <input class="input" type="tel" name="phoneNumber" required>
+             <p class="help is-danger hidden" id="phoneNumberError"></p>
+           </div>
+
+
+          <div class="field">
+            <label class="label">Age</label>
+            <input class="input" type="number" name="age" min="18" max="99" required>
+             <p class="help is-danger hidden" id="ageError"></p>
+          </div>
+
+          <div class="field">
+            <label class="label">Gender</label>
+            <div class="control">
+              <label class="radio"><input type="radio" name="gender" value="Male" required> Male</label>
+              <label class="radio"><input type="radio" name="gender" value="Female"> Female</label>
+              <label class="radio"><input type="radio" name="gender" value="Other"> Other</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Race</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="race" required>
+                  <option value="">Select your race</option>
+                  <option value="White">White</option>
+                  <option value="Black or African American">Black or African American</option>
+                  <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+                  <option value="Asian">Asian</option>
+                  <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Are you Hispanic or Latino?</label>
+            <div class="control">
+              <label class="radio"><input type="radio" name="hispanic" value="Yes" required> Yes</label>
+              <label class="radio"><input type="radio" name="hispanic" value="No"> No</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Highest Level of Education</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="education" required>
+                  <option value="">Select education level</option>
+                  <option value="Some high school">Some high school</option>
+                  <option value="High school">High school</option>
+                  <option value="Some college">Some college</option>
+                  <option value="Associate’s degree">Associate’s degree</option>
+                  <option value="Bachelor’s degree">Bachelor’s degree</option>
+                  <option value="Graduate degree">Graduate degree</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+             <label class="label">Occupation / Industry Role</label>
+             <div class="control">
+              <div class="select is-fullwidth">
+               <select name="occupation" required>
+                 <option value="">Select your occupation</option>
+  <option value="11-0000">Management Occupations</option>
+  <option value="13-0000">Business and Financial Operations Occupations</option>
+  <option value="15-0000">Computer and Mathematical Occupations</option>
+  <option value="17-0000">Architecture and Engineering Occupations</option>
+  <option value="19-0000">Life, Physical, and Social Science Occupations</option>
+  <option value="21-0000">Community and Social Service Occupations</option>
+  <option value="23-0000">Legal Occupations</option>
+  <option value="25-0000">Educational Instruction and Library Occupations</option>
+  <option value="27-0000">Arts, Design, Entertainment, Sports, and Media Occupations</option>
+  <option value="29-0000">Healthcare Practitioners and Technical Occupations</option>
+  <option value="31-0000">Healthcare Support Occupations</option>
+  <option value="33-0000">Protective Service Occupations</option>
+  <option value="35-0000">Food Preparation and Serving Related Occupations</option>
+  <option value="37-0000">Building and Grounds Cleaning and Maintenance Occupations</option>
+  <option value="39-0000">Personal Care and Service Occupations</option>
+  <option value="41-0000">Sales and Related Occupations</option>
+  <option value="43-0000">Office and Administrative Support Occupations</option>
+  <option value="45-0000">Farming, Fishing, and Forestry Occupations</option>
+  <option value="47-0000">Construction and Extraction Occupations</option>
+  <option value="49-0000">Installation, Maintenance, and Repair Occupations</option>
+  <option value="51-0000">Production Occupations</option>
+  <option value="53-0000">Transportation and Material Moving Occupations</option>
+  <option value="55-0000">Military Specific Occupations</option>
+  <option value="Student">Student</option>
+  <option value="Unemployed">Unemployed</option>
+  <option value="Retired">Retired</option>
+  <option value="Other">Other</option>
+               </select>
+              </div>
+             </div>
+           </div>
+
+           <div class="field">
+               <label class="label">Household Income</label>
+               <div class="control">
+                   <div class="select is-fullwidth">
+                       <select name="householdIncome" required>
+                           <option value="">Select your household income</option>
+                           <option value="Under $15,000">Under $15,000</option>
+                           <option value="$15,000 - $24,999">$15,000 - $24,999</option>
+                           <option value="$25,000 - $34,999">$25,000 - $34,999</option>
+                           <option value="$35,000 - $49,999">$35,000 - $49,999</option>
+                           <option value="$50,000 - $74,999">$50,000 - $74,999</option>
+                           <option value="$75,000 - $99,999">$74,999 - $99,999</option>
+                           <option value="$100,000 - $149,999">$100,000 - $149,999</option>
+                           <option value="$150,000 - $199,999">$150,000 - $199,999</option>
+                           <option value="$200,000 or more">$200,000 or more</option>
+                       </select>
+                   </div>
+               </div>
+           </div>
+
+
+           <div class="field">
+             <label class="label">Preferred method for follow-up contact:</label>
+              <div class="control">
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Email" required> Email
+               </label>
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Text (SMS)"> Text (SMS)
+               </label>
+               <label class="radio">
+                 <input type="radio" name="contactPreference" value="Both Email and Text"> Both Email and Text
+               </label>
+              </div>
+            </div>
+
+
+          <div class="field">
+            <label class="label">How many new vehicles have you purchased in your lifetime?</label>
+            <input class="input" type="number" name="newVehiclesPurchased" min="0" required>
+          </div>
+
+          <div class="field">
+            <button class="button is-success" type="submit" id="demographicsSubmitBtn">Submit Enrollment</button>
           </div>
         </div>
       </form>
-
-      <div class="message-box is-success hidden" id="thankYouMessage">
-        <p>Your enrollment has been submitted successfully!</p>
-        <p>Thank you for your participation.</p>
-      </div>
-
-      <div class="message-box is-danger hidden" id="duplicateMessage">
-        </div>
-
     </div>
   </div>
 
-  <script>
-    // Configuration for Google Apps Script Web App URL
-    // !!! IMPORTANT: Replace this with your actual Google Apps Script Web App URL !!!
-    // Deploy your script (Deploy -> New Deployment -> Web App -> Execute as: Me, Who has access: Anyone, even anonymous)
-    // Then copy the "Web app URL" and paste it here.
-    const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+  <div id="thank-you" class="message-box hidden">
+    <p class="title is-5 has-text-success">Thank you for completing the initial enrollment.</p>
+    <p>Please look out for an email with further instructions.</p>
+  </div>
 
-    // --- Element Selectors ---
-    const formCard = document.getElementById('formCard');
-    const submissionForm = document.getElementById('submissionForm');
-    const thankYouMessage = document.getElementById('thankYouMessage');
-    const duplicateMessage = document.getElementById('duplicateMessage');
-    const ageCheckSection = document.getElementById('ageCheckSection');
-    const purchasePlanSection = document.getElementById('purchasePlanSection');
-    const paymentPlanSection = document.getElementById('paymentPlanSection');
-    const ageNextBtn = document.getElementById('ageNextBtn');
-    const purchaseNextBtn = document.getElementById('purchaseNextBtn');
-    const paymentNextBtn = document.getElementById('paymentNextBtn');
-    const ageEligibilityMessage = document.getElementById('ageEligibilityMessage');
-    const purchaseEligibilityMessage = document.getElementById('purchaseEligibilityMessage');
-    const paymentEligibilityMessage = document.getElementById('paymentEligibilityMessage');
-    const disqualificationMessage = document.getElementById('disqualificationMessage');
-    const restartFormBtn = document.getElementById('restartFormBtn');
-    const introExplanationContent = document.getElementById('introExplanationContent');
 
-    // Hidden fields for initial eligibility answers & consent status
-    const timestampField = document.getElementById('timestampField');
-    const disqualificationReasonField = document.getElementById('disqualificationReasonField');
-    const age18OrOverInitialField = document.getElementById('age18OrOverInitialField');
-    const purchaseInitialField = document.getElementById('purchaseInitialField');
-    const paymentPlanInitialField = document.getElementById('paymentPlanInitialField');
-    const consentStatusField = document.getElementById('consentStatusField');
-    const viewedWebpageUrlField = document.getElementById('viewedWebpageUrlField');
-    const contentCertifiedCheckbox = document.getElementById('contentCertifiedCheckbox');
-    const contentCertifiedMessage = document.getElementById('contentCertifiedMessage');
-    const contentReviewedBtn = document.getElementById('contentReviewedBtn');
+  <div id="duplicate-message" class="message-box is-danger hidden"></div>
 
-    // Modals
-    const consentModal = document.getElementById('consentModal');
-    const consentBtn = document.getElementById('consentBtn');
-    const declineConsentBtn = document.getElementById('declineConsentBtn');
-    const contentModal = document.getElementById('contentModal');
-    const webpageIframe = document.getElementById('webpageIframe');
-    const surveySection = document.getElementById('submissionForm'); // Renamed from survey-section to submissionForm for consistency
+  <div id="consent-required-message" class="message-box is-danger hidden">
+    <p class="title is-5 has-text-danger">Consent Required</p>
+    <p>To participate in this study and proceed with the enrollment form, you must provide your consent.</p>
+    <button class="button is-primary mt-4" id="reopenConsentBtn">Review Consent Form</button>
+  </div>
 
-    // NEW: Geolocation elements
-    const latitudeField = document.getElementById('latitudeField');
-    const longitudeField = document.getElementById('longitudeField');
-    const locationAccuracyField = document.getElementById('locationAccuracyField');
-    const locationStatusField = document.getElementById('locationStatusField');
-    const locationMessage = document.getElementById('locationMessage');
+  <div id="content-required-message" class="message-box is-danger hidden">
+    <p class="title is-5 has-text-danger">Content Review Required</p>
+    <p>You must review the provided content to proceed with the study.</p>
+    <button class="button is-primary mt-4" id="reopenContentBtn">Review Content</button>
+  </div>
 
-    // NEW: Honeypot field
+
+  <div id="consent-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h3 class="title is-4">Consent Form</h3>
+        <p>Please review the consent form below:</p>
+        <div class="pdf-viewer-container" style="flex-grow: 1; min-height: 300px; position: relative; margin-bottom: 20px;">
+          <iframe src="expedited-consent-template_05_19_2025.pdf" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0"></iframe>
+        </div>
+        <div class="sticky-footer"> <p class="confirm-text">By clicking the "Consent" button below, you are indicating that I have read the above information about the Car Buying Study and have been given time to ask questions. I agree to take part in this study and I will be given a copy of this signed consent form.</p>
+          <p class="control">
+            <button class="button is-success" id="consentBtn">Consent</button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" id="closeConsentModal"></button>
+  </div>
+
+  <div id="content-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h3 class="title is-4">Review Required Content</h3>
+           <div class="iframe-container">
+             <iframe id="webpageIframe" src="" frameborder="0"></iframe>
+          </div>
+        <div class="sticky-footer"> <p class="confirm-text">By clicking "I Certify...", you confirm that you have reviewed the content shown above.</p>
+          <p class="control">
+            <button class="button is-success" id="certifyBtn">I certify that I have reviewed this content</button>
+          </p>
+        </div>
+      </div>
+    </div>
+       <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
+  </div>
+
+
+     <script>
+    // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
+
+    const timestampField = document.getElementById("timestampField");
+    const form = document.getElementById("purchaseForm");
+    const thankYouMessage = document.getElementById("thank-you");
+    const duplicateMessage = document.getElementById("duplicate-message");
+    const formCard = document.getElementById("form-card");
+    const introExplanationContent = document.getElementById("intro-explanation-content");
+
+    // Elements for initial screening (now sequential)
+    const ageCheckSection = document.getElementById("age-check-section");
+    const purchasePlanSection = document.getElementById("purchase-plan-section");
+    const paymentPlanSection = document.getElementById("payment-plan-section");
+
+    const ageNextBtn = document.getElementById("ageNextBtn");
+    const purchaseNextBtn = document.getElementById("purchaseNextBtn");
+    const paymentNextBtn = document.getElementById("paymentNextBtn");
+    const demographicsSubmitBtn = document.getElementById("demographicsSubmitBtn"); // New reference to demographics submit button
+
+    const age18OrOverInitialError = document.getElementById('age18OrOverInitialError');
+    const purchaseInitialError = document.getElementById('purchaseInitialError');
+    const paymentPlanInitialError = document.getElementById('paymentPlanInitialError');
+
+    // Elements for survey section (Demographics)
+    const surveySection = document.getElementById("survey-section");
+
+    // Consent modal elements
+    const consentModal = document.getElementById("consent-modal");
+    const consentBtn = document.getElementById("consentBtn");
+    const closeConsentModal = document.getElementById("closeConsentModal");
+
+    // Content modal elements
+    const contentModal = document.getElementById("content-modal");
+    const webpageIframe = document.getElementById("webpageIframe");
+    const certifyBtn = document.getElementById("certifyBtn");
+    const closeContentModal = document.getElementById("closeContentModal");
+
+    // Hidden form fields
+    const consentStatusField = document.getElementById("consentStatusField");
+    const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField");
+    const contentCertifiedField = document.getElementById("contentCertifiedField");
+    const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField");
+    const clientFetchedIpField = document.getElementById('clientFetchedIpField');
+
+    // Bot protection field
     const honeypotField = document.getElementById('honeypotField');
 
-    // Timer for content review
-    let contentModalStartTime = 0;
-    let timeOnContentPageMs = 0;
+    // Validation error elements for the *main survey* fields
+    const phoneNumberError = document.getElementById('phoneNumberError');
+    const ageError = document.getElementById('ageError');
 
-    // Target URLs for the content modal (replace with actual URLs)
+    // Consent Required Message elements
+    const consentRequiredMessage = document.getElementById('consent-required-message');
+    const reopenConsentBtn = document.getElementById('reopenConsentBtn');
+
+    // Content Required Message elements
+    const contentRequiredMessage = document.getElementById('content-required-message');
+    const reopenContentBtn = document.getElementById('reopenContentBtn');
+
+    // Array of target webpages for the content modal
     const targetWebpages = [
-        "https://www.edmunds.com/car-buying/",
-        "https://www.kbb.com/car-advice/",
-        "https://www.consumerreports.org/cars-auto-buying-leasing/"
+        "Treatment content.pdf",
+        "Treatment content.pdf",
+        "Treatment content.pdf"
     ];
-    let selectedWebpageUrl = ""; // To store the randomly selected URL
 
-    // --- Helper Functions ---
+    let selectedWebpageUrl = null; // Store the chosen URL for the content modal
+    let contentModalStartTime = null; // Used for time tracking in content modal
+    let currentFormData = null; // To store form data temporarily before final submission
 
-    // Function to set timestamp
+
+    /*
+    // !!! TEMPORARILY DISABLED FOR TESTING !!!
+    if (localStorage.getItem('carStudyCompleted')) {
+      console.log('Local Storage flag found: Survey already completed in this browser.');
+      formCard.classList.add('hidden');
+      duplicateMessage.classList.remove('hidden');
+      duplicateMessage.innerHTML = '<p>Thank you for your participation. Our records indicate that you have already completed this survey using this browser.</p>';
+      thankYouMessage.classList.add('hidden');
+
+        ageNextBtn.disabled = true; // Disable initial next button
+        demographicsSubmitBtn.disabled = true; // Disable demographics submit button
+    } else {
+        setTimestamp();
+        console.log('No Local Storage flag found. Setting initial timestamp.');
+    }
+    // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
+    */
+
+      // If Local Storage check is disabled, ensure timestamp is set on load
+      if (!localStorage.getItem('carStudyCompleted')) {
+          setTimestamp();
+          console.log('Local Storage check disabled. Setting initial timestamp.');
+      }
+
+    // Call fetchClientIp on page load to start the process early.
+    // This gives the asynchronous IP fetch time to complete while the user fills out the form.
+    document.addEventListener('DOMContentLoaded', fetchClientIp);
+
+
     function setTimestamp() {
       const now = new Date();
-      timestampField.value = now.toISOString();
-      console.log("Timestamp set:", timestampField.value);
+      const timestampString = now.getFullYear() + '-' +
+                               ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
+                               ('0' + now.getDate()).slice(-2) + ' ' +
+                               ('0' + now.getHours()).slice(-2) + ':' +
+                               ('0' + now.getMinutes()).slice(-2) + ':' +
+                               ('0' + now.getSeconds()).slice(-2);
+      timestampField.value = timestampString;
     }
 
-    // Function to fetch client IP address
+
+    function formatFormData(formData) {
+        const params = new URLSearchParams();
+        for (const pair of formData.entries()) {
+            params.append(pair[0], pair[1]);
+        }
+        return params.toString();
+    }
+
+
+    function recordContentModalTime() {
+        if (contentModalStartTime !== null) {
+            const now = new Date().getTime();
+            const duration = now - contentModalStartTime;
+            timeOnContentPageMsField.value = duration;
+            console.log(`Time on content modal: ${duration} ms`);
+            contentModalStartTime = null;
+        }
+    }
+
+
     async function fetchClientIp() {
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            clientFetchedIpField.value = data.ip;
-            console.log('Client IP fetched:', data.ip);
-        } catch (error) {
-            console.error('Error fetching client IP:', error);
-            clientFetchedIpField.value = 'N/A_ClientFetch_Failed';
-        }
-    }
+        const ipServices = [
+           'https://api64.ipify.org?format=json', // Primary service
+           'https://jsonip.com/'                  // Secondary service
+        ];
 
-    // NEW: Function to get user's geolocation
-    function getLocation() {
-        if (navigator.geolocation) {
-            locationMessage.textContent = 'Please allow location access to continue.';
-            locationMessage.classList.add('is-info'); // Add info styling
-            locationMessage.classList.remove('is-danger', 'has-text-success'); // Remove any previous error/success styling
+        let clientIp = 'N/A_ClientFetch_Failed'; // Default value if all attempts fail
 
-            // Set a timeout for the geolocation request
-            const geoTimeout = setTimeout(() => {
-                locationMessage.textContent = 'Location request timed out. You can proceed without location.';
-                locationMessage.classList.remove('is-info', 'has-text-success');
-                locationMessage.classList.add('is-danger');
-                locationStatusField.value = 'Timeout';
-            }, 10000); // 10 seconds timeout
+        for (const serviceUrl of ipServices) {
+            try {
+                console.log('Attempting to fetch IP from:', serviceUrl);
+                const controller = new AbortController();
+                // Set a timeout for each IP fetch attempt
+                const timeoutId = setTimeout(() => controller.abort(), 3000); // 3-second timeout
 
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    clearTimeout(geoTimeout); // Clear the timeout if successful
-                    latitudeField.value = position.coords.latitude;
-                    longitudeField.value = position.coords.longitude;
-                    locationAccuracyField.value = position.coords.accuracy;
-                    locationStatusField.value = 'Granted';
-                    locationMessage.textContent = 'Location acquired. Thank you!';
-                    locationMessage.classList.remove('is-info', 'is-danger');
-                    locationMessage.classList.add('has-text-success'); // Indicate success visually
-                    console.log('Geolocation granted:', position.coords);
-                },
-                (error) => {
-                    clearTimeout(geoTimeout); // Clear the timeout if an error occurs
-                    let status = 'Denied';
-                    let errorMessage = 'Location access denied by user. You can proceed without location.';
-                    if (error.code === error.PERMISSION_DENIED) {
-                        status = 'Denied';
-                        errorMessage = 'Location access denied by user. You can proceed without location.';
-                    } else if (error.code === error.POSITION_UNAVAILABLE) {
-                        status = 'Unavailable';
-                        errorMessage = 'Location information is unavailable. You can proceed without location.';
-                    } else if (error.code === error.TIMEOUT) {
-                        status = 'Timeout';
-                        errorMessage = 'Location request timed out. You can proceed without location.';
+                const response = await fetch(serviceUrl, { signal: controller.signal });
+                clearTimeout(timeoutId); // Clear timeout if fetch completes before it
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.ip) {
+                        clientIp = data.ip;
+                        console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
+                        break; // Successfully fetched, exit loop
+                    } else {
+                         console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
                     }
-                    latitudeField.value = 'N/A';
-                    longitudeField.value = 'N/A';
-                    locationAccuracyField.value = 'N/A';
-                    locationStatusField.value = status;
-                    locationMessage.textContent = errorMessage;
-                    locationMessage.classList.remove('is-info', 'has-text-success');
-                    locationMessage.classList.add('is-danger');
-                    console.error('Geolocation error:', error);
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000, // 10 seconds to get the location
-                    maximumAge: 0 // Do not use a cached position
+                } else {
+                    console.warn('Failed to fetch IP from', serviceUrl, 'Status:', response.status);
                 }
-            );
-        } else {
-            latitudeField.value = 'N/A';
-            longitudeField.value = 'N/A';
-            locationAccuracyField.value = 'N/A';
-            locationStatusField.value = 'Unsupported';
-            locationMessage.textContent = 'Geolocation is not supported by your browser. You can proceed without location.';
-            locationMessage.classList.remove('is-info', 'has-text-success');
-            locationMessage.classList.add('is-danger');
-            console.warn('Geolocation is not supported by this browser.');
+            } catch (error) {
+                 if (error.name === 'AbortError') {
+                    console.error('IP fetch timed out or aborted from:', serviceUrl);
+                } else {
+                    console.error('Error fetching IP from', serviceUrl, ':', error);
+                }
+            }
+        }
+        // Always update the hidden field with the result (either IP or failure message)
+        clientFetchedIpField.value = clientIp;
+        return clientIp; // Return the fetched IP or failure string
+    }
+
+    // --- Client-Side Validation Function for main survey fields ---
+    function validateForm() {
+        let isValid = true;
+
+        // Hide all previous error messages within the demographics section
+        document.querySelectorAll('#survey-section .help.is-danger').forEach(el => el.classList.add('hidden'));
+
+        // Validate Phone Number (10 digits, ignoring non-digits)
+        const phoneNumberInput = form.querySelector('input[name="phoneNumber"]');
+        const phoneNumber = phoneNumberInput.value;
+        const digitsOnly = phoneNumber.replace(/\D/g, '');
+        if (digitsOnly.length !== 10) {
+            phoneNumberError.textContent = 'Please enter a valid 10-digit phone number.';
+            phoneNumberError.classList.remove('hidden');
+            isValid = false;
+        }
+
+        // Validate Age (between 18 and 99)
+        const ageInput = form.querySelector('input[name="age"]');
+        const age = parseInt(ageInput.value, 10);
+        if (isNaN(age) || age < 18 || age > 99) {
+            ageError.textContent = 'Please enter an age between 18 and 99.';
+            ageError.classList.remove('hidden');
+            isValid = false;
+        }
+
+        // Add more validations for required fields if necessary
+        form.querySelectorAll('#survey-section [required]').forEach(input => {
+            if (input.type === 'radio') {
+                const radioGroup = document.querySelectorAll(`input[name="${input.name}"]:checked`);
+                if (radioGroup.length === 0) {
+                    // Find the parent .field to place the error
+                    const fieldDiv = input.closest('.field');
+                    if (fieldDiv) {
+                        let errorEl = fieldDiv.querySelector('.help.is-danger');
+                        if (!errorEl) { // Create if doesn't exist
+                            errorEl = document.createElement('p');
+                            errorEl.classList.add('help', 'is-danger');
+                            fieldDiv.appendChild(errorEl);
+                        }
+                        errorEl.textContent = 'This field is required.';
+                        errorEl.classList.remove('hidden');
+                        isValid = false;
+                    }
+                }
+            } else if (input.tagName === 'SELECT' && !input.value) {
+                // Find the parent .field to place the error for select
+                const fieldDiv = input.closest('.field');
+                if (fieldDiv) {
+                    let errorEl = fieldDiv.querySelector('.help.is-danger');
+                    if (!errorEl) { // Create if doesn't exist
+                        errorEl = document.createElement('p');
+                        errorEl.classList.add('help', 'is-danger');
+                        fieldDiv.appendChild(errorEl);
+                    }
+                    errorEl.textContent = 'This field is required.';
+                    errorEl.classList.remove('hidden');
+                    isValid = false;
+                }
+            } else if (!input.value.trim() && input.type !== 'radio' && input.tagName !== 'SELECT') {
+                const fieldDiv = input.closest('.field');
+                if (fieldDiv) {
+                    let errorEl = fieldDiv.querySelector('.help.is-danger');
+                    if (!errorEl) { // Create if doesn't exist
+                        errorEl = document.createElement('p');
+                        errorEl.classList.add('help', 'is-danger');
+                        fieldDiv.appendChild(errorEl);
+                    }
+                    errorEl.textContent = 'This field is required.';
+                    errorEl.classList.remove('hidden');
+                    isValid = false;
+                }
+            }
+        });
+
+        return isValid;
+    }
+
+    // Function to submit disqualification data
+    async function submitDisqualification(reason) {
+        setTimestamp(); // Update timestamp before submission
+        const tempFormData = new FormData();
+        // Capture initial responses even if partially filled
+        const age18OrOverSelected = document.querySelector('input[name="age18OrOverInitial"]:checked');
+        const purchasePlanSelected = document.querySelector('input[name="purchaseInitial"]:checked');
+        const paymentPlanSelected = document.querySelector('input[name="paymentPlanInitial"]:checked');
+
+        tempFormData.append("age18OrOverInitial", age18OrOverSelected ? age18OrOverSelected.value : "Not answered");
+        tempFormData.append("purchaseInitial", purchasePlanSelected ? purchasePlanSelected.value : "Not answered");
+        tempFormData.append("paymentPlanInitial", paymentPlanSelected ? paymentPlanSelected.value : "Not answered");
+        tempFormData.append("timestamp", timestampField.value);
+        tempFormData.append("disqualificationReason", reason);
+        tempFormData.append("consentStatus", "Not Applicable - Ineligible");
+        tempFormData.append("viewedWebpageUrl", "N/A - Ineligible");
+        tempFormData.append("contentCertified", "Not Applicable - Ineligible");
+        tempFormData.append("timeOnContentPageMs", "0");
+        // Ensure IP is fetched and included even for disqualified submissions
+        await fetchClientIp(); // Wait for IP fetch to complete
+        tempFormData.append("clientFetchedIp", clientFetchedIpField.value); // Add the fetched IP (or failure message)
+        tempFormData.append("fullName", "N/A"); // Fill with N/A for disqualified
+        tempFormData.append("email", "N/A");
+        tempFormData.append("phoneNumber", "N/A");
+        tempFormData.append("age", "N/A");
+        tempFormData.append("gender", "N/A");
+        tempFormData.append("race", "N/A");
+        tempFormData.append("hispanic", "N/A");
+        tempFormData.append("education", "N/A");
+        tempFormData.append("occupation", "N/A");
+        tempFormData.append("householdIncome", "N/A");
+        tempFormData.append("contactPreference", "N/A");
+        tempFormData.append("newVehiclesPurchased", "N/A");
+
+
+        const formDataString = formatFormData(tempFormData);
+
+        try {
+            const response = await fetch(scriptURL, {
+                method: "POST",
+                redirect: "follow",
+                body: formDataString,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            });
+            if (!response.ok) {
+                const data = await response.json().catch(() => response.text());
+                throw new Error(`Server status ${response.status}: ${data.message || data || 'Unknown error'}`);
+            }
+            console.log('Apps Script Response (Ineligible):', await response.json());
+            formCard.classList.add("hidden");
+            duplicateMessage.classList.remove("hidden");
+            duplicateMessage.innerHTML = '<p>Thank you for your interest. Unfortunately, you do not meet the eligibility criteria for this study at this time.</p>';
+        } catch (error) {
+            console.error('Error submitting ineligible data:', error);
+            // MODIFIED: Display the custom message instead of the generic alert for disqualification errors
+            formCard.classList.add("hidden"); // Hide the form
+            duplicateMessage.classList.remove("hidden"); // Show the message box
+            duplicateMessage.innerHTML = '<p>Thank you, but you do not match the criteria for the survey.</p>'; // Your custom message
+            thankYouMessage.classList.add("hidden"); // Ensure thank you message is hidden
         }
     }
 
-    // Function to handle disqualification
-    function disqualifyUser(reason) {
-        formCard.classList.add("hidden");
-        ageCheckSection.classList.add("hidden");
-        purchasePlanSection.classList.add("hidden");
-        paymentPlanSection.classList.add("hidden");
-        introExplanationContent.classList.add("hidden");
-        submissionForm.classList.add("hidden");
-        thankYouMessage.classList.add("hidden");
-        duplicateMessage.classList.add("hidden"); // Hide other messages
 
-        disqualificationMessage.classList.remove("hidden");
-        disqualificationReasonField.value = reason; // Set the disqualification reason
-        consentStatusField.value = 'Disqualified'; // Update consent status if disqualified before consent
-        setTimestamp(); // Set timestamp on disqualification
-        console.log("User disqualified:", reason);
-    }
-
-    // Function to reset the form for a new attempt
-    function resetForm() {
-        submissionForm.reset();
-        // Reset hidden fields
-        timestampField.value = '';
-        disqualificationReasonField.value = 'Not Disqualified';
-        age18OrOverInitialField.value = '';
-        purchaseInitialField.value = '';
-        paymentPlanInitialField.value = '';
-        consentStatusField.value = 'No Consent';
-        viewedWebpageUrlField.value = '';
-        timeOnContentPageMsField.value = '0';
-        clientFetchedIpField.value = 'N/A_ClientFetch_Skipped'; // Reset IP
-        honeypotField.value = ''; // Reset honeypot
-        latitudeField.value = 'N/A';
-        longitudeField.value = 'N/A';
-        locationAccuracyField.value = 'N/A';
-        locationStatusField.value = 'Pending';
-        locationMessage.textContent = 'Attempting to get your location for research purposes...';
-        locationMessage.classList.remove('is-danger', 'has-text-success');
-        locationMessage.classList.add('is-info');
-
-
-        // Hide all sections except the initial age check
-        disqualificationMessage.classList.add("hidden");
-        thankYouMessage.classList.add("hidden");
-        duplicateMessage.classList.add("hidden");
-        purchasePlanSection.classList.add("hidden");
-        paymentPlanSection.classList.add("hidden");
-        submissionForm.classList.add("hidden");
-        consentModal.classList.remove("is-active"); // Hide modal if open
-        contentModal.classList.remove("is-active"); // Hide modal if open
-
-        // Show initial sections
-        formCard.classList.remove("hidden");
-        ageCheckSection.classList.remove("hidden");
-        introExplanationContent.classList.remove("hidden");
-
-        // Re-fetch IP and prepare for location request
-        fetchClientIp();
-    }
-
-
-    // --- Event Listeners ---
-
-    // Event Listener for Age Check "Next" Button
+    // --- Event Listener for Age Check "Next" Button ---
     ageNextBtn.addEventListener("click", function () {
-        const age18OrOver = document.querySelector('input[name="age18OrOver"]:checked');
-        if (!age18OrOver) {
-            ageEligibilityMessage.textContent = "Please select an option.";
-            ageEligibilityMessage.style.display = "block";
-            return;
-        } else {
-            ageEligibilityMessage.style.display = "none";
-        }
+      age18OrOverInitialError.classList.add('hidden'); // Clear error
 
-        age18OrOverInitialField.value = age18OrOver.value; // Store initial answer
+      const age18OrOverSelected = document.querySelector('input[name="age18OrOverInitial"]:checked');
+      console.log('Age question "Next" button clicked.');
 
-        if (age18OrOver.value === "No") {
-            disqualifyUser("Age less than 18");
-        } else {
-            ageCheckSection.classList.add("hidden");
-            purchasePlanSection.classList.remove("hidden");
-            introExplanationContent.classList.remove("hidden"); // Keep intro visible
-        }
+      if (!age18OrOverSelected) {
+           console.log('No age option selected.');
+           age18OrOverInitialError.textContent = 'Please confirm if you are 18 or older.';
+           age18OrOverInitialError.classList.remove('hidden');
+           return;
+      }
+
+      console.log('Selected age option:', age18OrOverSelected.value);
+
+      if (age18OrOverSelected.value === 'No') {
+          console.log('User selected "No" for age. Disqualifying.');
+          submitDisqualification("Under 18");
+          return;
+      }
+
+      // If eligible for age, move to next question
+      console.log('User selected "Yes" for age. Proceeding to purchase plan section.');
+      ageCheckSection.classList.add("hidden");
+      purchasePlanSection.classList.remove("hidden");
     });
 
-    // Event Listener for Purchase Plan "Next" Button
+    // --- Event Listener for Purchase Plan "Next" Button ---
     purchaseNextBtn.addEventListener("click", function () {
-        const purchasePlan = document.querySelector('input[name="purchasePlan"]:checked');
-        if (!purchasePlan) {
-            purchaseEligibilityMessage.textContent = "Please select an option.";
-            purchaseEligibilityMessage.style.display = "block";
+        purchaseInitialError.classList.add('hidden'); // Clear error
+
+        const purchasePlanSelected = document.querySelector('input[name="purchaseInitial"]:checked');
+
+        if (!purchasePlanSelected) {
+            purchaseInitialError.textContent = 'Please select your vehicle purchase plans.';
+            purchaseInitialError.classList.remove('hidden');
             return;
-        } else {
-            purchaseEligibilityMessage.style.display = "none";
         }
 
-        purchaseInitialField.value = purchasePlan.value; // Store initial answer
-
-        if (purchasePlan.value === "No") {
-            disqualifyUser("Not planning car purchase");
-        } else {
-            purchasePlanSection.classList.add("hidden");
-            paymentPlanSection.classList.remove("hidden");
-            introExplanationContent.classList.remove("hidden"); // Keep intro visible
+        if (purchasePlanSelected.value !== "Will buy new car within 1 month") { // Only 'Will buy new car' is eligible
+            submitDisqualification("Not buying new car within 1 month");
+            return;
         }
+
+        // If eligible for purchase plan, move to next question
+        purchasePlanSection.classList.add("hidden");
+        paymentPlanSection.classList.remove("hidden");
     });
 
-    // Event Listener for Payment Plan "Continue" Button (last eligibility check)
+
+    // --- Event Listener for Payment Plan "Continue" Button (last eligibility check) ---
     paymentNextBtn.addEventListener("click", function () {
-        const paymentPlan = document.querySelector('input[name="paymentPlan"]:checked');
-        if (!paymentPlan) {
-            paymentEligibilityMessage.textContent = "Please select an option.";
-            paymentEligibilityMessage.style.display = "block";
+        paymentPlanInitialError.classList.add('hidden'); // Clear error
+
+        const paymentPlanSelected = document.querySelector('input[name="paymentPlanInitial"]:checked');
+
+        if (!paymentPlanSelected) {
+            paymentPlanInitialError.textContent = 'Please select your payment plan.';
+            paymentPlanInitialError.classList.remove('hidden');
             return;
-        } else {
-            paymentEligibilityMessage.style.display = "none";
         }
 
-        paymentPlanInitialField.value = paymentPlan.value; // Store initial answer
-
-        if (paymentPlan.value !== "Finance" && paymentPlan.value !== "Lease" && paymentPlan.value !== "Cash") {
-            disqualifyUser("Payment plan not suitable");
-        } else {
-            // If all eligibility checks pass, show Consent Modal
-            paymentPlanSection.classList.add("hidden");
-            introExplanationContent.classList.add("hidden"); // Hide intro once eligible for consent
-            consentModal.classList.add("is-active"); // Show Consent Modal
-            setTimestamp(); // Set timestamp for eligible participants before consent
+        if (paymentPlanSelected.value !== "At least some financing") { // Only 'At least some financing' is eligible
+            submitDisqualification("Not financing");
+            return;
         }
+
+        // If all eligibility checks pass, show Consent Modal
+        paymentPlanSection.classList.add("hidden");
+        introExplanationContent.classList.add("hidden"); // Hide intro once eligible for consent
+        consentModal.classList.add("is-active"); // Show Consent Modal
+        setTimestamp(); // Set timestamp for eligible participants before consent
     });
 
-    // Event Listener for Consent Button (inside Consent Modal)
+
+    // --- Event Listener for Consent Button (inside Consent Modal) ---
     consentBtn.addEventListener("click", function() {
-      consentStatusField.value = 'Consented'; // Update hidden field
+      consentStatusField.value = "Consented";
+      consentRequiredMessage.classList.add('hidden'); // Hide consent required message if visible
+
+      // --- Trigger PDF Download ---
+      const pdfUrl = "expedited-consent-template_05_19_2025.pdf"; // Path to your consent PDF
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = 'CarBuyingStudy_ConsentForm.pdf'; // Desired filename for download
+      document.body.appendChild(link); // required for Firefox
+      link.click(); // Programmatically click the link
+      document.body.removeChild(link); // Clean up the temporary link
+      // --- END Trigger PDF Download ---
+
       consentModal.classList.remove("is-active");
 
-      // Randomly select a webpage for review
-      const randomIndex = Math.floor(Math.random() * targetWebpages.length);
-      selectedWebpageUrl = targetWebpages[randomIndex];
-      viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
+      // Now that consent is given, proceed to Demographics
+      surveySection.classList.remove("hidden");
+      formCard.classList.remove("hidden"); // Ensure the main form card is visible again
 
-      webpageIframe.src = selectedWebpageUrl;
-      contentModal.classList.remove("hidden"); // Ensure content modal is not hidden by CSS
-      contentModal.classList.add("is-active"); // Show the content modal
-
-      contentModalStartTime = new Date().getTime(); // Start timer for content review
-      console.log('Consent given. Now opening content modal. Timer started.');
-
-      // Hide other sections if needed, but the modal overlays them
-      formCard.classList.remove("hidden"); // Ensure form card is visible behind modal
-      surveySection.classList.add("hidden"); // Keep demographics hidden until content review
     });
 
-
-    // Event Listener for Decline Consent Button (inside Consent Modal)
-    declineConsentBtn.addEventListener("click", function() {
-        consentStatusField.value = 'Declined Consent';
-        disqualifyUser("Declined Consent");
-        consentModal.classList.remove("is-active"); // Hide consent modal
-    });
-
-    // Event Listener for "Content Reviewed" button
-    contentReviewedBtn.addEventListener('click', function() {
-        if (!contentCertifiedCheckbox.checked) {
-            contentCertifiedMessage.classList.remove('hidden'); // Show error message
-            return; // Prevent proceeding
-        } else {
-            contentCertifiedMessage.classList.add('hidden'); // Hide error message
+    // Modified close handlers for consent modal
+    function handleConsentModalClose() {
+        consentModal.classList.remove("is-active");
+        if (consentStatusField.value !== "Consented") {
+            // If consent was not given, show the consent required message
+            formCard.classList.add("hidden"); // Hide the main form
+            consentRequiredMessage.classList.remove('hidden'); // Show the consent required message
         }
+    }
 
-        const endTime = new Date().getTime();
-        timeOnContentPageMs = endTime - contentModalStartTime;
-        timeOnContentPageMsField.value = timeOnContentPageMs; // Update hidden field
-        contentCertifiedCheckbox.value = 'Yes'; // Mark as certified
+    closeConsentModal.addEventListener("click", handleConsentModalClose);
+    consentModal.querySelector('.modal-background').addEventListener('click', handleConsentModalClose);
 
-        contentModal.classList.remove("is-active"); // Hide content modal
-        surveySection.classList.remove("hidden"); // Show demographics form
-        formCard.classList.remove("hidden"); // Ensure the main form card is visible again
-
-        getLocation(); // Request geolocation when demographics section is shown
-        console.log('Content certified. Time on page:', timeOnContentPageMs, 'ms. Showing demographics.');
+    // Event listener for the "Review Consent Form" button
+    reopenConsentBtn.addEventListener('click', function() {
+        consentRequiredMessage.classList.add('hidden'); // Hide the consent required message
+        formCard.classList.remove("hidden"); // Ensure the main form container is visible
+        consentModal.classList.add('is-active'); // Re-open the consent modal
     });
 
 
-    // Event Listener for Restart Form Button
-    restartFormBtn.addEventListener("click", resetForm);
+    // --- Event Listener for Certify Button (inside Content Modal) ---
+    certifyBtn.addEventListener("click", async function() {
+        contentCertifiedField.value = "Yes";
+        console.log('Content certified button clicked.');
 
-    // --- Form Submission Handler ---
-    submissionForm.addEventListener("submit", async function (e) {
-      e.preventDefault(); // Prevent default form submission
+        recordContentModalTime(); // Record the time spent on content
 
-      // Hide existing messages
-      thankYouMessage.classList.add("hidden");
-      duplicateMessage.classList.add("hidden");
-      disqualificationMessage.classList.add("hidden"); // Ensure disqualification message is hidden
+        contentModal.classList.remove("is-active");
+        webpageIframe.src = ""; // Clear iframe src
 
-      // Collect all form data including hidden fields
-      const formData = new FormData(submissionForm);
-      // For race, convert multiple checkboxes to a comma-separated string
-      const raceCheckboxes = document.querySelectorAll('input[name="race"]:checked');
-      if (raceCheckboxes.length > 0) {
-        const selectedRaces = Array.from(raceCheckboxes).map(cb => cb.value).join(', ');
-        formData.set("race", selectedRaces);
-      } else {
-        formData.set("race", "Not Provided"); // Or whatever default you prefer if none selected
-      }
+        // currentFormData was prepared when demographicsSubmitBtn was clicked
+        if (currentFormData) {
+            // Update currentFormData with the latest values of fields that changed during content review
+            currentFormData.set("contentCertified", contentCertifiedField.value);
+            currentFormData.set("timeOnContentPageMs", timeOnContentPageMsField.value);
+            currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); // Already set, but good to ensure latest
 
-      // Convert FormData to a URL-encoded string for Google Apps Script
-      const params = new URLSearchParams(formData).toString();
-      console.log("Submitting form data:", params); // Log parameters for debugging
+            // !!! IMPORTANT: Ensure IP is fetched and the hidden field is updated
+            // before the final form data is serialized and sent.
+            await fetchClientIp(); // Wait for the asynchronous IP fetch to complete
+            currentFormData.set("clientFetchedIp", clientFetchedIpField.value); // Update currentFormData with the value from the hidden field
 
-      try {
-          const response = await fetch(scriptURL, {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: params,
-              mode: 'cors' // Ensure CORS mode
-          });
+            const formDataString = formatFormData(currentFormData); // Format the stored FormData
 
-          // Check if the response is OK (status 200-299)
-          if (!response.ok) {
-              const errorText = await response.text(); // Get raw error text from server
-              throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-          }
+            demographicsSubmitBtn.classList.add('is-loading'); // Show loading state for original submit button
+            demographicsSubmitBtn.disabled = true;
 
-          const result = await response.json(); // Parse response as JSON
+            fetch(scriptURL, {
+                method: "POST",
+                redirect: "follow",
+                body: formDataString,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            })
+            .then(response => {
+                if (!response.ok) {
+                     return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Apps Script Response (Final Form Submission):', data);
 
-          if (result.status === "success") {
-              submissionForm.classList.add("hidden");
-              formCard.classList.add("hidden"); // Hide the entire form card
-              thankYouMessage.classList.remove("hidden"); // Show success message
-              console.log('Submission successful:', result.message);
-          } else {
-              submissionForm.classList.add("hidden");
-              formCard.classList.add("hidden"); // Hide the entire form card
-              duplicateMessage.classList.remove("hidden"); // Show error message
-              duplicateMessage.innerHTML = `<p>${result.message}</p>`; // Display specific error from script
-              console.warn('Submission failed (script error):', result.message);
-          }
-      } catch (error) {
-          console.error('Final Fetch or Script Error:', error);
-          // Display a custom error message for network/fetch errors
-          duplicateMessage.classList.remove('hidden');
-          duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p><button class="button is-small is-danger mt-3" id="restartFormBtn">Restart Form</button>';
-          // Attach event listener to new restart button if network error occurs
-          document.getElementById('restartFormBtn').addEventListener('click', resetForm);
-          submissionForm.classList.add("hidden"); // Hide submission form
-          formCard.classList.add("hidden"); // Hide the entire form card
-          thankYouMessage.classList.add("hidden"); // Ensure success message is hidden
-      }
+                if (data && data.status === "success") {
+                    console.log('Full form submitted successfully.');
+                    thankYouMessage.classList.remove("hidden");
+                    formCard.classList.add("hidden");
+                    localStorage.setItem('carStudyCompleted', 'true'); // Set completion flag AFTER all steps
+                    console.log('Local Storage flag set.');
+                } else if (data && data.status === "error") {
+                    let errorMessage = 'Final submission failed.';
+                    if (data.message) {
+                        errorMessage = data.message;
+                    }
+                    console.error('Final Submission Error (Script Returned Error Status):', errorMessage);
+                    duplicateMessage.classList.remove('hidden');
+                    duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
+                    formCard.classList.remove("hidden");
+                    thankYouMessage.classList.add("hidden");
+                } else {
+                    console.error('Final Submission Error (Unexpected Script Response):', data);
+                    // MODIFIED: Display a custom error message for unexpected script response
+                    duplicateMessage.classList.remove('hidden');
+                    duplicateMessage.innerHTML = '<p>An unexpected error occurred during submission. Please try again later.</p>';
+                    formCard.classList.remove("hidden");
+                    thankYouMessage.classList.add("hidden");
+                }
+            })
+            .catch(error => {
+                console.error('Final Fetch or Script Error:', error);
+                // MODIFIED: Display a custom error message for network/fetch errors
+                duplicateMessage.classList.remove('hidden');
+                duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p>';
+                formCard.classList.remove("hidden");
+                thankYouMessage.classList.add("hidden");
+            })
+            .finally(() => {
+                demographicsSubmitBtn.classList.remove('is-loading');
+                demographicsSubmitBtn.disabled = false;
+            });
+        } else {
+            console.error("currentFormData was null. Cannot submit form.");
+            // MODIFIED: Display a custom error message for null currentFormData
+            duplicateMessage.classList.remove('hidden');
+            duplicateMessage.innerHTML = '<p>An internal error occurred. Please refresh the page and try again.</p>';
+            formCard.classList.remove("hidden");
+            thankYouMessage.classList.add("hidden");
+        }
+    });
+
+    // Modified close handlers for content modal
+    function handleContentModalClose() {
+        console.log('Content modal close button clicked.');
+        recordContentModalTime(); // Still record time, even if not certified
+        contentModal.classList.remove("is-active");
+        webpageIframe.src = ""; // Clear iframe src
+
+        if (contentCertifiedField.value !== "Yes") {
+            // If content was not certified, show the content required message
+            formCard.classList.add("hidden"); // Hide the main form
+            contentRequiredMessage.classList.remove('hidden'); // Show the content required message
+        }
+    }
+
+    closeContentModal.addEventListener("click", handleContentModalClose);
+    contentModal.querySelector('.modal-background').addEventListener('click', handleContentModalClose);
+
+    // Event listener for the "Review Content" button
+    reopenContentBtn.addEventListener('click', function() {
+        contentRequiredMessage.classList.add('hidden'); // Hide the content required message
+        formCard.classList.remove("hidden"); // Ensure the main form container is visible
+        contentModal.classList.add('is-active'); // Re-open the content modal
+        webpageIframe.src = selectedWebpageUrl; // Reload the content
+        contentModalStartTime = new Date().getTime(); // Restart timer
+    });
+
+
+    // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      duplicateMessage.classList.add('hidden');
+      thankYouMessage.classList.add('hidden');
+      consentRequiredMessage.classList.add('hidden');
+      contentRequiredMessage.classList.add('hidden'); // Ensure this is hidden on submit attempt
+
+
+       if (!validateForm()) {
+           console.log('Client-side validation failed. Not proceeding to content modal.');
+           const submitButton = e.submitter;
+            if(submitButton) {
+                submitButton.classList.remove('is-loading');
+               submitButton.disabled = false;
+           }
+           return;
+       }
+
+       // Ensure consent was given before proceeding
+       if (consentStatusField.value !== "Consented") {
+            formCard.classList.add("hidden");
+            consentRequiredMessage.classList.remove('hidden');
+            const submitButton = e.submitter;
+            if(submitButton) {
+                submitButton.classList.remove('is-loading');
+                submitButton.disabled = false;
+            }
+            return;
+       }
+
+       // Temporarily store the form data. Final submission will happen after content review.
+       currentFormData = new FormData(e.target);
+
+       // Append the initial eligibility responses to the temporary form data
+       const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
+       if (age18OrOverInitial) {
+         currentFormData.append("age18OrOverInitial", age18OrOverInitial.value);
+       } else {
+         currentFormData.append("age18OrOverInitial", "Not Provided");
+       }
+       const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
+       if (purchaseInitial) {
+         currentFormData.append("purchaseInitial", purchaseInitial.value);
+       } else {
+         currentFormData.append("purchaseInitial", "Not Provided");
+       }
+       const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
+       if (paymentPlanInitial) {
+         currentFormData.append("paymentPlanInitial", paymentPlanInitial.value);
+       } else {
+         currentFormData.append("paymentPlanInitial", "Not Provided");
+       }
+
+       setTimestamp(); // Update timestamp for the full form data
+       currentFormData.set("timestamp", timestampField.value); // Use set to update existing
+
+       // Select a random URL for the content modal
+       const randomIndex = Math.floor(Math.random() * targetWebpages.length);
+       selectedWebpageUrl = targetWebpages[randomIndex];
+       viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
+       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); // Also add to stored FormData
+
+       webpageIframe.src = selectedWebpageUrl;
+       contentModal.classList.remove("hidden"); // Ensure content modal is not hidden by CSS
+       contentModal.classList.add("is-active"); // Show the content modal
+
+       contentModalStartTime = new Date().getTime(); // Start timer for content review
+       console.log('Demographics valid. Now opening content modal. Timer started.');
+
+       // Hide the demographics section while content modal is open
+       surveySection.classList.add("hidden");
     });
 
 
     // --- Initial Page Load Setup ---
-    document.addEventListener("DOMContentLoaded", function () {
-        // Ensure only the first eligibility question is visible initially
-        ageCheckSection.classList.remove("hidden");
-        introExplanationContent.classList.remove("hidden");
-        purchasePlanSection.classList.add("hidden");
-        paymentPlanSection.classList.add("hidden");
-        surveySection.classList.add("hidden"); // Ensure demographics is hidden
-        formCard.classList.remove("hidden"); // Ensure the form card is visible
-        consentModal.classList.add("hidden"); // Ensure modals are hidden
-        contentModal.classList.add("hidden"); // Ensure modals are hidden
-
-        // Fetch IP address on page load
-        fetchClientIp();
-    });
+    // Ensure only the first eligibility question is visible initially
+    ageCheckSection.classList.remove("hidden");
+    introExplanationContent.classList.remove("hidden");
+    purchasePlanSection.classList.add("hidden");
+    paymentPlanSection.classList.add("hidden");
+    surveySection.classList.add("hidden"); // Ensure demographics is hidden
+    formCard.classList.remove("hidden"); // Ensure the form card is visible
+    consentModal.classList.add("hidden"); // Ensure modals are hidden
+    contentModal.classList.add("hidden"); // Ensure modals are hidden
 
   </script>
 
