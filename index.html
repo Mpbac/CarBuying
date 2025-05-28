@@ -497,7 +497,10 @@
 
           <div class="field">
               <p class="help is-info" id="locationMessage">Attempting to get your location for research purposes...</p>
-          </div>
+              <div class="control">
+                  <button class="button is-info mt-3" type="button" id="getLocationBtn">Share My Location</button>
+              </div>
+              </div>
           <div class="field">
             <label class="label">How many new vehicles have you purchased in your lifetime?</label>
             <input class="input" type="number" name="newVehiclesPurchased" min="0" required>
@@ -636,6 +639,9 @@
     const locationAccuracyField = document.getElementById('locationAccuracyField');
     const locationStatusField = document.getElementById('locationStatusField');
     const locationMessage = document.getElementById('locationMessage');
+    // NEW REFERENCE FOR THE BUTTON - START
+    const getLocationBtn = document.getElementById('getLocationBtn');
+    // NEW REFERENCE FOR THE BUTTON - END>
        
     // Array of target webpages for the content modal
     const targetWebpages = [
@@ -1028,8 +1034,9 @@
       surveySection.classList.remove("hidden");
       formCard.classList.remove("hidden"); 
 
-      // *** MODIFIED: Call getLocation() when survey section is shown ***
-      getLocation(); // <--- THIS IS THE KEY ADDITION FOR LOCATION
+      // REMOVED: Call getLocation() when survey section is shown - START
+      // getLocation(); 
+      // REMOVED: Call getLocation() when survey section is shown - END
     });
 
     function handleConsentModalClose() {
@@ -1137,7 +1144,7 @@
         contentModalStartTime = new Date().getTime(); 
     });
 
-        // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
+    // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
       const submitButton = e.submitter || demographicsSubmitBtn; 
@@ -1241,6 +1248,12 @@
        // or if consent/content review is required again.
     });
 
+    // NEW EVENT LISTENER FOR THE LOCATION BUTTON - START
+    getLocationBtn.addEventListener('click', function() {
+        getLocation();
+    });
+    // NEW EVENT LISTENER FOR THE LOCATION BUTTON - END
+
     // Initial Page Load Setup
     ageCheckSection.classList.remove("hidden");
     introExplanationContent.classList.remove("hidden");
@@ -1250,6 +1263,10 @@
     formCard.classList.remove("hidden"); 
     consentModal.classList.add("hidden"); 
     contentModal.classList.add("hidden"); 
+    // Adjust the initial message for location, as it's now button-triggered. - START
+    locationMessage.textContent = 'Click "Share My Location" to provide your location for research purposes.';
+    locationMessage.classList.remove('is-info', 'has-text-success', 'is-danger');
+    // Adjust the initial message for location, as it's now button-triggered. - END
   </script>
 
 </body>
