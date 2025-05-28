@@ -709,22 +709,22 @@
         }
     }
 
-    function getLocation() {
+   function getLocation() {
         if (navigator.geolocation) {
-            locationMessage.textContent = 'Please allow location access to continue. This is for research purposes and helps us understand regional differences.';
+            // Keep the initial request message friendly
+            locationMessage.textContent = 'Requesting your location. This is required for study participation and helps us understand regional differences.';
             locationMessage.classList.remove('is-danger', 'has-text-success');
             locationMessage.classList.add('is-info'); 
 
             const geoTimeout = setTimeout(() => {
-                locationMessage.textContent = 'Location request timed out. You can proceed without location.';
+                locationMessage.textContent = 'Location request timed out. Location is required to participate. Please refresh or check browser/OS settings.';
                 locationMessage.classList.remove('is-info', 'has-text-success');
                 locationMessage.classList.add('is-danger');
-                locationStatusField.value = 'Timeout';
-                // Ensure N/A is set for coordinates on timeout
+                locationStatusField.value = 'Timeout_Form'; // Custom status for our timeout
                 latitudeField.value = 'N/A';
                 longitudeField.value = 'N/A';
                 locationAccuracyField.value = 'N/A';
-            }, 15000); // 15 seconds timeout (increased slightly)
+            }, 15000); // 15 seconds timeout
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -740,21 +740,24 @@
                 },
                 (error) => {
                     clearTimeout(geoTimeout); 
-                    let status = 'Denied_Unknown'; // Default error status
-                    let errorMessage = 'Could not retrieve location. You can proceed without location.';
+                    let status = 'Denied_Unknown'; 
+                    let errorMessage = 'Could not retrieve location. Location is required to participate. Please check browser/OS settings.'; // Default error
                     
                     switch (error.code) {
                         case error.PERMISSION_DENIED:
                             status = 'Denied_User';
-                            errorMessage = 'Location access denied by user. You can proceed without location.';
+                            // *** MODIFIED MESSAGE ***
+                            errorMessage = 'Location access denied by user. Location is required to participate. You may need to adjust browser settings and refresh.';
                             break;
                         case error.POSITION_UNAVAILABLE:
                             status = 'Unavailable';
-                            errorMessage = 'Location information is unavailable. You can proceed without location.';
+                            // *** MODIFIED MESSAGE ***
+                            errorMessage = 'Location information is unavailable. Location is required to participate. Ensure location services are enabled.';
                             break;
                         case error.TIMEOUT:
-                            status = 'Timeout_API'; // Differentiate from our manual timeout
-                            errorMessage = 'Location request timed out (API). You can proceed without location.';
+                            status = 'Timeout_API'; 
+                            // *** MODIFIED MESSAGE ***
+                            errorMessage = 'Location request timed out (API). Location is required to participate. Please try again or check settings.';
                             break;
                     }
                     
@@ -778,7 +781,8 @@
             longitudeField.value = 'N/A';
             locationAccuracyField.value = 'N/A';
             locationStatusField.value = 'Unsupported';
-            locationMessage.textContent = 'Geolocation is not supported by your browser. You can proceed without location.';
+            // *** MODIFIED MESSAGE ***
+            locationMessage.textContent = 'Geolocation is not supported by your browser. Location is required to participate.';
             locationMessage.classList.remove('is-info', 'has-text-success');
             locationMessage.classList.add('is-danger');
             console.warn('Geolocation is not supported by this browser.');
@@ -1133,20 +1137,33 @@
         contentModalStartTime = new Date().getTime(); 
     });
 
+        // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-      const submitButton = e.submitter || demographicsSubmitBtn; // Get the button that triggered submit
+      const submitButton = e.submitter || demographicsSubmitBtn; 
       submitButton.classList.add('is-loading');
       submitButton.disabled = true;
-
 
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
       consentRequiredMessage.classList.add('hidden');
       contentRequiredMessage.classList.add('hidden'); 
+      // Clear any previous general location error that this submit handler might have set
+      // but let specific messages from getLocation() persist unless overridden.
+      // If locationMessage is already showing a specific error from getLocation(), this won't change it yet.
+      if (locationMessage.textContent.includes("Location access is required to proceed")) {
+          locationMessage.classList.remove('is-danger'); // Temporarily remove danger if it was from a previous submit click
+          locationMessage.textContent = document.getElementById('locationStatusField').value === 'Granted' ? 'Location acquired. Thank you!' : 'Attempting to get your location for research purposes...'; // Reset to a neutral or success message if applicable
+          if (document.getElementById('locationStatusField').value === 'Granted') {
+            locationMessage.classList.add('has-text-success');
+          } else {
+            locationMessage.classList.add('is-info');
+          }
+      }
 
 
        if (!validateForm()) {
+           console.log('Client-side validation failed.');
            if(submitButton) {
                 submitButton.classList.remove('is-loading');
                submitButton.disabled = false;
@@ -1155,6 +1172,7 @@
        }
 
        if (consentStatusField.value !== "Consented") {
+            console.log('Consent not given.');
             formCard.classList.add("hidden");
             consentRequiredMessage.classList.remove('hidden');
             if(submitButton) {
@@ -1164,8 +1182,36 @@
             return;
        }
 
+       // *** NEW: Mandatory Location Check ***
+       if (locationStatusField.value !== 'Granted') {
+            console.log('Location not granted. Status:', locationStatusField.value);
+            locationMessage.textContent = 'Location access is required to proceed. Please grant permission and ensure location services are enabled. You may need to refresh the page or adjust browser settings if you previously denied it.';
+            locationMessage.classList.remove('is-info', 'has-text-success');
+            locationMessage.classList.add('is-danger');
+            locationMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if(submitButton) {
+                submitButton.classList.remove('is-loading');
+                submitButton.disabled = false;
+            }
+            return; // Stop form submission
+       }
+       // *** END: Mandatory Location Check ***
+
+       // If we've passed the location check, and it was previously showing an error from *this* submit handler,
+       // ensure the message reflects the actual granted status.
+       // getLocation() would have already set a success message if granted.
+       if (locationStatusField.value === 'Granted') {
+            locationMessage.textContent = 'Location acquired. Thank you!';
+            locationMessage.classList.remove('is-info', 'is-danger');
+            locationMessage.classList.add('has-text-success');
+       }
+
+
+       // Temporarily store the form data. Final submission will happen after content review.
        currentFormData = new FormData(e.target);
 
+       // Append the initial eligibility responses to the temporary form data
        const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
        currentFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "Not Provided");
        const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
@@ -1173,20 +1219,21 @@
        const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
        currentFormData.append("paymentPlanInitial", paymentPlanInitial ? paymentPlanInitial.value : "Not Provided");
 
-       setTimestamp(); 
-       currentFormData.set("timestamp", timestampField.value); 
+       setTimestamp(); // Update timestamp for the full form data
+       currentFormData.set("timestamp", timestampField.value); // Use set to update existing
 
+       // Select a random URL for the content modal
        const randomIndex = Math.floor(Math.random() * targetWebpages.length);
        selectedWebpageUrl = targetWebpages[randomIndex];
-       viewedWebpageUrlField.value = selectedWebpageUrl; 
-       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); 
+       viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
+       currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); // Also add to stored FormData
 
        webpageIframe.src = selectedWebpageUrl;
        contentModal.classList.remove("hidden"); 
        contentModal.classList.add("is-active"); 
 
        contentModalStartTime = new Date().getTime(); 
-       
+       console.log('Demographics, consent, and location valid. Now opening content modal. Timer started.');
        // Don't hide surveySection immediately; allow submit button to remain visible but loading
        // surveySection.classList.add("hidden"); // This was hiding the button too soon
        // The button's state (loading, disabled) will handle user feedback.
