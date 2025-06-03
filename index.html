@@ -271,9 +271,7 @@
         <input type="hidden" name="timestamp" id="timestampField">
         <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
         <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
-
-        
-        <div class="field hidden">
+        <input type="hidden" name="redirectedToUrl" id="redirectedToUrlField" value="N/A"> <div class="field hidden">
           <label class="label" for="honeypotField">Leave this field empty</label>
           <div class="control">
             <input class="input" type="text" name="honeypot" id="honeypotField" tabindex="-1" autocomplete="off">
@@ -541,9 +539,12 @@
     <button class="modal-close is-large" aria-label="close" id="closeConsentModal"></button>
   </div>
 
-  <script>
+     <script>
     // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv46ODXRCgJ-1XYbh_R7tKGECykly/exec"; // Updated URL from previous example, ensure yours is correct
+    // This URL must be deployed as a "Web app" with appropriate access permissions (e.g., "Anyone, even anonymous").
+    // If you are experiencing "network errors", check your browser's network tab (F12) to see the actual response
+    // from this URL, and verify your Apps Script is returning valid JSON.
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv46ODXRCgJ-1XYbh_R7tKGECykly/exec"; 
 
     const timestampField = document.getElementById("timestampField");
     const form = document.getElementById("purchaseForm");
@@ -574,12 +575,10 @@
     const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
 
-    // Removed Content modal elements and related variables
-
     // Hidden form fields
     const consentStatusField = document.getElementById("consentStatusField");
-    // Removed viewedWebpageUrlField, contentCertifiedField, timeOnContentPageMsField
     const clientFetchedIpField = document.getElementById('clientFetchedIpField');
+    const redirectedToUrlField = document.getElementById('redirectedToUrlField'); // NEW: Reference to the hidden field
 
     // Bot protection field
     const honeypotField = document.getElementById('honeypotField');
@@ -592,22 +591,17 @@
     const consentRequiredMessage = document.getElementById('consent-required-message');
     const reopenConsentBtn = document.getElementById('reopenConsentBtn');
 
-    // Removed Content Required Message elements
-
     const latitudeField = document.getElementById('latitudeField');
     const longitudeField = document.getElementById('longitudeField');
     const locationAccuracyField = document.getElementById('locationAccuracyField');
     const locationStatusField = document.getElementById('locationStatusField');
     const locationMessage = document.getElementById('locationMessage');
        
-    // Removed targetWebpages as content is no longer displayed in an iframe
-
     // Array of URLs for random redirection after successful submission
     const postSubmissionRedirectUrls = [
-        "https://www.google.com/", // Example URL 1
-        "https://www.bing.com/",   // Example URL 2
-        "https://www.yahoo.com/"   // Example URL 3
-        // Add more URLs as needed
+        "https://www.google.com/", 
+        "https://www.bing.com/",   
+        "https://www.yahoo.com/"   
     ];
 
     let currentFormData = null; // To store form data temporarily before final submission
@@ -663,8 +657,6 @@
     }
 
 
-    // Removed recordContentModalTime() function
-
    function getLocation() {
         if (navigator.geolocation) {
             // Keep the initial request message friendly
@@ -702,17 +694,14 @@
                     switch (error.code) {
                         case error.PERMISSION_DENIED:
                             status = 'Denied_User';
-                            // *** MODIFIED MESSAGE ***
                             errorMessage = 'Location access denied by user. Location is required to participate. You may need to adjust browser settings and refresh.';
                             break;
                         case error.POSITION_UNAVAILABLE:
                             status = 'Unavailable';
-                            // *** MODIFIED MESSAGE ***
                             errorMessage = 'Location information is unavailable. Location is required to participate. Ensure location services are enabled.';
                             break;
                         case error.TIMEOUT:
                             status = 'Timeout_API'; 
-                            // *** MODIFIED MESSAGE ***
                             errorMessage = 'Location request timed out (API). Location is required to participate. Please try again or check settings.';
                             break;
                     }
@@ -737,7 +726,6 @@
             longitudeField.value = 'N/A';
             locationAccuracyField.value = 'N/A';
             locationStatusField.value = 'Unsupported';
-            // *** MODIFIED MESSAGE ***
             locationMessage.textContent = 'Geolocation is not supported by your browser. Location is required to participate.';
             locationMessage.classList.remove('is-info', 'has-text-success');
             locationMessage.classList.add('is-danger');
@@ -868,11 +856,12 @@
         tempFormData.append("timestamp", timestampField.value);
         tempFormData.append("disqualificationReason", reason);
         tempFormData.append("consentStatus", "Not Applicable - Ineligible");
-        tempFormData.append("viewedWebpageUrl", "N/A - Not Applicable"); // Updated
-        tempFormData.append("contentCertified", "N/A - Not Applicable"); // Updated
-        tempFormData.append("timeOnContentPageMs", "0"); // Still include as 0 or N/A
+        tempFormData.append("viewedWebpageUrl", "N/A - Not Applicable"); 
+        tempFormData.append("contentCertified", "N/A - Not Applicable"); 
+        tempFormData.append("timeOnContentPageMs", "0"); 
         await fetchClientIp(); 
         tempFormData.append("clientFetchedIp", clientFetchedIpField.value); 
+        tempFormData.append("redirectedToUrl", "N/A - Ineligible"); // NEW: For disqualified submissions
         tempFormData.append("fullName", "N/A"); 
         tempFormData.append("email", "N/A");
         tempFormData.append("phoneNumber", "N/A");
@@ -1005,8 +994,6 @@
         consentModal.classList.add('is-active'); 
     });
 
-    // Removed certifyBtn event listener and content modal related functions
-
         // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -1017,7 +1004,6 @@
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
       consentRequiredMessage.classList.add('hidden');
-      // Removed contentRequiredMessage.classList.add('hidden');
       
       if (locationMessage.textContent.includes("Location access is required to proceed")) {
           locationMessage.classList.remove('is-danger'); 
@@ -1071,6 +1057,10 @@
             locationMessage.classList.add('has-text-success');
        }
 
+       // Determine the redirect URL before submission
+       const randomIndex = Math.floor(Math.random() * postSubmissionRedirectUrls.length);
+       const redirectUrl = postSubmissionRedirectUrls[randomIndex];
+
        // Prepare form data for submission
        currentFormData = new FormData(e.target);
 
@@ -1085,10 +1075,15 @@
        setTimestamp(); // Update timestamp for the full form data
        currentFormData.set("timestamp", timestampField.value); // Use set to update existing
 
-       // Removed content-related data for submission
-       currentFormData.set("viewedWebpageUrl", "N/A - Not Applicable"); // Set to N/A
-       currentFormData.set("contentCertified", "N/A - Not Applicable"); // Set to N/A
-       currentFormData.set("timeOnContentPageMs", "0"); // Set to 0 or N/A as content not shown
+       // Set content-related data to N/A as content is no longer shown
+       currentFormData.set("viewedWebpageUrl", "N/A - Not Applicable"); 
+       currentFormData.set("contentCertified", "N/A - Not Applicable"); 
+       currentFormData.set("timeOnContentPageMs", "0"); 
+
+       // Set the redirect URL in the form data
+       currentFormData.set("redirectedToUrl", redirectUrl); // NEW: Set the URL to be recorded
+       redirectedToUrlField.value = redirectUrl; // Update the hidden field in the DOM
+
 
        await fetchClientIp(); 
        currentFormData.set("clientFetchedIp", clientFetchedIpField.value); 
@@ -1104,8 +1099,17 @@
        })
        .then(response => {
            if (!response.ok) {
-                return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
+                // If response is not OK (e.g., 4xx, 5xx), try to parse as JSON, then as text for debugging
+                return response.json().then(data => { 
+                    throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); 
+                }).catch(() => { 
+                    return response.text().then(text => { 
+                        const snippet = text.substring(0, 200); 
+                        throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); 
+                    }); 
+                });
            }
+           // If response is OK, try to parse as JSON
            return response.json();
        })
        .then(data => {
@@ -1114,15 +1118,10 @@
                formCard.classList.add("hidden");
                localStorage.setItem('carStudyCompleted', 'true'); 
 
-               // --- NEW REDIRECTION LOGIC: Redirect after successful submission ---
-               const randomIndex = Math.floor(Math.random() * postSubmissionRedirectUrls.length);
-               const redirectUrl = postSubmissionRedirectUrls[randomIndex];
-
                // Redirect after a short delay to allow the "Thank you" message to be seen
                setTimeout(() => {
                    window.location.href = redirectUrl;
                }, 2000); // 2 second delay before redirection
-               // --- END NEW REDIRECTION LOGIC ---
 
            } else if (data && data.status === "error") {
                let errorMessage = data.message || 'Final submission failed.';
@@ -1131,15 +1130,18 @@
                formCard.classList.remove("hidden"); 
                thankYouMessage.classList.add("hidden");
            } else {
+               // Unexpected successful response format
                duplicateMessage.classList.remove('hidden');
-               duplicateMessage.innerHTML = '<p>An unexpected error occurred during submission. Please try again later.</p>';
+               duplicateMessage.innerHTML = '<p>An unexpected successful response was received from the server. Please try again later. Response data: ' + JSON.stringify(data).substring(0, 200) + '...</p>';
                formCard.classList.remove("hidden");
                thankYouMessage.classList.add("hidden");
            }
        })
        .catch(error => {
+           // This catch block handles network errors or errors thrown from the .then blocks above
+           console.error('Submission error:', error);
            duplicateMessage.classList.remove('hidden');
-           duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p>';
+           duplicateMessage.innerHTML = `<p>There was a network or server response error during submission. Please check your internet connection and try again. Error details: ${error.message || error}</p>`;
            formCard.classList.remove("hidden");
            thankYouMessage.classList.add("hidden");
        })
@@ -1157,7 +1159,6 @@
     surveySection.classList.add("hidden"); 
     formCard.classList.remove("hidden"); 
     consentModal.classList.add("hidden"); 
-    // Removed contentModal.classList.add("hidden");
   </script>
 
 </body>
