@@ -130,7 +130,6 @@
       margin: 2rem 0;
     }
 
-
     .modal-content {
       width: 95%;
       max-width: 1600px;
@@ -149,7 +148,6 @@
       overflow: hidden;
       position: relative;
     }
-
 
     .iframe-container {
       flex-grow: 1;
@@ -193,19 +191,16 @@
         text-align: center;
     }
 
-
     .modal .modal-close {
         top: 10px;
         right: 10px;
     }
-
 
     .help.is-danger {
         color: #f14668;
         font-size: 0.875em;
         margin-top: 0.25rem;
     }
-
 
     @media (max-width: 768px) {
       .hero .title {
@@ -271,8 +266,7 @@
         <input type="hidden" name="timestamp" id="timestampField">
         <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
         <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
-        <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
-        <input type="hidden" name="timeOnContentPageMs" id="timeOnContentPageMsField" value="0">
+        <!-- Removed contentCertified and timeOnContentPageMs as content modal is removed -->
         <input type="hidden" name="clientFetchedIp" id="clientFetchedIpField" value="N/A_ClientFetch_Skipped">
 
         
@@ -528,12 +522,7 @@
     <button class="button is-primary mt-4" id="reopenConsentBtn">Review Consent Form</button>
   </div>
 
-  <div id="content-required-message" class="message-box is-danger hidden">
-    <p class="title is-5 has-text-danger">Content Review Required</p>
-    <p>You must review the provided content to proceed with the study.</p>
-    <button class="button is-primary mt-4" id="reopenContentBtn">Review Content</button>
-  </div>
-
+  <!-- Content Required Message and Modal removed as direct redirect is implemented -->
 
   <div id="consent-modal" class="modal">
     <div class="modal-background"></div>
@@ -554,26 +543,7 @@
     <button class="modal-close is-large" aria-label="close" id="closeConsentModal"></button>
   </div>
 
-  <div id="content-modal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-      <div class="box">
-        <h3 class="title is-4">Review Required Content</h3>
-           <div class="iframe-container">
-             <iframe id="webpageIframe" src="" frameborder="0"></iframe>
-          </div>
-        <div class="sticky-footer"> <p class="confirm-text">By clicking "I Certify...", you confirm that you have reviewed the content shown above.</p>
-          <p class="control">
-            <button class="button is-success" id="certifyBtn">I certify that I have reviewed this content</button>
-          </p>
-        </div>
-      </div>
-    </div>
-       <button class="modal-close is-large" aria-label="close" id="closeContentModal"></button>
-  </div>
-
-
-     <script>
+  <script>
     // !!! REPLACE with your actual Google Apps Script Web App URL for this study data submission !!!
     const scriptURL = "https://script.google.com/macros/s/AKfycbzR0R21CHTJvYXI5mOwIkIV3kVQSa9AC0dby7Hv4J6ODXRCgJ-1XYbh_R7tKGECykly/exec";
 
@@ -606,17 +576,10 @@
     const consentBtn = document.getElementById("consentBtn");
     const closeConsentModal = document.getElementById("closeConsentModal");
 
-    // Content modal elements
-    const contentModal = document.getElementById("content-modal");
-    const webpageIframe = document.getElementById("webpageIframe");
-    const certifyBtn = document.getElementById("certifyBtn");
-    const closeContentModal = document.getElementById("closeContentModal");
-
     // Hidden form fields
     const consentStatusField = document.getElementById("consentStatusField");
     const viewedWebpageUrlField = document.getElementById("viewedWebpageUrlField");
-    const contentCertifiedField = document.getElementById("contentCertifiedField");
-    const timeOnContentPageMsField = document.getElementById("timeOnContentPageMsField");
+    // Removed contentCertifiedField and timeOnContentPageMsField
     const clientFetchedIpField = document.getElementById('clientFetchedIpField');
 
     // Bot protection field
@@ -630,58 +593,32 @@
     const consentRequiredMessage = document.getElementById('consent-required-message');
     const reopenConsentBtn = document.getElementById('reopenConsentBtn');
 
-    // Content Required Message elements
-    const contentRequiredMessage = document.getElementById('content-required-message');
-    const reopenContentBtn = document.getElementById('reopenContentBtn');
-
+    // Location elements
     const latitudeField = document.getElementById('latitudeField');
     const longitudeField = document.getElementById('longitudeField');
     const locationAccuracyField = document.getElementById('locationAccuracyField');
     const locationStatusField = document.getElementById('locationStatusField');
     const locationMessage = document.getElementById('locationMessage');
-    // NEW REFERENCE FOR THE BUTTON - START
     const getLocationBtn = document.getElementById('getLocationBtn');
-    // NEW REFERENCE FOR THE BUTTON - END>
        
-    // Array of target webpages for the content modal
+    // Array of target webpages for redirection
     const targetWebpages = [
-        "Treatment content.pdf",
-        "Treatment content.pdf",
-        "Treatment content.pdf"
+        "https://www.example.com/treatment1", // Replace with your actual URL 1
+        "https://www.example.com/treatment2", // Replace with your actual URL 2
+        "https://www.example.com/treatment3"  // Replace with your actual URL 3
     ];
 
-    let selectedWebpageUrl = null; // Store the chosen URL for the content modal
-    let contentModalStartTime = null; // Used for time tracking in content modal
+    let selectedWebpageUrl = null; // Store the chosen URL for redirection
     let currentFormData = null; // To store form data temporarily before final submission
 
 
-    /*
-    // !!! TEMPORARILY DISABLED FOR TESTING !!!
-    if (localStorage.getItem('carStudyCompleted')) {
-      console.log('Local Storage flag found: Survey already completed in this browser.');
-      formCard.classList.add('hidden');
-      duplicateMessage.classList.remove('hidden');
-      duplicateMessage.innerHTML = '<p>Thank you for your participation. Our records indicate that you have already completed this survey using this browser.</p>';
-      thankYouMessage.classList.add('hidden');
-
-        ageNextBtn.disabled = true; // Disable initial next button
-        demographicsSubmitBtn.disabled = true; // Disable demographics submit button
-    } else {
+    // If Local Storage check is disabled, ensure timestamp is set on load
+    if (!localStorage.getItem('carStudyCompleted')) {
         setTimestamp();
-        console.log('No Local Storage flag found. Setting initial timestamp.');
+        console.log('Local Storage check disabled. Setting initial timestamp.');
     }
-    // !!! TO RE-ENABLE, UNCOMMENT THE ABOVE BLOCK AND REMOVE THIS COMMENT BLOCK !!!
-    */
 
-      // If Local Storage check is disabled, ensure timestamp is set on load
-      if (!localStorage.getItem('carStudyCompleted')) {
-          setTimestamp();
-          console.log('Local Storage check disabled. Setting initial timestamp.');
-      }
-
-    // Call fetchClientIp on page load to start the process early.
-    // This gives the asynchronous IP fetch time to complete while the user fills out the form.
-    document.addEventListener('DOMContentLoaded', fetchClientIp);
+    // Removed document.addEventListener('DOMContentLoaded', fetchClientIp);
 
 
     function setTimestamp() {
@@ -702,17 +639,6 @@
             params.append(pair[0], pair[1]);
         }
         return params.toString();
-    }
-
-
-    function recordContentModalTime() {
-        if (contentModalStartTime !== null) {
-            const now = new Date().getTime();
-            const duration = now - contentModalStartTime;
-            timeOnContentPageMsField.value = duration;
-            console.log(`Time on content modal: ${duration} ms`);
-            contentModalStartTime = null;
-        }
     }
 
    function getLocation() {
@@ -795,46 +721,7 @@
         }
     }
 
-    async function fetchClientIp() {
-        const ipServices = [
-           'https://api64.ipify.org?format=json', 
-           'https://jsonip.com/'                  
-        ];
-
-        let clientIp = 'N/A_ClientFetch_Failed'; 
-
-        for (const serviceUrl of ipServices) {
-            try {
-                console.log('Attempting to fetch IP from:', serviceUrl);
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3000); 
-
-                const response = await fetch(serviceUrl, { signal: controller.signal });
-                clearTimeout(timeoutId); 
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.ip) {
-                        clientIp = data.ip;
-                        console.log("Client-fetched IP:", clientIp, "from", serviceUrl);
-                        break; 
-                    } else {
-                         console.warn('IP data not found in response from:', serviceUrl, 'Response data:', data);
-                    }
-                } else {
-                    console.warn('Failed to fetch IP from', serviceUrl, 'Status:', response.status);
-                }
-            } catch (error) {
-                 if (error.name === 'AbortError') {
-                    console.error('IP fetch timed out or aborted from:', serviceUrl);
-                } else {
-                    console.error('Error fetching IP from', serviceUrl, ':', error);
-                }
-            }
-        }
-        clientFetchedIpField.value = clientIp;
-        return clientIp; 
-    }
+    // Removed async function fetchClientIp() { ... }
 
     function validateForm() {
         let isValid = true;
@@ -919,9 +806,8 @@
         tempFormData.append("disqualificationReason", reason);
         tempFormData.append("consentStatus", "Not Applicable - Ineligible");
         tempFormData.append("viewedWebpageUrl", "N/A - Ineligible");
-        tempFormData.append("contentCertified", "Not Applicable - Ineligible");
-        tempFormData.append("timeOnContentPageMs", "0");
-        await fetchClientIp(); 
+        // Removed contentCertified and timeOnContentPageMs for disqualified users
+        // Removed await fetchClientIp(); 
         tempFormData.append("clientFetchedIp", clientFetchedIpField.value); 
         tempFormData.append("fullName", "N/A"); 
         tempFormData.append("email", "N/A");
@@ -1033,10 +919,6 @@
       consentModal.classList.remove("is-active");
       surveySection.classList.remove("hidden");
       formCard.classList.remove("hidden"); 
-
-      // REMOVED: Call getLocation() when survey section is shown - START
-      // getLocation(); 
-      // REMOVED: Call getLocation() when survey section is shown - END
     });
 
     function handleConsentModalClose() {
@@ -1056,94 +938,6 @@
         consentModal.classList.add('is-active'); 
     });
 
-    certifyBtn.addEventListener("click", async function() {
-        contentCertifiedField.value = "Yes";
-        recordContentModalTime(); 
-        contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; 
-
-        if (currentFormData) {
-            currentFormData.set("contentCertified", contentCertifiedField.value);
-            currentFormData.set("timeOnContentPageMs", timeOnContentPageMsField.value);
-            currentFormData.set("viewedWebpageUrl", viewedWebpageUrlField.value); 
-            await fetchClientIp(); 
-            currentFormData.set("clientFetchedIp", clientFetchedIpField.value); 
-
-            const formDataString = formatFormData(currentFormData); 
-
-            demographicsSubmitBtn.classList.add('is-loading'); 
-            demographicsSubmitBtn.disabled = true;
-
-            fetch(scriptURL, {
-                method: "POST",
-                redirect: "follow",
-                body: formDataString,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            })
-            .then(response => {
-                if (!response.ok) {
-                     return response.json().then(data => { throw new Error(`Server status ${response.status}: ${data.message || 'Unknown error'}`); }).catch(() => { return response.text().then(text => { const snippet = text.substring(0, 200); throw new Error(`Server status ${response.status}. Raw response snippet: ${snippet}...`); }); });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data && data.status === "success") {
-                    thankYouMessage.classList.remove("hidden");
-                    formCard.classList.add("hidden");
-                    localStorage.setItem('carStudyCompleted', 'true'); 
-                } else if (data && data.status === "error") {
-                    let errorMessage = data.message || 'Final submission failed.';
-                    duplicateMessage.classList.remove('hidden');
-                    duplicateMessage.innerHTML = '<p>' + errorMessage + '</p>';
-                    formCard.classList.remove("hidden"); // Keep form visible to allow retry if appropriate
-                    thankYouMessage.classList.add("hidden");
-                } else {
-                    duplicateMessage.classList.remove('hidden');
-                    duplicateMessage.innerHTML = '<p>An unexpected error occurred during submission. Please try again later.</p>';
-                    formCard.classList.remove("hidden");
-                    thankYouMessage.classList.add("hidden");
-                }
-            })
-            .catch(error => {
-                duplicateMessage.classList.remove('hidden');
-                duplicateMessage.innerHTML = '<p>There was a network error during submission. Please check your internet connection and try again.</p>';
-                formCard.classList.remove("hidden");
-                thankYouMessage.classList.add("hidden");
-            })
-            .finally(() => {
-                demographicsSubmitBtn.classList.remove('is-loading');
-                demographicsSubmitBtn.disabled = false;
-            });
-        } else {
-            duplicateMessage.classList.remove('hidden');
-            duplicateMessage.innerHTML = '<p>An internal error occurred. Please refresh the page and try again.</p>';
-            formCard.classList.remove("hidden");
-            thankYouMessage.classList.add("hidden");
-        }
-    });
-
-    function handleContentModalClose() {
-        recordContentModalTime(); 
-        contentModal.classList.remove("is-active");
-        webpageIframe.src = ""; 
-
-        if (contentCertifiedField.value !== "Yes") {
-            formCard.classList.add("hidden"); 
-            contentRequiredMessage.classList.remove('hidden'); 
-        }
-    }
-
-    closeContentModal.addEventListener("click", handleContentModalClose);
-    contentModal.querySelector('.modal-background').addEventListener('click', handleContentModalClose);
-
-    reopenContentBtn.addEventListener('click', function() {
-        contentRequiredMessage.classList.add('hidden'); 
-        formCard.classList.remove("hidden"); 
-        contentModal.classList.add('is-active'); 
-        webpageIframe.src = selectedWebpageUrl; 
-        contentModalStartTime = new Date().getTime(); 
-    });
-
     // --- Event Listener for Main Survey Form Submission (Demographics submit button) ---
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -1154,20 +948,17 @@
       duplicateMessage.classList.add('hidden');
       thankYouMessage.classList.add('hidden');
       consentRequiredMessage.classList.add('hidden');
-      contentRequiredMessage.classList.add('hidden'); 
+      // Removed contentRequiredMessage as content modal is removed
       // Clear any previous general location error that this submit handler might have set
-      // but let specific messages from getLocation() persist unless overridden.
-      // If locationMessage is already showing a specific error from getLocation(), this won't change it yet.
       if (locationMessage.textContent.includes("Location access is required to proceed")) {
-          locationMessage.classList.remove('is-danger'); // Temporarily remove danger if it was from a previous submit click
-          locationMessage.textContent = document.getElementById('locationStatusField').value === 'Granted' ? 'Location acquired. Thank you!' : 'Attempting to get your location for research purposes...'; // Reset to a neutral or success message if applicable
+          locationMessage.classList.remove('is-danger'); 
+          locationMessage.textContent = document.getElementById('locationStatusField').value === 'Granted' ? 'Location acquired. Thank you!' : 'Attempting to get your location for research purposes...'; 
           if (document.getElementById('locationStatusField').value === 'Granted') {
             locationMessage.classList.add('has-text-success');
           } else {
             locationMessage.classList.add('is-info');
           }
       }
-
 
        if (!validateForm()) {
            console.log('Client-side validation failed.');
@@ -1207,21 +998,19 @@
 
        // If we've passed the location check, and it was previously showing an error from *this* submit handler,
        // ensure the message reflects the actual granted status.
-       // getLocation() would have already set a success message if granted.
        if (locationStatusField.value === 'Granted') {
             locationMessage.textContent = 'Location acquired. Thank you!';
             locationMessage.classList.remove('is-info', 'is-danger');
             locationMessage.classList.add('has-text-success');
        }
 
-
-       // Temporarily store the form data. Final submission will happen after content review.
+       // Temporarily store the form data.
        currentFormData = new FormData(e.target);
 
        // Append the initial eligibility responses to the temporary form data
        const age18OrOverInitial = document.querySelector('input[name="age18OrOverInitial"]:checked');
        currentFormData.append("age18OrOverInitial", age18OrOverInitial ? age18OrOverInitial.value : "Not Provided");
-       const purchaseInitial = document.querySelector('input[name="purchaseInitial"]:checked');
+       const purchaseInitial = document.querySelector('input[name="purchaseInitial']:checked');
        currentFormData.append("purchaseInitial", purchaseInitial ? purchaseInitial.value : "Not Provided");
        const paymentPlanInitial = document.querySelector('input[name="paymentPlanInitial"]:checked');
        currentFormData.append("paymentPlanInitial", paymentPlanInitial ? paymentPlanInitial.value : "Not Provided");
@@ -1229,23 +1018,42 @@
        setTimestamp(); // Update timestamp for the full form data
        currentFormData.set("timestamp", timestampField.value); // Use set to update existing
 
-       // Select a random URL for the content modal
+       // Select a random URL for redirection
        const randomIndex = Math.floor(Math.random() * targetWebpages.length);
        selectedWebpageUrl = targetWebpages[randomIndex];
        viewedWebpageUrlField.value = selectedWebpageUrl; // Update hidden field with the URL that will be shown
        currentFormData.set("viewedWebpageUrl", selectedWebpageUrl); // Also add to stored FormData
 
-       webpageIframe.src = selectedWebpageUrl;
-       contentModal.classList.remove("hidden"); 
-       contentModal.classList.add("is-active"); 
+       // Removed await fetchClientIp(); 
+       currentFormData.set("clientFetchedIp", clientFetchedIpField.value); 
 
-       contentModalStartTime = new Date().getTime(); 
-       console.log('Demographics, consent, and location valid. Now opening content modal. Timer started.');
-       // Don't hide surveySection immediately; allow submit button to remain visible but loading
-       // surveySection.classList.add("hidden"); // This was hiding the button too soon
-       // The button's state (loading, disabled) will handle user feedback.
-       // The formCard itself isn't hidden here, only when a final message (thank you/error) is shown
-       // or if consent/content review is required again.
+       const formDataString = formatFormData(currentFormData); 
+
+       try {
+           const response = await fetch(scriptURL, {
+               method: "POST",
+               redirect: "follow",
+               body: formDataString,
+               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+           });
+
+           if (!response.ok) {
+                const data = await response.json().catch(() => response.text());
+                throw new Error(`Server status ${response.status}: ${data.message || data || 'Unknown error'}`);
+           }
+           console.log('Form data submitted successfully. Redirecting...');
+           // Redirect the user after successful submission
+           window.location.href = selectedWebpageUrl;
+
+       } catch (error) {
+           console.error('Error submitting data before redirect:', error);
+           duplicateMessage.classList.remove('hidden');
+           duplicateMessage.innerHTML = '<p>There was an error submitting your information. Please check your internet connection and try again. If the problem persists, please contact support.</p>';
+           formCard.classList.remove("hidden");
+           thankYouMessage.classList.add("hidden");
+           submitButton.classList.remove('is-loading');
+           submitButton.disabled = false;
+       }
     });
 
     // NEW EVENT LISTENER FOR THE LOCATION BUTTON - START
@@ -1262,7 +1070,7 @@
     surveySection.classList.add("hidden"); 
     formCard.classList.remove("hidden"); 
     consentModal.classList.add("hidden"); 
-    contentModal.classList.add("hidden"); 
+    // Removed contentModal.classList.add("hidden");
     // Adjust the initial message for location, as it's now button-triggered. - START
     locationMessage.textContent = 'Click "Share My Location" to provide your location for research purposes.';
     locationMessage.classList.remove('is-info', 'has-text-success', 'is-danger');
