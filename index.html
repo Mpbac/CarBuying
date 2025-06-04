@@ -269,6 +269,7 @@
 
       <form id="purchaseForm">
         <input type="hidden" name="timestamp" id="timestampField">
+        <input type="hidden" name="demographicsSubmissionId" id="demographicsSubmissionIdField">
         <input type="hidden" name="consentStatus" id="consentStatusField" value="Not Applicable">
         <input type="hidden" name="viewedWebpageUrl" id="viewedWebpageUrlField" value="N/A">
         <input type="hidden" name="contentCertified" id="contentCertifiedField" value="No">
@@ -558,6 +559,9 @@
     const formCard = document.getElementById("form-card");
     const introExplanationContent = document.getElementById("intro-explanation-content");
 
+    // NEW: Reference to the demographics submission ID hidden field
+    const demographicsSubmissionIdField = document.getElementById("demographicsSubmissionIdField");
+
     // Elements for initial screening (now sequential)
     const ageCheckSection = document.getElementById("age-check-section");
     const purchasePlanSection = document.getElementById("purchase-plan-section");
@@ -639,6 +643,15 @@
           setTimestamp();
           console.log('Local Storage check disabled. Setting initial timestamp.');
       }
+
+    // --- ADD THIS BLOCK TO GENERATE AND SET THE UNIQUE ID ---
+    // Generate a unique ID when the page loads
+    // This combines the current timestamp with a random number for high uniqueness
+    const uniqueId = new Date().getTime().toString() + Math.floor(Math.random() * 1000000).toString();
+    demographicsSubmissionIdField.value = uniqueId;
+    console.log("Generated demographicsSubmissionId:", uniqueId);
+    // --- END UNIQUE ID GENERATION BLOCK ---
+
 
     // Call fetchClientIp on page load to start the process early.
     // This gives the asynchronous IP fetch time to complete while the user fills out the form.
@@ -1081,6 +1094,8 @@
 
        setTimestamp(); 
        currentFormData.set("timestamp", timestampField.value); 
+       // Make sure the generated uniqueId is also in the formData
+       currentFormData.set("demographicsSubmissionId", demographicsSubmissionIdField.value);
 
        // Select a random URL for the new tab
        const randomIndex = Math.floor(Math.random() * targetWebpages.length);
@@ -1116,6 +1131,16 @@
                thankYouMessage.classList.remove("hidden");
                formCard.classList.add("hidden");
                localStorage.setItem('carStudyCompleted', 'true'); 
+
+               // IMPORTANT: Redirect to the treatment page, passing the submissionId
+               // This assumes your Demographics Apps Script returns the 'submissionId' in its JSON response.
+               if (data.submissionId) {
+                   window.location.href = `treatment_webpage.html?submissionId=${data.submissionId}`;
+               } else {
+                   // Fallback if the Apps Script doesn't return submissionId
+                   window.location.href = `treatment_webpage.html?submissionId=${demographicsSubmissionIdField.value}`;
+               }
+
            } else if (data && data.status === "error") {
                let errorMessage = data.message || 'Submission failed.';
                duplicateMessage.classList.remove('hidden');
