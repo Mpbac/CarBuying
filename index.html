@@ -982,16 +982,10 @@
         setTimestamp();
     });
 
-  
-    consentBtn.addEventListener('click', () => {
-        console.log('Consent button clicked.');
-        consentStatusField.value = 'Consented';
-        localStorage.setItem('consentGiven', 'true');
-        consentModal.classList.remove('is-active'); // Close the modal
-        consentModal.classList.add('hidden'); // Add this line to explicitly hide the modal
-        showInitialScreening(); // Proceed to the first screening question
-        startContentTimer(); // Start the timer for content engagement
-    });
+  consentBtn.addEventListener("click", function() {Add commentMore actions
+      consentStatusField.value = "Consented";
+      consentRequiredMessage.classList.add('hidden');
+      
       
       const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
       const link = document.createElement('a');
