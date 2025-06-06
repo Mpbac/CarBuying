@@ -223,16 +223,48 @@
            margin-left: 0;
       }
       .modal-content {
-           width: 95%;
-           height: 95%;
-      }
-       .modal-content .box {
-         padding: 15px;
-       }
+            width: 95%;
+            height: 95%;
+            max-height: calc(100vh - 40px); /* Adjust to viewport height minus some margin */
+            display: flex; /* Ensure it's a flex container for internal scrolling */
+            flex-direction: column;
+        }
+
+        .modal-content .box {
+            padding: 15px;
+            flex-grow: 1; /* Make the box fill available space */
+            display: flex; /* Make the box a flex container too */
+            flex-direction: column;
+            overflow: hidden; /* Hide overflow at the box level */
+        }
+
+        .pdf-viewer-container {
+            flex-grow: 1; /* Allow the iframe container to take available space */
+            overflow-y: auto; /* IMPORTANT: Enable scrolling *inside* this container */
+            -webkit-overflow-scrolling: touch; /* For smoother iOS scrolling */
+            position: relative; /* Keep this for absolute positioning of iframe */
+            min-height: 0; /* Important for flex items to shrink correctly */
+        }
+
+        /* Ensure iframe fills its container */
+        .pdf-viewer-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Adjust footer positioning on mobile */
         .sticky-footer {
-            left: -15px;
-            width: calc(100% + 30px);
+            position: sticky; /* Keep it sticky */
+            bottom: 0;
+            left: 0; /* Reset left to 0 */
+            width: 100%; /* Full width */
             padding: 10px 15px;
+            box-sizing: border-box; /* Include padding in width */
+            margin-top: auto; /* Pushes it to the bottom if parent is flex column */
         }
          .modal .modal-close {
              top: 5px;
