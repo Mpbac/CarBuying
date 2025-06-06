@@ -982,21 +982,22 @@
         setTimestamp();
     });
 
-  consentBtn.addEventListener("click", function() {Add commentMore actions
-      consentStatusField.value = "Consented";
-      consentRequiredMessage.classList.add('hidden');
-      const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
-      const link = document.createElement('a');
-      link.href = pdfUrl;
-      link.download = 'CarBuyingStudy_ConsentForm.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+ consentBtn.addEventListener("click", function() {
+    consentStatusField.value = "Consented";
+    consentRequiredMessage.classList.add('hidden');
 
-      consentModal.classList.remove("is-active");
-      surveySection.classList.remove("hidden");
-      formCard.classList.remove("hidden");
-    });
+    const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'CarBuyingStudy_ConsentForm.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    consentModal.classList.remove("is-active");
+    surveySection.classList.remove("hidden");
+    formCard.classList.remove("hidden");
+});
 
     function handleConsentModalClose() {
         consentModal.classList.remove("is-active");
