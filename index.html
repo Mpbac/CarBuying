@@ -309,11 +309,11 @@
                     Will probably buy a new car within the next month
                 </label><br>
                 <label class="radio">
-                    <input type="radio" name="purchaseInitial" value="Will buy used car within 1 month">
+                    <input type="radio" name="purchaseInitial" value="Will buy used car within 1 month" required>
                     Will probably buy a used car within the next month
                 </label><br>
                 <label class="radio">
-                    <input type="radio" name="purchaseInitial" value="No plans to buy car within 1 month">
+                    <input type="radio" name="purchaseInitial" value="No plans to buy car within 1 month" required>
                     No plans to buy a car within the next month
                 </label>
                 </div>
@@ -330,7 +330,7 @@
                         <input type="radio" name="paymentPlanInitial" value="All cash" required> All cash
                     </label><br>
                     <label class="radio">
-                        <input type="radio" name="paymentPlanInitial" value="At least some financing"> At least some financing
+                        <input type="radio" name="paymentPlanInitial" value="At least some financing" required> At least some financing
                     </label>
                 </div>
             </div>
@@ -612,7 +612,7 @@
     // Array of target webpages for the content modal (now for new tab)
     const targetWebpages = [
         "https://mpbac.github.io/Treatment_1/",
-        "https://mpbac.github.io/Treatment2/,
+        "https://mpbac.github.io/Treatment2/",
         "https://mpbac.github.io/Treatment_1/"
     ];
 
@@ -982,22 +982,23 @@
         setTimestamp();
     });
 
- consentBtn.addEventListener("click", function() {
-    consentStatusField.value = "Consented";
-    consentRequiredMessage.classList.add('hidden');
+  consentBtn.addEventListener("click", function() {
+      consentStatusField.value = "Consented";
+      consentRequiredMessage.classList.add('hidden');
+      
+      
+      const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = 'CarBuyingStudy_ConsentForm.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = 'CarBuyingStudy_ConsentForm.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    consentModal.classList.remove("is-active");
-    surveySection.classList.remove("hidden");
-    formCard.classList.remove("hidden");
-});
+      consentModal.classList.remove("is-active");
+      surveySection.classList.remove("hidden");
+      formCard.classList.remove("hidden");
+    });
 
     function handleConsentModalClose() {
         consentModal.classList.remove("is-active");
