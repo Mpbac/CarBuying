@@ -206,6 +206,11 @@
         margin-top: 0.25rem;
     }
 
+    /* NEW: Ensure the modal is completely invisible and non-interactive when not active */
+    .modal:not(.is-active) {
+        display: none !important;
+    }
+
 
     @media (max-width: 768px) {
       .hero .title {
