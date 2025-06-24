@@ -1019,18 +1019,38 @@
         setTimestamp();
     });
 
+// Utility function to detect mobile devices
+  function isMobile() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Basic check for common mobile OS and devices
+    if (/android/i.test(userAgent)) {
+      return true;
+    }
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return true;
+    }
+    // Check for common mobile screen sizes, can be adjusted
+    if (window.innerWidth <= 768) { // 768px is a common breakpoint for tablets/mobiles
+      return true;
+    }
+    return false;
+  }
+
   consentBtn.addEventListener("click", function() {
       consentStatusField.value = "Consented";
       consentRequiredMessage.classList.add('hidden');
       
-      
-      const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
-      const link = document.createElement('a');
-      link.href = pdfUrl;
-      link.download = 'CarBuyingStudy_ConsentForm.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Conditionally trigger download based on device type
+      if (!isMobile()) { // Only execute download on non-mobile (desktop)
+        const pdfUrl = "expedited-consent-template_05_19_2025.pdf";
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = 'CarBuyingStudy_ConsentForm.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
 
       consentModal.classList.remove("is-active");
       surveySection.classList.remove("hidden");
