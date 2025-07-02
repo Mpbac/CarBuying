@@ -206,11 +206,15 @@
         margin-top: 0.25rem;
     }
 
-    /* NEW: Ensure the modal is completely invisible and non-interactive when not active */
+   
     .modal:not(.is-active) {
         display: none !important;
     }
-
+    
+    .subtitle-text {
+        font-size: 0.9em; /* Adjust as needed */
+        font-weight: normal;
+    }
 
     @media (max-width: 768px) {
       .hero .title {
@@ -230,28 +234,28 @@
       .modal-content {
             width: 95%;
             height: 95%;
-            max-height: calc(100vh - 40px); /* Adjust to viewport height minus some margin */
-            display: flex; /* Ensure it's a flex container for internal scrolling */
+            max-height: calc(100vh - 40px);  
+            display: flex;  
             flex-direction: column;
         }
 
         .modal-content .box {
             padding: 15px;
-            flex-grow: 1; /* Make the box fill available space */
-            display: flex; /* Make the box a flex container too */
+            flex-grow: 1;  
+            display: flex;  
             flex-direction: column;
-            overflow: hidden; /* Hide overflow at the box level */
+            overflow: hidden; 
         }
 
         .pdf-viewer-container {
-            flex-grow: 1; /* Allow the iframe container to take available space */
-            overflow-y: auto; /* IMPORTANT: Enable scrolling *inside* this container */
-            -webkit-overflow-scrolling: touch; /* For smoother iOS scrolling */
-            position: relative; /* Keep this for absolute positioning of iframe */
-            min-height: 0; /* Important for flex items to shrink correctly */
+            flex-grow: 1;  
+            overflow-y: auto;  
+            -webkit-overflow-scrolling: touch;  
+            position: relative;  
+            min-height: 0;  
         }
 
-        /* Ensure iframe fills its container */
+       
         .pdf-viewer-container iframe {
             position: absolute;
             top: 0;
@@ -261,15 +265,15 @@
             border: none;
         }
 
-        /* Adjust footer positioning on mobile */
+        
         .sticky-footer {
-            position: sticky; /* Keep it sticky */
+            position: sticky;  
             bottom: 0;
-            left: 0; /* Reset left to 0 */
-            width: 100%; /* Full width */
+            left: 0;  
+            width: 100%;  
             padding: 10px 15px;
-            box-sizing: border-box; /* Include padding in width */
-            margin-top: auto; /* Pushes it to the bottom if parent is flex column */
+            box-sizing: border-box; 
+            margin-top: auto;  
         }
          .modal .modal-close {
              top: 5px;
@@ -280,12 +284,12 @@
 </head>
 <body>
 
-  <section class="hero is-primary is-bold">
+<section class="hero is-primary is-bold">
     <div class="hero-body">
       <div class="container">
         <img src="D-Pine_Rev.png" alt="Dartmouth College Logo" class="banner-logo">
         <h1 class="title">Buying a New Car Soon? - Get $20+ for Sharing Pics of Paperwork</h1>
-        <p>Dartmouth College research study. Enrolling today takes just 2 minutes!</p>
+        <p class="subtitle-text">Dartmouth College research study. Enrolling today takes just 2 minutes!</p>
       </div>
     </div>
   </section>
