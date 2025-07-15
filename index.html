@@ -346,16 +346,16 @@
                 <label class="label">What are your vehicle purchase plans?</label>
                 <div class="control">
                 <label class="radio">
-                    <input type="radio" name="purchaseInitial" value="Will buy new car within 1 month" required>
-                    Will probably buy a new car within the next month
+                    <input type="radio" name="purchaseInitial" value="Will buy new car in the United States within 1 month" required>
+                    Will probably buy a new car in the United States within the next month
                 </label><br>
                 <label class="radio">
-                    <input type="radio" name="purchaseInitial" value="Will buy used car within 1 month" required>
-                    Will probably buy a used car within the next month
+                    <input type="radio" name="purchaseInitial" value="Will buy used car in the United States within 1 month" required>
+                    Will probably buy a used car in the United States within the next month
                 </label><br>
                 <label class="radio">
-                    <input type="radio" name="purchaseInitial" value="No plans to buy car within 1 month" required>
-                    No plans to buy a car within the next month
+                    <input type="radio" name="purchaseInitial" value="No plans to buy car in the United States within 1 month" required>
+                    No plans to buy a car in the United States within the next month
                 </label>
                 </div>
             </div>
@@ -996,7 +996,7 @@
             purchaseInitialError.classList.remove('hidden');
             return;
         }
-        if (purchasePlanSelected.value !== "Will buy new car within 1 month") {
+        if (purchasePlanSelected.value !== "Will buy new car in the United States within 1 month") {
             submitDisqualification("Not buying new car within 1 month");
             return;
         }
